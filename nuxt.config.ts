@@ -1,4 +1,6 @@
-export default {
+import { NuxtConfig } from '@nuxt/types'
+
+export default <NuxtConfig>{
 	// Target: https://go.nuxtjs.dev/config-target
 	target: 'static',
 
