@@ -1,3 +1,6 @@
+/**
+ * @type {import("eslint").Linter.Config}
+ */
 module.exports = {
 	root: true,
 	env: {
@@ -8,6 +11,18 @@ module.exports = {
 	plugins: [],
 	// add your custom rules here
 	rules: {
+		'no-unused-vars': [
+			'warn',
+			{
+				args: 'none',
+			},
+		],
+		'@typescript-eslint/no-unused-vars': [
+			'warn',
+			{
+				args: 'none',
+			},
+		],
 		'prettier/prettier': [
 			'error',
 			{

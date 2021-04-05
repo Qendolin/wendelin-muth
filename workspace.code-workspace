@@ -1,0 +1,13 @@
+{
+	"folders": [
+		{
+			"path": ".",
+			"name": "Nuxt App"
+		},
+		{
+			"name": "Firebase Functions",
+			"path": "./functions/"
+		}
+	],
+	"settings": {}
+}

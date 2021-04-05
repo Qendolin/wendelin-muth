@@ -1,3 +1,17 @@
+# Firebase
+
+.firebase
+
+## Compiled JavaScript files
+/functions/lib
+/functions/**/*.js
+/functions/**/*.js.map
+
+# Typescript v1 declaration files
+functions/typings/
+
+functions/node_modules/
+
 # Created by .ignore support plugin (hsz.mobi)
 ### Node template
 # Logs
