@@ -1,8 +1,0 @@
-{
-	"vetur.format.options.useTabs": true,
-	"vetur.experimental.templateInterpolationService": true,
-	"vetur.completion.scaffoldSnippetSources": {
-		"workspace": "💼",
-		"vetur": ""
-	}
-}

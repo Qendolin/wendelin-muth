@@ -6,4 +6,12 @@
 export default {}
 </script>
 
-<style></style>
+<style lang="scss" scoped>
+$padding: 3rem;
+
+p {
+	text-align: center;
+	margin: auto;
+	padding-block: $padding;
+}
+</style>
