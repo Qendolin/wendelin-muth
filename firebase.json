@@ -3,7 +3,7 @@
 		"predeploy": "npm --prefix \"$RESOURCE_DIR\" run build"
 	},
 	"hosting": {
-		"public": "dist",
+		"public": "app/dist",
 		"ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
 		"trailingSlash": false
 	}

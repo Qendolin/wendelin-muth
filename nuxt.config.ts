@@ -15,6 +15,12 @@ export default <NuxtConfig>{
 		link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }],
 	},
 
+	// The source directory of your Nuxt.js application
+	srcDir: './app',
+
+	// The dist directory for your Nuxt.js application
+	buildDir: './app/.nuxt',
+
 	// Global CSS: https://go.nuxtjs.dev/config-css
 	css: ['@/assets/css/main.scss'],
 
@@ -80,5 +86,10 @@ export default <NuxtConfig>{
 				implementation: require('sass'),
 			},
 		},
+	},
+
+	generate: {
+		// Distribution Folder: https://nuxtjs.org/docs/2.x/directory-structure/dist
+		dir: './app/dist',
 	},
 }

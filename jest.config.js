@@ -2,6 +2,7 @@
  * @type {import("@jest/types").Config.InitialOptions}
  */
 module.exports = {
+	rootDir: 'app',
 	moduleNameMapper: {
 		'^@/(.*)$': '<rootDir>/$1',
 		'^~/(.*)$': '<rootDir>/$1',
