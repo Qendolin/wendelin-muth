@@ -1,0 +1,40 @@
+h1 {
+	margin-top: 1rem;
+	margin-bottom: 0.5rem;
+	font-size: 3rem;
+}
+
+h2 {
+	font-size: 2.25rem;
+	margin-top: 1rem;
+	margin-bottom: 0.5rem;
+}
+
+h3 {
+	font-size: 1.75rem;
+	margin-top: 0.8rem;
+	margin-bottom: 0.4rem;
+}
+
+h4 {
+	font-size: 1.3rem;
+	margin-top: 0.6rem;
+	margin-bottom: 0.3rem;
+}
+
+h5 {
+	font-size: 1rem;
+	margin-top: 0.4rem;
+	margin-bottom: 0.2rem;
+}
+
+h6 {
+	font-size: 1rem;
+	font-style: italic;
+	margin-top: 0.2rem;
+	margin-bottom: 0.1rem;
+}
+
+a:focus {
+	outline: 1px dotted;
+}
