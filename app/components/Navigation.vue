@@ -12,7 +12,7 @@ export type NavItem = {
 	to: string
 }
 
-@Component({})
+@Component
 export default class Navigation extends Vue {
 	@Prop({ type: Array, default: [] })
 	public items!: NavItem[]
