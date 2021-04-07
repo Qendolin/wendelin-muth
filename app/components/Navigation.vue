@@ -49,7 +49,7 @@ nav {
 			content: '';
 			position: absolute;
 			bottom: 1rem;
-			left: 2rem;
+			left: 1.5rem;
 			width: 200%;
 			border-bottom: 1pt solid;
 		}
