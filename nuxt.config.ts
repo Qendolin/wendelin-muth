@@ -22,7 +22,7 @@ export default <NuxtConfig>{
 	buildDir: './app/.nuxt',
 
 	// Global CSS: https://go.nuxtjs.dev/config-css
-	css: ['@/assets/css/main.scss'],
+	css: ['assets/css/modern-normalize.min.css', 'assets/css/main.scss'],
 
 	// Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
 	plugins: [],

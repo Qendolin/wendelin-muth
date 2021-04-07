@@ -1,0 +1,23 @@
+@use "sass:color";
+@use "./colors.scss";
+
+$backdrop: 0.25rem 0.5rem 1rem 4px colors.$accent-backdrop;
+$backdrop-primary: 0.25rem 0.5rem 1rem 4px colors.$primary-backdrop;
+
+@mixin button {
+	box-shadow: $backdrop-primary; //, $backdrop inset;
+	background-color: colors.$primary;
+	color: colors.$primary-text;
+	height: 3rem;
+	padding-inline: 1rem;
+	margin: 0.5rem;
+	transition: box-shadow 0.1s;
+}
+
+button {
+	@include button();
+
+	&:hover {
+		box-shadow: 0.25rem 0.5rem 0.5rem 2px colors.$primary-backdrop;
+	}
+}

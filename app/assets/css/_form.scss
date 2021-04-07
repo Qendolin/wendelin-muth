@@ -1,0 +1,71 @@
+@use "sass:color";
+@use "./colors.scss";
+
+$backdrop: 0.25rem 0.5rem 1rem 4px colors.$accent-backdrop;
+
+$backdrop-focus: 0.25rem 0.5rem 1rem 4px
+	color.adjust(
+		$color: colors.$accent-backdrop,
+		$saturation: 20%,
+		$lightness: 20%,
+	);
+
+input {
+	padding-inline: 1rem;
+	margin: 0.5rem;
+	box-shadow: $backdrop;
+	vertical-align: middle;
+	width: 250px;
+	height: 3rem;
+	transition: box-shadow 0.25s;
+
+	&:focus {
+		box-shadow: $backdrop-focus;
+	}
+
+	&[type='checkbox'] {
+		width: 1rem;
+		height: 1rem;
+		padding: 0.5rem;
+	}
+	&[type='radio'] {
+		padding: 0.5rem;
+		width: 1rem;
+		height: 1rem;
+		border-radius: 100%;
+		appearance: initial;
+		border: 1px solid gray;
+
+		&:hover {
+			border-color: colors.$primary;
+		}
+
+		&:disabled {
+			border-color: rgba(118, 118, 118, 0.3);
+		}
+
+		&:checked:disabled {
+			background-image: radial-gradient(circle at center, rgba(118, 118, 118, 0.3) 40%, transparent 45%);
+		}
+
+		&:checked:not(:disabled) {
+			background-image: radial-gradient(circle at center, colors.$primary 40%, transparent 45%);
+			border-color: colors.$primary;
+
+			&:hover {
+				border-color: color.adjust($color: colors.$primary, $lightness: -15%);
+			}
+		}
+	}
+	&[type='color'] {
+		padding: 0;
+	}
+	&[type='range'] {
+		padding: 0;
+		border-radius: 100vmax;
+		height: auto;
+	}
+	&[type='file'] {
+		padding: 0.75rem;
+	}
+}
