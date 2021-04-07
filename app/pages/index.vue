@@ -2,7 +2,7 @@
 	<div class="container">
 		<div>
 			<Logo />
-			<h1 class="title">wendelin-muth</h1>
+			<h1 class="title">Wendelin Muth</h1>
 			<div class="links">
 				<NuxtLink to="/about">About</NuxtLink>
 			</div>
@@ -27,11 +27,9 @@ export default Vue.extend({})
 }
 
 .title {
-	font-family: 'Quicksand', 'Source Sans Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue',
-		Arial, sans-serif;
 	display: block;
-	font-weight: 300;
-	font-size: 100px;
+	font-weight: 200;
+	font-size: 80px;
 	color: #35495e;
 	letter-spacing: 1px;
 }
