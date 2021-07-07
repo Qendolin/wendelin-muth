@@ -47,6 +47,7 @@
 				<input type="reset" value="Reset Input" />
 				<input type="submit" value="Submit Input" />
 				<input type="button" value="Button Input" />
+				<textarea cols="30" rows="10">Textarea</textarea>
 			</form>
 		</section>
 		<hr />

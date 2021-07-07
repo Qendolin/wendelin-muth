@@ -10,13 +10,25 @@ $backdrop-focus: 0.25rem 0.5rem 1rem 4px
 		$lightness: 20%,
 	);
 
+textarea {
+	padding-block: 0.75rem;
+	min-height: 3rem;
+	resize: none;
+	clip-path: rect(0, 0, 1, 1);
+}
+
 input {
+	height: 3rem;
+}
+
+input,
+textarea {
 	padding-inline: 1rem;
-	margin: 0.5rem;
 	box-shadow: $backdrop;
 	vertical-align: middle;
 	width: 250px;
-	height: 3rem;
+	margin: 0.5rem;
+	max-width: 100%;
 	transition: box-shadow 0.25s;
 
 	&:focus {
@@ -67,5 +79,15 @@ input {
 	}
 	&[type='file'] {
 		padding: 0.75rem;
+	}
+}
+
+label {
+	display: flex;
+	flex-direction: column;
+	padding-bottom: 1rem;
+
+	> * {
+		width: auto;
 	}
 }

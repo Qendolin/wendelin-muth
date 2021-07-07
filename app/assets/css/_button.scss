@@ -11,7 +11,7 @@ $backdrop-primary: 0.25rem 0.5rem 1rem 4px colors.$primary-backdrop;
 	height: 3rem;
 	padding-inline: 1rem;
 	margin: 0.5rem;
-	transition: box-shadow 0.1s;
+	transition: box-shadow 0.05s, background-color 0.05s;
 }
 
 button {
@@ -19,5 +19,11 @@ button {
 
 	&:hover {
 		box-shadow: 0.25rem 0.5rem 0.5rem 2px colors.$primary-backdrop;
+		background-color: colors.$primary-light;
+	}
+
+	&:active {
+		box-shadow: 0.125rem 0.25rem 0.25rem 0px colors.$primary-backdrop;
+		background-color: colors.$primary;
 	}
 }

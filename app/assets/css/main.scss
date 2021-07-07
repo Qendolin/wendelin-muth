@@ -1,6 +1,7 @@
-@use 'form.scss';
-@use 'button.scss';
+@use 'form';
+@use 'button';
 @use 'typography';
+@use 'util';
 
 body,
 #__nuxt,

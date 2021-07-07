@@ -10,6 +10,7 @@
 		"indentation": "tab",
 		"color-hex-length": null,
 		"length-zero-no-unit": null,
-		"max-nesting-depth": null
+		"max-nesting-depth": null,
+		"property-no-vendor-prefix": null
 	}
 }

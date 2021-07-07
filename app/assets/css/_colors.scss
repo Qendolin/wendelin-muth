@@ -1,6 +1,6 @@
 @use "sass:color";
 
-$accent: rgb(201, 33, 33);
+$accent: rgb(216, 158, 221);
 $accent-backdrop: color.change(
 	$color: $accent,
 	$lightness: 30%,
@@ -8,6 +8,10 @@ $accent-backdrop: color.change(
 );
 
 $primary: dodgerblue;
+$primary-light: color.adjust(
+	$color: $primary,
+	$lightness: 10%,
+);
 $primary-backdrop: color.change(
 	$color: $primary,
 	$lightness: 30%,
