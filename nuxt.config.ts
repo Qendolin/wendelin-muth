@@ -90,6 +90,11 @@ export default <NuxtConfig>{
 				implementation: require('sass'),
 			},
 		},
+		postcss: {
+			preset: {
+				stage: 3,
+			},
+		},
 	},
 
 	generate: {

@@ -27,7 +27,7 @@
 				<input type="text" placeholder="Text Input" />
 				<input type="search" placeholder="Search Input" />
 				<input type="email" placeholder="Email Input" />
-				<input type="tel" placeholder="Email Input" />
+				<input type="tel" placeholder="Telephone Input" />
 				<input type="url" placeholder="Url Input" />
 				<input type="password" placeholder="Password Input" />
 				<input type="number" placeholder="Number Input" />
