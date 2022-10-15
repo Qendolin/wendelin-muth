@@ -1,0 +1,43 @@
+.blog-entry-list {
+	list-style: none;
+	padding: unset;
+	margin: unset;
+}
+
+.blog-entry-time {
+	font-size: 0.8rem;
+	color: #888;
+}
+
+.blog-entry-body {
+	margin-top: 1rem;
+}
+
+.blog-entry-heading {
+	display: flex;
+	margin-top: 1rem;
+}
+
+.blog-entry-heading h2 {
+	margin: unset;
+}
+
+.blog-entry-heading a {
+	opacity: 0;
+	color: black;
+	display: inline-block;
+	width: 1rem;
+	margin-left: -1rem;
+}
+
+.blog-entry-heading:is(:hover, :focus) a {
+	opacity: 0.5;
+}
+
+.blog-entry-element::after {
+	content: '';
+	display: block;
+	margin-inline: 20px;
+	margin-block: 1rem;
+	border-bottom: 1px solid gray;
+}
