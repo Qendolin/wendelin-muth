@@ -1,29 +1,25 @@
+<noscript>
+  <dialog open class="js-disabled-dialog">
+    <form method="dialog">
+      <strong><h2>This Website requires JavaScript to be enabled!</h2></strong>
+      <p>Thank you for your understanding.</p>
+      <button type="submit" autofocus>Ok</button>
+    </form>
+  </dialog>
+</noscript>
 <slot />
 
-<style global>
-  :root {
-    font-family: Inter, Avenir, Helvetica, Arial, sans-serif;
-    font-size: 16px;
-    line-height: 24px;
-    font-weight: 400;
-
-    color-scheme: light;
-
-    font-synthesis: none;
-    text-rendering: optimizeLegibility;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    -webkit-text-size-adjust: 100%;
+<style>
+  .js-disabled-dialog {
+    position: fixed;
+    inset: 0;
   }
-
-  body {
-    margin: 0;
-    min-height: 100vh;
+  .js-disabled-dialog button[type='submit'] {
+    float: right;
   }
-
-  body > :first-child {
-    max-width: 1280px;
-    margin: 0 auto;
-    padding: 2rem;
+  noscript:has([open].js-disabled-dialog) {
+    position: fixed;
+    inset: 0;
+    background: #00000080;
   }
 </style>
