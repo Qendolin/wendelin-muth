@@ -1,0 +1,29 @@
+<slot />
+
+<style global>
+  :root {
+    font-family: Inter, Avenir, Helvetica, Arial, sans-serif;
+    font-size: 16px;
+    line-height: 24px;
+    font-weight: 400;
+
+    color-scheme: light;
+
+    font-synthesis: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    margin: 0;
+    min-height: 100vh;
+  }
+
+  body > :first-child {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 2rem;
+  }
+</style>
