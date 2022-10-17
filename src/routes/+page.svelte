@@ -74,6 +74,11 @@
     <p>Sorry, no entries exist.</p>
   {:else}
     <ol class="blog-entry-list">
+      {#if isAdmin}
+        <li>
+          <a href={`/edit`} class="blog-entry-edit">Add Entry</a>
+        </li>
+      {/if}
       {#each blogEntries as entry}
         <li class="blog-entry-item">
           <!-- svelte-ignore a11y-no-noninteractive-tabindex -->

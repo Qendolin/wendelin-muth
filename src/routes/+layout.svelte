@@ -32,10 +32,10 @@
       <button on:click={() => auth$.then((auth) => auth.signOut())}>Log Out</button>
     </p>
   {:else}
-    <nav>
+    <p>
       <a href="/login">Login</a> |
       <a href="/register">Register</a>
-    </nav>
+    </p>
   {/if}
 </footer>
 

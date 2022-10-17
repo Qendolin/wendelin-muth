@@ -46,17 +46,20 @@
     }
   });
 
+  let saving = false;
   async function submit() {
+    saving = true;
     render();
     const now = Timestamp.fromDate(new Date());
     entry.created_date ??= now;
     entry.modified_date = now;
     if (docRef) {
-      setDoc(docRef, entry);
+      await setDoc(docRef, entry);
     } else {
       const ref = await addDoc(blog, entry);
       goto(`$id=${ref.id}`);
     }
+    saving = false;
   }
 
   function render() {
@@ -79,7 +82,7 @@
       >
         {preview ? 'Edit' : 'Preview'}
       </button>
-      <button type="submit" style="margin-left: 2rem;">Save</button>
+      <button type="submit" style="margin-left: 2rem;" disabled={saving}>Save</button>
     </span>
     {#if preview}
       <section class="preview-area">{@html entry.body}</section>
