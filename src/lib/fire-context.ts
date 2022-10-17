@@ -1,6 +1,6 @@
 // Import the functions you need from the SDKs you need
+import { browser } from '$app/environment';
 import { initializeApp } from 'firebase/app';
-import { getAuth } from 'firebase/auth';
 import { getFirestore } from 'firebase/firestore/lite';
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -20,14 +20,31 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 
-const auth = getAuth(app);
 const db = getFirestore(app);
 
-const analytics$ = import('firebase/analytics').then(async ({ getAnalytics, isSupported }) => {
-	if (await isSupported()) {
-		return getAnalytics(app);
-	}
-	return null;
+const auth$ = import('firebase/auth').then(({ getAuth }) => {
+	return getAuth(app);
 });
 
-export { app, analytics$, auth, db };
+const analytics$ = new Promise((resolve) => {
+	if (!browser) return resolve(null);
+	const next = () => {
+		if (globalThis.requestIdleCallback != null) {
+			globalThis.setTimeout(() => globalThis.requestIdleCallback(resolve), 1000);
+		} else {
+			globalThis.setTimeout(resolve, 5000);
+		}
+	};
+
+	if (globalThis.document.readyState == 'complete') next();
+	else globalThis.addEventListener('load', next);
+}).then(() =>
+	import('firebase/analytics').then(async ({ getAnalytics, isSupported }) => {
+		if (await isSupported()) {
+			return getAnalytics(app);
+		}
+		return null;
+	})
+);
+
+export { app, analytics$, auth$, db };

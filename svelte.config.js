@@ -14,6 +14,10 @@ const config = {
 			fallback: null,
 			precompress: false
 		})
+	},
+
+	compilerOptions: {
+		enableSourcemap: true
 	}
 };
 

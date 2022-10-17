@@ -1,3 +1,18 @@
+<script lang="ts">
+  import { auth$ } from '$lib/fire-context';
+  import type { User } from 'firebase/auth';
+
+  let user = null as User | null;
+  auth$.then((auth) =>
+    auth.onAuthStateChanged((current) => {
+      user = current;
+    })
+  );
+</script>
+
+<svelte:head>
+  <title>Wendelin's Homepage</title>
+</svelte:head>
 <noscript>
   <dialog open class="js-disabled-dialog">
     <form method="dialog">
@@ -7,7 +22,22 @@
     </form>
   </dialog>
 </noscript>
-<slot />
+<main id="main">
+  <slot />
+</main>
+<footer id="footer">
+  {#if user}
+    <p>
+      <span>Logged in as {user.displayName ?? user.email}</span>
+      <button on:click={() => auth$.then((auth) => auth.signOut())}>Log Out</button>
+    </p>
+  {:else}
+    <nav>
+      <a href="/login">Login</a> |
+      <a href="/register">Register</a>
+    </nav>
+  {/if}
+</footer>
 
 <style>
   .js-disabled-dialog {
@@ -21,5 +51,11 @@
     position: fixed;
     inset: 0;
     background: #00000080;
+  }
+  #main {
+    grid-area: main;
+  }
+  #footer {
+    grid-area: footer;
   }
 </style>

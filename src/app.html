@@ -4,10 +4,16 @@
 		<meta charset="utf-8" />
 		<link rel="icon" href="%sveltekit.assets%/favicon.png" />
 		<link rel="stylesheet" href="%sveltekit.assets%/global.css" />
+		<link rel="dns-prefetch" href="https://firestore.googleapis.com/" />
+		<link rel="preconnect" href="https://firestore.googleapis.com/" />
+		<link rel="dns-prefetch" href="https://firebase.googleapis.com/" />
+		<link rel="preconnect" href="https://firebase.googleapis.com/" />
+		<link rel="dns-prefetch" href="https://identitytoolkit.googleapis.com/" />
+		<link rel="preconnect" href="https://identitytoolkit.googleapis.com/" />
 		<meta name="viewport" content="width=device-width" />
 		%sveltekit.head%
 	</head>
 	<body>
-		<div>%sveltekit.body%</div>
+		%sveltekit.body%
 	</body>
 </html>
