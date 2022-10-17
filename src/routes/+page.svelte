@@ -38,9 +38,11 @@
   let isAdmin = false;
   auth$.then((auth) =>
     auth.onAuthStateChanged((user) => {
-      user?.getIdTokenResult().then((token) => {
-        isAdmin = !!token.claims.admin;
-      });
+      if (!user) isAdmin = false;
+      else
+        user.getIdTokenResult().then((token) => {
+          isAdmin = !!token.claims.admin;
+        });
     })
   );
 
