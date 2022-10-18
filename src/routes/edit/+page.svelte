@@ -3,15 +3,22 @@
   import {
     addDoc,
     collection,
+    deleteDoc,
     doc,
     DocumentReference,
+    FieldValue,
     getDoc,
+    getDocs,
+    query,
+    serverTimestamp,
     setDoc,
-    Timestamp
+    Timestamp,
+    where
   } from 'firebase/firestore/lite';
-  import { onMount } from 'svelte';
+  import { onDestroy, onMount } from 'svelte';
   import { marked } from 'marked';
-  import { goto } from '$app/navigation';
+  import { afterNavigate, goto, invalidate } from '$app/navigation';
+  import { navigating } from '$app/stores';
 
   const blog = collection(db, 'blog');
 
@@ -19,58 +26,108 @@
     gfm: true
   });
 
-  let entry = {
-    created_date: null as Timestamp | null,
-    modified_date: null as Timestamp | null,
+  let defaultEntry = {
+    created_date: null as Timestamp | FieldValue | null,
+    modified_date: null as Timestamp | FieldValue | null,
     body: '',
     body_raw: '',
-    title: ''
+    title: '',
+    draft: true
   };
+  let entry: typeof defaultEntry;
   let docRef = null as DocumentReference | null;
   let loading = true;
   let preview = false;
 
   onMount(() => {
-    const urlParams = new URLSearchParams(globalThis.location.search);
+    load();
+  });
 
-    const docId = urlParams.get('id');
+  afterNavigate(() => {
+    load();
+  });
+
+  const getParams = () =>
+    globalThis.location ? new URLSearchParams(globalThis.location.search) : null;
+
+  function load() {
+    const params = getParams();
+    if (params == null) return;
+    const docId = params.get('id');
     if (docId != null) {
-      docRef = doc(db, 'blog', urlParams.get('id') as string);
+      docRef = doc(db, 'blog', params.get('id') as string);
       getDoc(docRef).then((doc) => {
         const data = doc.data();
         if (data) entry = data as any;
         loading = false;
       });
     } else {
+      docRef = null;
+      entry = { ...defaultEntry };
       loading = false;
     }
-  });
+  }
+
+  let drafts$ = getDocs(query(blog, where('draft', '==', true))).then((snapshot) =>
+    snapshot.docs.map((doc) => ({ ...doc.data(), _id: doc.id } as any))
+  );
 
   let saving = false;
-  async function submit() {
+  async function saveEntry() {
     saving = true;
-    render();
-    const now = Timestamp.fromDate(new Date());
-    entry.created_date ??= now;
-    entry.modified_date = now;
+    renderEntry();
+    entry.modified_date = serverTimestamp();
     if (docRef) {
       await setDoc(docRef, entry);
     } else {
       const ref = await addDoc(blog, entry);
-      goto(`$id=${ref.id}`);
+      goto(`/edit?id=${ref.id}`);
     }
     saving = false;
   }
 
-  function render() {
+  function renderEntry() {
     entry.body = marked.parse(entry.body_raw);
+  }
+
+  function publishEntry() {
+    entry.draft = false;
+    entry.created_date = serverTimestamp();
+    saveEntry();
+  }
+
+  function deleteEntry() {
+    if (docRef != null) {
+      deleteDoc(docRef);
+      goto('/edit');
+    }
+  }
+
+  function onDraftSelect(ev: Event) {
+    const id = (ev.currentTarget as HTMLSelectElement).value;
+    if (!id) return;
+    goto(`/edit?id=${id}`);
   }
 </script>
 
 {#if loading}
   <p>Loading....</p>
 {:else}
-  <form on:submit|preventDefault={submit}>
+  <label>
+    Drafts
+    <select name="docId" on:change={onDraftSelect}>
+      <option value="">-- Select Draft --</option>
+      {#await drafts$ then drafts}
+        {#each drafts as draft}
+          <option value={draft._id} selected={draft._id == getParams()?.get('id')}
+            >{draft.title}</option
+          >
+        {/each}
+      {/await}
+    </select>
+  </label>
+
+  <form on:submit|preventDefault={saveEntry}>
     <span>
       <input type="text" name="title" placeholder="Title" required bind:value={entry.title} />
       <button
@@ -83,6 +140,10 @@
         {preview ? 'Edit' : 'Preview'}
       </button>
       <button type="submit" style="margin-left: 2rem;" disabled={saving}>Save</button>
+      <button type="button" disabled={saving || !entry.draft} on:click={publishEntry}
+        >Publish</button
+      >
+      <button type="button" disabled={saving} on:click={deleteEntry}>Delete</button>
     </span>
     {#if preview}
       <section class="preview-area">{@html entry.body}</section>

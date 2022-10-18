@@ -1,6 +1,6 @@
 <script lang="ts">
   import { auth$, db } from '$lib/fire-context';
-  import { collection, getDocs } from 'firebase/firestore/lite';
+  import { collection, getDocs, query, where } from 'firebase/firestore/lite';
 
   type Entry = {
     _id: string;
@@ -12,7 +12,7 @@
 
   async function getBlogEntries(): Promise<Entry[]> {
     const blog = collection(db, 'blog');
-    const documents = await getDocs(blog);
+    const documents = await getDocs(query(blog, where('draft', '==', false)));
     const entries = documents.docs
       .map((doc) => ({ ...doc.data(), _id: doc.id } as any))
       .map((doc) => ({
