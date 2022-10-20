@@ -133,7 +133,7 @@
       <button
         type="button"
         on:click={() => {
-          render();
+          renderEntry();
           preview = !preview;
         }}
       >

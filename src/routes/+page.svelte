@@ -88,7 +88,9 @@
             <section class="blog-entry-header">
               <span class="blog-entry-heading">
                 <a href={`#${entry._id}`} id={entry._id} class="blog-entry-anchor">#</a>
-                <h2>{entry.title}</h2>
+                <a href={`/enry?id=${entry._id}`}>
+                  <h2>{entry.title}</h2>
+                </a>
                 {#if isAdmin}
                   <a href={`/edit?id=${entry._id}`} class="blog-entry-edit">Edit</a>
                 {/if}
