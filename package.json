@@ -31,6 +31,9 @@
 	},
 	"type": "module",
 	"dependencies": {
+		"@bbob/core": "^2.8.1",
+		"@bbob/html": "^2.8.1",
+		"@bbob/preset-html5": "^2.8.1",
 		"@types/marked": "^4.0.7",
 		"firebase": "^9.12.1",
 		"marked": "^4.1.1"

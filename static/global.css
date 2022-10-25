@@ -4,28 +4,146 @@
 	line-height: 24px;
 	font-weight: normal;
 
-	color-scheme: light;
+	color-scheme: light dark;
 
 	font-synthesis: none;
 	text-rendering: optimizeLegibility;
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
 	-webkit-text-size-adjust: 100%;
+
+	--link-color: #3131dd;
+	--background-color: white;
+	--text-color: black;
+	--accent-background-color: #404040;
+	--accent-color: white;
 }
 
 * {
 	box-sizing: border-box;
 }
 
+html {
+	background: var(--background-color);
+	width: 100%;
+	max-width: 100%;
+	scrollbar-gutter: stable;
+}
+
 body {
 	margin: 0;
 	min-height: 100vh;
+	max-width: 100%;
+	width: 100%;
+	overflow-x: hidden;
 	position: relative;
 	margin: 0 auto;
 	padding: 2rem;
 
 	display: grid;
 	grid-template:
+		'. header .' max-content
 		'. main .' 1fr
 		'. footer .' max-content / auto minmax(auto, 1280px) auto;
+}
+
+a:not(:visited) {
+	color: var(--link-color);
+}
+
+.link-button {
+	font: unset;
+	background: unset;
+	border: unset;
+	text-decoration: underline;
+	color: var(--link-color);
+	cursor: pointer;
+}
+
+.link-button:disabled {
+	color: unset;
+	opacity: 0.5;
+	cursor: default;
+}
+
+summary {
+	cursor: pointer;
+}
+
+.bbcode-spoiler {
+	font: unset;
+	background: unset;
+	padding: 0;
+	border: none;
+
+	outline-offset: 2px;
+	color: transparent;
+	background-color: #404040;
+	transition: color, background-color 0.2s;
+	cursor: pointer;
+	line-height: normal;
+	padding-inline: 2px;
+}
+
+.bbcode-spoiler > :first-child {
+	visibility: hidden;
+}
+
+.bbcode-spoiler-revealed {
+	background-color: #40404040;
+	color: inherit;
+}
+
+.bbcode-spoiler-revealed > :first-child {
+	visibility: unset;
+}
+
+.spinner-container {
+	position: relative;
+}
+
+.spinner-container::before {
+	content: '';
+	display: block;
+	position: absolute;
+	inset: 0;
+	background: rgba(0, 0, 0, 0.33);
+	z-index: 1;
+}
+
+.spinner-container::after {
+	content: '';
+	display: block;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%) rotate(0deg);
+	border: 4px solid transparent;
+	border-top: 4px solid white;
+	border-right: 4px solid white;
+	width: 2rem;
+	height: 2rem;
+	border-radius: 2rem;
+
+	animation-name: spinner-spin;
+	animation-duration: 1s;
+	animation-timing-function: linear;
+	animation-iteration-count: infinite;
+	z-index: 1;
+}
+
+@keyframes spinner-spin {
+	to {
+		transform: translate(-50%, -50%) rotate(360deg);
+	}
+}
+
+@media (prefers-color-scheme: dark) {
+	:root {
+		--link-color: #9e9eff;
+		--background-color: #121212;
+		--text-color: white;
+		--accent-background-color: #eeeeee;
+		--accent-color: black;
+	}
 }

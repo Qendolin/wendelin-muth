@@ -15,16 +15,24 @@
     Timestamp,
     where
   } from 'firebase/firestore/lite';
-  import { onDestroy, onMount } from 'svelte';
+  import { onMount } from 'svelte';
   import { marked } from 'marked';
-  import { afterNavigate, goto, invalidate } from '$app/navigation';
-  import { navigating } from '$app/stores';
+  import { afterNavigate, goto } from '$app/navigation';
 
   const blog = collection(db, 'blog');
 
   marked.setOptions({
     gfm: true
   });
+  const renderer = new marked.Renderer();
+  const linkRenderer = renderer.link;
+  renderer.link = (href: string, title: string, text: string) => {
+    const localLink = href.startsWith(`${location.protocol}//${location.hostname}`);
+    const html = linkRenderer.call(renderer, href, title, text);
+    return localLink
+      ? html
+      : html.replace(/^<a /, `<a target="_blank" rel="noreferrer noopener nofollow" `);
+  };
 
   let defaultEntry = {
     created_date: null as Timestamp | FieldValue | null,
@@ -81,13 +89,13 @@
       await setDoc(docRef, entry);
     } else {
       const ref = await addDoc(blog, entry);
-      goto(`/edit?id=${ref.id}`);
+      goto(`/admin/edit?id=${ref.id}`);
     }
     saving = false;
   }
 
   function renderEntry() {
-    entry.body = marked.parse(entry.body_raw);
+    entry.body = marked.parse(entry.body_raw, { renderer });
   }
 
   function publishEntry() {
@@ -99,14 +107,14 @@
   function deleteEntry() {
     if (docRef != null) {
       deleteDoc(docRef);
-      goto('/edit');
+      goto('/admin/edit');
     }
   }
 
   function onDraftSelect(ev: Event) {
     const id = (ev.currentTarget as HTMLSelectElement).value;
     if (!id) return;
-    goto(`/edit?id=${id}`);
+    goto(`/admin/edit?id=${id}`);
   }
 </script>
 

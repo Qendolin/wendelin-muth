@@ -1,4 +1,6 @@
 <script lang="ts">
+  import { page } from '$app/stores';
+  import CommentBox from '$lib/components/comment-box.svelte';
   import { auth$ } from '$lib/fire-context';
   import type { User } from 'firebase/auth';
 
@@ -22,6 +24,11 @@
     </form>
   </dialog>
 </noscript>
+<header id="header">
+  {#if $page.routeId != ''}
+    <a href="/">Go to Home</a>
+  {/if}
+</header>
 <main id="main">
   <slot />
 </main>
@@ -29,7 +36,9 @@
   {#if user}
     <p>
       <span>Logged in as {user.displayName ?? user.email}</span>
-      <button on:click={() => auth$.then((auth) => auth.signOut())}>Log Out</button>
+      <button class="link-button" on:click={() => auth$.then((auth) => auth.signOut())}>
+        Log Out
+      </button>
     </p>
   {:else}
     <p>
@@ -52,8 +61,15 @@
     inset: 0;
     background: #00000080;
   }
+  #header {
+    grid-area: header;
+    width: 100%;
+  }
   #main {
     grid-area: main;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
   }
   #footer {
     grid-area: footer;

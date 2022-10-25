@@ -76,15 +76,15 @@
       />
     {/if}
 
-    <button on:click={() => (passwordVisible = !passwordVisible)} type="button">
+    <button on:click={() => (passwordVisible = !passwordVisible)} type="button" class="link-button">
       {passwordVisible ? 'Hide' : 'Show'}</button
     >
   </label>
   <br />
 
-  <button type="submit">Register</button>
+  <button type="submit" class="link-button">Register</button>
 </form>
 
 <h2>Sign-In with Google</h2>
 
-<button on:click={submitGoogle}>Sign-In</button>
+<button on:click={submitGoogle} class="link-button">Sign-In</button>

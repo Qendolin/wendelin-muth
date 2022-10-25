@@ -46,8 +46,13 @@
     })
   );
 
-  const dateFormat = new Intl.DateTimeFormat('en-GB', {
+  const longDate = new Intl.DateTimeFormat('en-GB', {
     dateStyle: 'full',
+    timeStyle: 'short',
+    timeZone: 'UTC'
+  });
+  const shortDate = new Intl.DateTimeFormat('en-GB', {
+    dateStyle: 'short',
     timeStyle: 'short',
     timeZone: 'UTC'
   });
@@ -56,14 +61,24 @@
 <header>
   <h1>Welcome to my Blog!</h1>
   Check out my
-  <a target="_blank" rel="noreferrer" href="https://github.com/Qendolin/">GitHub</a> and
-  <a target="_blank" rel="noreferrer" href="https://www.linkedin.com/in/wendelin-muth">LinkedIn</a>.
-  Get in touch via my Email
-  <a target="_blank" rel="noreferrer" href="mailto:wendelin.muth@gmail.com"
+  <a target="_blank" rel="noreferrer noopener nofollow" href="https://github.com/Qendolin/"
+    >GitHub</a
+  >
+  and
+  <a
+    target="_blank"
+    rel="noreferrer noopener nofollow"
+    href="https://www.linkedin.com/in/wendelin-muth">LinkedIn</a
+  >. Get in touch via my Email
+  <a target="_blank" rel="noreferrer noopener nofollow" href="mailto:wendelin.muth@gmail.com"
     >wendelin.muth@gmail.com</a
   >
   or Discord
-  <a target="_blank" rel="noreferrer" href="https://discordapp.com/users/Wendelin#7330">
+  <a
+    target="_blank"
+    rel="noreferrer noopener nofollow"
+    href="https://discordapp.com/users/Wendelin#7330"
+  >
     Wendelin#7330
   </a>
   <hr />
@@ -78,7 +93,7 @@
     <ol class="blog-entry-list">
       {#if isAdmin}
         <li>
-          <a href={`/edit`} class="blog-entry-edit">Add Entry</a>
+          <a href={`/admin/edit`} class="blog-entry-edit">Add Entry</a>
         </li>
       {/if}
       {#each blogEntries as entry}
@@ -88,21 +103,21 @@
             <section class="blog-entry-header">
               <span class="blog-entry-heading">
                 <a href={`#${entry._id}`} id={entry._id} class="blog-entry-anchor">#</a>
-                <a href={`/enry?id=${entry._id}`}>
+                <a href={`/entry?id=${entry._id}`} class="blog-entry-link">
                   <h2>{entry.title}</h2>
                 </a>
                 {#if isAdmin}
-                  <a href={`/edit?id=${entry._id}`} class="blog-entry-edit">Edit</a>
+                  <a href={`/admin/edit?id=${entry._id}`} class="blog-entry-edit">Edit</a>
                 {/if}
               </span>
               <span class="blog-entry-time">
                 <time datetime={entry.created_date.toISOString()}>
-                  {dateFormat.format(entry.created_date)} UTC
+                  {longDate.format(entry.created_date)} UTC
                 </time>
                 {#if entry.modified_date.getTime() - entry.created_date.getTime() > 1000 * 60 * 10}
                   &mdash; Edited
                   <time datetime={entry.modified_date.toISOString()}>
-                    {dateFormat.format(entry.modified_date)}
+                    {shortDate.format(entry.modified_date)}
                   </time>
                 {/if}
               </span>
@@ -128,7 +143,10 @@
 
   .blog-entry-time {
     font-size: 0.8rem;
-    color: #888;
+    color: var(--accent-color);
+    background: var(--accent-background-color);
+    padding-block: 1px;
+    padding-inline: 4px;
   }
 
   .blog-entry-body {
@@ -145,16 +163,21 @@
   }
 
   .blog-entry-anchor {
+    font-family: 'Times New Roman', Times, serif;
     display: none;
     opacity: 0;
-    color: black;
+    color: white;
+    mix-blend-mode: difference;
     display: inline-block;
     width: 1rem;
     margin-left: -1rem;
+    text-decoration: none;
+    font-size: 1.5rem;
   }
 
-  .blog-entry-heading:is(:hover, :focus) .blog-entry-anchor,
-  .blog-entry-anchor:is(:hover, :focus) {
+  .blog-entry:is(:focus-within, :focus) .blog-entry-anchor,
+  .blog-entry-heading:is(:hover) .blog-entry-anchor,
+  .blog-entry-anchor:is(:hover) {
     opacity: 0.5;
     display: block;
   }

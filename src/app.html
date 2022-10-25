@@ -11,7 +11,15 @@
 		<link rel="dns-prefetch" href="https://identitytoolkit.googleapis.com/" />
 		<link rel="preconnect" href="https://identitytoolkit.googleapis.com/" />
 		<meta name="viewport" content="width=device-width" />
+		<meta name="description" content="Wendelin Muth's personal website / blog." />
 		%sveltekit.head%
+		<script>
+			document.documentElement.addEventListener('mousedown', (ev) => {
+				if (ev.composedPath().some((el) => el.tagName == 'SUMMARY') && ev.detail > 1) {
+					ev.preventDefault();
+				}
+			});
+		</script>
 	</head>
 	<body>
 		%sveltekit.body%

@@ -1,43 +1,77 @@
 <script lang="ts">
   import type { DocumentData, DocumentSnapshot } from 'firebase/firestore/lite';
+  import CommentList from '$lib/components/comment-list.svelte';
+  import CommentBox from '$lib/components/comment-box.svelte';
+  import { page, user } from '$lib/stores';
 
-  export let data: { entry: DocumentSnapshot<DocumentData>; test: string };
-
-  let entry = ((doc: DocumentData, id: string) =>
-    ({
-      ...doc,
-      _id: id,
-      created_date: new Date(doc.created_date.seconds * 1000),
-      modified_date: new Date(doc.modified_date.seconds * 1000)
-    } as any)).call(null, data.entry.data()!, data.entry.id);
-
-  const dateFormat = new Intl.DateTimeFormat('en-GB', {
+  const longDate = new Intl.DateTimeFormat('en-GB', {
     dateStyle: 'full',
+    timeStyle: 'short',
+    timeZone: 'UTC'
+  });
+  const shortDate = new Intl.DateTimeFormat('en-GB', {
+    dateStyle: 'short',
     timeStyle: 'short',
     timeZone: 'UTC'
   });
 </script>
 
-{#if entry}
-  <article>
+{#if $page}
+  <article class="blog-entry">
     <section>
       <span class="blog-entry-heading">
-        <h2>{entry.title}</h2>
+        <h2>{$page.title}</h2>
       </span>
       <span class="blog-entry-time">
-        <time datetime={entry.created_date.toISOString()}>
-          {dateFormat.format(entry.created_date)} UTC
+        <time datetime={$page.created_date.toISOString()}>
+          {longDate.format($page.created_date)} UTC
         </time>
-        {#if entry.modified_date.getTime() - entry.created_date.getTime() > 1000 * 60 * 10}
+        {#if $page.modified_date.getTime() - $page.created_date.getTime() > 1000 * 60 * 10}
           &mdash; Edited
-          <time datetime={entry.modified_date.toISOString()}>
-            {dateFormat.format(entry.modified_date)}
+          <time datetime={$page.modified_date.toISOString()}>
+            {shortDate.format($page.modified_date)}
           </time>
         {/if}
       </span>
     </section>
     <section class="blog-entry-body">
-      {@html entry.body}
+      {@html $page.body}
     </section>
   </article>
+  <section class="blog-comments">
+    <h2>Comments</h2>
+    {#if $user}
+      <CommentBox hints={true} />
+    {:else}
+      <p><a href="/login">Login</a> to comment</p>
+    {/if}
+    <CommentList />
+  </section>
 {/if}
+
+<style>
+  .blog-entry {
+    flex-grow: 1;
+  }
+
+  .blog-entry-body {
+    margin-top: 1rem;
+  }
+
+  .blog-entry-heading {
+    display: flex;
+    margin-top: 1rem;
+  }
+
+  .blog-entry-heading h2 {
+    margin: unset;
+  }
+
+  .blog-entry-time {
+    font-size: 0.8rem;
+    color: var(--accent-color);
+    background: var(--accent-background-color);
+    padding-block: 1px;
+    padding-inline: 4px;
+  }
+</style>
