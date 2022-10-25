@@ -3,9 +3,6 @@
   import { comments } from '$lib/stores';
   import CommentTree from './comment-tree.svelte';
 
-  comments.clear();
-  comments.reload();
-
   const bbcode$ = (async () => {
     const [{ default: render }, { preset: preset }] = await Promise.all([
       import('$lib/bbcode/bbcode-renderer') as Promise<any>,

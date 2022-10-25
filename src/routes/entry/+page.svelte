@@ -1,8 +1,8 @@
 <script lang="ts">
-  import type { DocumentData, DocumentSnapshot } from 'firebase/firestore/lite';
   import CommentList from '$lib/components/comment-list.svelte';
   import CommentBox from '$lib/components/comment-box.svelte';
-  import { page, user } from '$lib/stores';
+  import { comments, page, user } from '$lib/stores';
+  import { onMount } from 'svelte';
 
   const longDate = new Intl.DateTimeFormat('en-GB', {
     dateStyle: 'full',
@@ -13,6 +13,11 @@
     dateStyle: 'short',
     timeStyle: 'short',
     timeZone: 'UTC'
+  });
+
+  onMount(() => {
+    comments.clear();
+    comments.reload();
   });
 </script>
 

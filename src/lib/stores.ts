@@ -123,16 +123,14 @@ function createCommentsStore() {
 			loading++;
 			return patch(state, { isLoading: true });
 		});
-	const stopLoading = (error?: any) =>
+	const stopLoading = (error?: any) => {
 		update((state) => {
 			if (loading === 0) console.error('Stopped loading more than started');
 			loading = Math.max(0, loading - 1);
-			return patch(
-				state,
-				{ isLoading: loading > 0 },
-				error == null ? {} : { error: String(error) }
-			);
+			return patch(state, { isLoading: loading > 0 });
 		});
+		if (error != null) showError(error);
+	};
 
 	const reload = async () => {
 		// TODO: add pagination
@@ -148,7 +146,8 @@ function createCommentsStore() {
 		update((state) => patch(state, { direct: comments, replies: new Map() }));
 	};
 
-	const setError = async (error: any) => {
+	const showError = async (error: any) => {
+		console.error(error);
 		update((state) => patch(state, { error: String(error) }));
 	};
 
@@ -200,7 +199,7 @@ function createCommentsStore() {
 				};
 				await updateDoc(doc(db, 'comments', id), payload);
 			} catch (error) {
-				setError(String(error));
+				showError(String(error));
 			}
 		},
 		remove: async (comment: DocumentReference) => {
@@ -209,7 +208,7 @@ function createCommentsStore() {
 					removed: true
 				});
 			} catch (error) {
-				setError(error);
+				showError(error);
 			}
 		},
 		unremove: async (comment: DocumentReference) => {
@@ -218,7 +217,7 @@ function createCommentsStore() {
 					removed: false
 				});
 			} catch (error) {
-				setError(error);
+				showError(error);
 			}
 		},
 		clear: () => {
