@@ -63,7 +63,7 @@
   let saving = false;
   const dispatch = createEventDispatcher();
   async function postComment() {
-    if (!$user?.uid) return;
+    if (!$user?.auth?.uid) return;
     saving = true;
 
     const bbcode = await bbcode$;

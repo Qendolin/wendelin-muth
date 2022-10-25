@@ -3,6 +3,8 @@
   import CommentBox from '$lib/components/comment-box.svelte';
   import { comments, page, user } from '$lib/stores';
   import { onMount } from 'svelte';
+  import { dataset_dev } from 'svelte/internal';
+  import UsernameForm from '$lib/components/username-form.svelte';
 
   const longDate = new Intl.DateTimeFormat('en-GB', {
     dateStyle: 'full',
@@ -45,8 +47,12 @@
   </article>
   <section class="blog-comments">
     <h2>Comments</h2>
-    {#if $user}
-      <CommentBox hints={true} />
+    {#if $user.data}
+      {#if $user.data.display_name != null}
+        <CommentBox hints={true} />
+      {:else}
+        <UsernameForm />
+      {/if}
     {:else}
       <p><a href="/login">Login</a> to comment</p>
     {/if}

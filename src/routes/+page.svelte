@@ -70,8 +70,10 @@
     rel="noreferrer noopener nofollow"
     href="https://www.linkedin.com/in/wendelin-muth">LinkedIn</a
   >. Get in touch via my Email
-  <a target="_blank" rel="noreferrer noopener nofollow" href="mailto:wendelin.muth@gmail.com"
-    >wendelin.muth@gmail.com</a
+  <a
+    target="_blank"
+    rel="noreferrer noopener nofollow"
+    href="mailto:wendelin.muth+website@gmail.com">wendelin.muth@gmail.com</a
   >
   or Discord
   <a

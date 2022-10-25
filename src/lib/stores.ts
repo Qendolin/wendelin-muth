@@ -9,6 +9,7 @@ import {
 	orderBy,
 	query,
 	serverTimestamp,
+	setDoc,
 	updateDoc,
 	where,
 	type DocumentData
@@ -37,6 +38,10 @@ export type BlogEntry = {
 	draft: boolean;
 };
 
+export type UserData = {
+	display_name: string;
+};
+
 function patch<S>(state: S, ...changes: Partial<S>[]): S {
 	return Object.assign({}, state, ...changes);
 }
@@ -49,14 +54,24 @@ export const page = createBlogStore();
 
 function createUserStore() {
 	let currentUser = null as User | null;
+	let currentUserData = null as UserData | null;
 
-	const { set, subscribe } = writable(currentUser);
+	const { update, subscribe } = writable({ auth: currentUser, data: currentUserData });
 	auth$.then((auth) => {
-		currentUser = auth.currentUser;
-		set(currentUser);
 		auth.onAuthStateChanged((user) => {
 			currentUser = user;
-			set(currentUser);
+			currentUserData = null;
+			update((state) => patch(state, { auth: user, data: currentUserData }));
+			if (currentUser) {
+				getDoc(doc(db, 'users', currentUser.uid))
+					.then((doc) => ({
+						display_name: doc.get('display_name')
+					}))
+					.then((userData) => {
+						currentUserData = userData;
+						update((state) => patch(state, { data: userData }));
+					});
+			}
 		});
 	});
 	return {
@@ -67,6 +82,17 @@ function createUserStore() {
 		getRef(): DocumentReference | null {
 			if (currentUser == null) return null;
 			return doc(db, 'users', currentUser.uid);
+		},
+		async createUser(name: string) {
+			if (currentUser == null) throw 'No user';
+			await setDoc(doc(db, 'users', currentUser.uid), {
+				display_name: name
+			});
+
+			currentUserData = {
+				display_name: name
+			};
+			update((state) => patch(state, { data: { ...state.data, display_name: name } }));
 		}
 	};
 }
