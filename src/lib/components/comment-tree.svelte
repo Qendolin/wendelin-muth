@@ -1,5 +1,4 @@
 <script lang="ts">
-  import { spinner } from '$lib/directives';
   import { db } from '$lib/fire-context';
   import { comments, user, type Comment } from '$lib/stores';
   import { doc } from 'firebase/firestore/lite';

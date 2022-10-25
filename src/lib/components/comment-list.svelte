@@ -1,5 +1,4 @@
 <script lang="ts">
-  import { spinner } from '$lib/directives';
   import { comments } from '$lib/stores';
   import CommentTree from './comment-tree.svelte';
 
@@ -12,7 +11,7 @@
   })();
 </script>
 
-<ol class="comment-tree-root" use:spinner={$comments.isLoading}>
+<ol class="comment-tree-root">
   {#each $comments.direct as comment}
     <li class="comment-tree-node">
       {#await bbcode$ then bbcode}

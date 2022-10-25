@@ -85,4 +85,6 @@
 
 <h2>Sign-In with Google</h2>
 
-<button on:click={submitGoogle} class="link-button">Sign-In</button>
+<div>
+  <button on:click={submitGoogle} class="link-button">Sign-In</button>
+</div>

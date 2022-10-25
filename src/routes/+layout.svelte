@@ -1,15 +1,9 @@
 <script lang="ts">
   import { page } from '$app/stores';
-  import CommentBox from '$lib/components/comment-box.svelte';
   import { auth$ } from '$lib/fire-context';
-  import type { User } from 'firebase/auth';
+  import { user } from '$lib/stores';
 
-  let user = null as User | null;
-  auth$.then((auth) =>
-    auth.onAuthStateChanged((current) => {
-      user = current;
-    })
-  );
+  import '../global.css';
 </script>
 
 <svelte:head>
@@ -33,9 +27,9 @@
   <slot />
 </main>
 <footer id="footer">
-  {#if user}
+  {#if $user}
     <p>
-      <span>Logged in as {user.displayName ?? user.email}</span>
+      <span>Logged in as {$user.displayName ?? $user.email}</span>
       <button class="link-button" on:click={() => auth$.then((auth) => auth.signOut())}>
         Log Out
       </button>

@@ -37,7 +37,7 @@
 
 <h1>Account Registration</h1>
 
-<p>Registering currently doesn't do anything, but I've planned support for comments.</p>
+<p>If you register on this website you will be able to comment on my blog posts!</p>
 
 <h2>Register with Email</h2>
 
@@ -87,4 +87,6 @@
 
 <h2>Sign-In with Google</h2>
 
-<button on:click={submitGoogle} class="link-button">Sign-In</button>
+<div>
+  <button on:click={submitGoogle} class="link-button">Sign-In</button>
+</div>

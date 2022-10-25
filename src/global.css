@@ -98,19 +98,6 @@ summary {
 	visibility: unset;
 }
 
-.spinner-container {
-	position: relative;
-}
-
-.spinner-container::before {
-	content: '';
-	display: block;
-	position: absolute;
-	inset: 0;
-	background: rgba(0, 0, 0, 0.33);
-	z-index: 1;
-}
-
 .spinner-container::after {
 	content: '';
 	display: block;
