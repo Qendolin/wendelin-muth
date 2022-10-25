@@ -2,7 +2,7 @@
   import { db } from '$lib/fire-context';
   import { comments, user, type Comment } from '$lib/stores';
   import { doc } from 'firebase/firestore/lite';
-  import { onMount } from 'svelte';
+  import { onDestroy, onMount } from 'svelte';
   import CommentBox from './comment-box.svelte';
 
   export let root: Comment;
@@ -39,10 +39,22 @@
 
   let busy = false;
   let commentContainer: HTMLElement;
+
+  function render() {
+    requestAnimationFrame(() => {
+      commentContainer.innerHTML = '';
+      commentContainer.append(bbcode(root.body));
+    });
+  }
+
   onMount(() => {
-    commentContainer.innerHTML = '';
-    commentContainer.append(bbcode(root.body));
+    render();
   });
+
+  const unsubscribe = comments.subscribe(() => {
+    render();
+  });
+  onDestroy(unsubscribe);
 
   async function removeComment() {
     busy = true;
@@ -61,10 +73,7 @@
   let editing = false;
   function stopEditing() {
     editing = false;
-    requestAnimationFrame(() => {
-      commentContainer.innerHTML = '';
-      commentContainer.append(bbcode(root.body));
-    });
+    render();
   }
 </script>
 
@@ -75,11 +84,10 @@
   </summary>
   {#if !editing}
     <p class="comment-tree-body" bind:this={commentContainer} />
-    {#if root.user_ref.id == $user?.uid}
+    {#if root.user_ref.id == $user?.auth?.uid}
       <menu class="comment-tree-actions">
         <li>
-          <button class="link-button" on:click={() => (editing = true)} disabled={busy}>Edit</button
-          >
+          <button class="link-button" on:click={() => (editing = true)} disabled={busy}>Edit</button>
         </li>
         {#if root.removed}
           <li>

@@ -27,9 +27,9 @@
   <slot />
 </main>
 <footer id="footer">
-  {#if $user}
+  {#if $user?.auth}
     <p>
-      <span>Logged in as {$user.displayName ?? $user.email}</span>
+      <span>Logged in as {$user.auth.displayName ?? $user.auth.email}</span>
       <button class="link-button" on:click={() => auth$.then((auth) => auth.signOut())}>
         Log Out
       </button>
