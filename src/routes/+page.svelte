@@ -1,6 +1,7 @@
 <script lang="ts">
   import { auth$, db } from '$lib/fire-context';
   import { collection, getDocs, query, where } from 'firebase/firestore/lite';
+  import { tick } from 'svelte';
 
   type Entry = {
     _id: string;
@@ -56,35 +57,40 @@
     timeStyle: 'short',
     timeZone: 'UTC'
   });
+
+  function updateOverflowShadows() {
+    for (const entry of Array.from(document.querySelectorAll('.blog-entry-body')) as HTMLElement[]) {
+      if (entry.scrollHeight > 400) {
+        entry.dataset.overflowing = 'true';
+      } else {
+        entry.dataset.overflowing = 'false';
+      }
+    }
+  }
+
+  function updateOverflowShadowsNextTick(_: any) {
+    tick().then(updateOverflowShadows);
+  }
 </script>
 
 <header>
   <h1>Welcome to my Blog!</h1>
   Check out my
-  <a target="_blank" rel="noreferrer noopener nofollow" href="https://github.com/Qendolin/"
-    >GitHub</a
-  >
+  <a target="_blank" rel="noreferrer noopener nofollow" href="https://github.com/Qendolin/">GitHub</a>
   and
-  <a
-    target="_blank"
-    rel="noreferrer noopener nofollow"
-    href="https://www.linkedin.com/in/wendelin-muth">LinkedIn</a
-  >. Get in touch via my Email
-  <a
-    target="_blank"
-    rel="noreferrer noopener nofollow"
-    href="mailto:wendelin.muth+website@gmail.com">wendelin.muth@gmail.com</a
+  <a target="_blank" rel="noreferrer noopener nofollow" href="https://www.linkedin.com/in/wendelin-muth">LinkedIn</a>.
+  Get in touch via my Email
+  <a target="_blank" rel="noreferrer noopener nofollow" href="mailto:wendelin.muth+website@gmail.com"
+    >wendelin.muth@gmail.com</a
   >
   or Discord
-  <a
-    target="_blank"
-    rel="noreferrer noopener nofollow"
-    href="https://discordapp.com/users/Wendelin#7330"
-  >
+  <a target="_blank" rel="noreferrer noopener nofollow" href="https://discordapp.com/users/Wendelin#7330">
     Wendelin#7330
   </a>
   <hr />
 </header>
+
+<svelte:window on:resize={updateOverflowShadows} />
 
 {#await blogEntries$}
   <p>Loading...</p>
@@ -92,7 +98,7 @@
   {#if blogEntries.length == 0}
     <p>Sorry, no entries exist.</p>
   {:else}
-    <ol class="blog-entry-list">
+    <ol class="blog-entry-list" use:updateOverflowShadowsNextTick>
       {#if isAdmin}
         <li>
           <a href={`/admin/edit`} class="blog-entry-edit">Add Entry</a>
@@ -124,8 +130,13 @@
                 {/if}
               </span>
             </section>
-            <section class="blog-entry-body">
-              {@html entry.body}
+            <section class="blog-entry-body" data-overflowing="false">
+              <div class="blog-entry-overflow-overlay">
+                <a href={`/entry?id=${entry._id}`} class="blog-entry-overflow-link">Read Full Post</a>
+              </div>
+              <div>
+                {@html entry.body}
+              </div>
             </section>
           </article>
         </li>
@@ -153,6 +164,51 @@
 
   .blog-entry-body {
     margin-top: 1rem;
+    text-align: justify;
+    white-space: normal;
+    max-height: 400px;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .blog-entry-overflow-overlay {
+    display: none;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 72px;
+    background-image: url('/img/dither-24-light.png');
+    background-repeat: repeat-x;
+    background-position: bottom 24px left;
+    background-size: 8px 48px;
+    image-rendering: pixelated;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    .blog-entry-overflow-overlay {
+      background-image: url('/img/dither-24-dark.png');
+    }
+  }
+
+  .blog-entry-body:is([data-overflowing='true']) .blog-entry-overflow-overlay {
+    display: block;
+  }
+
+  .blog-entry-overflow-link {
+    display: inline-block;
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    text-align: center;
+    color: var(--accent-color);
+    background: var(--accent-background-color);
+  }
+
+  .blog-entry-body::first-letter {
+    font-size: 200%;
+    font-style: italic;
   }
 
   .blog-entry-heading {
@@ -175,6 +231,7 @@
     margin-left: -1rem;
     text-decoration: none;
     font-size: 1.5rem;
+    position: absolute;
   }
 
   .blog-entry:is(:focus-within, :focus) .blog-entry-anchor,

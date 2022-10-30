@@ -1,12 +1,18 @@
 <script lang="ts">
+  import { browser } from '$app/environment';
   import { goto } from '$app/navigation';
   import { auth$ } from '$lib/fire-context';
-  import { GoogleAuthProvider, signInWithEmailAndPassword, signInWithPopup } from 'firebase/auth';
+  import { user } from '$lib/stores';
+  import { getRedirectResult, GoogleAuthProvider, signInWithEmailAndPassword, signInWithRedirect } from 'firebase/auth';
+  import { onDestroy, onMount } from 'svelte';
 
-  auth$.then((auth) => {
-    if (auth.currentUser) {
-      goto('/');
-    }
+  onMount(() => {
+    if ($user.auth) goto('/');
+    auth$.then(async (auth) => {
+      if (auth.currentUser) goto('/');
+      const result = await getRedirectResult(auth);
+      if (result) goto('/');
+    });
   });
 
   let passwordVisible = false;
@@ -29,8 +35,7 @@
   async function submitGoogle() {
     const auth = await auth$;
     try {
-      await signInWithPopup(auth, provider);
-      goto('/');
+      await signInWithRedirect(auth, provider);
     } catch (error: any) {
       errorMessage = error.message;
     }
@@ -45,25 +50,13 @@
   {/if}
   <label title="Email">
     <span aria-hidden="true">Email</span> <br />
-    <input
-      type="email"
-      autocomplete="email"
-      placeholder="max.mustermann@mail.com"
-      required
-      bind:value={email}
-    />
+    <input type="email" autocomplete="email" placeholder="max.mustermann@mail.com" required bind:value={email} />
   </label>
   <br />
   <label title="Password">
     <span aria-hidden="true">Password</span><br />
     {#if passwordVisible}
-      <input
-        type="text"
-        autocomplete="current-password"
-        placeholder="·······"
-        minlength="8"
-        bind:value={password}
-      />
+      <input type="text" autocomplete="current-password" placeholder="·······" minlength="8" bind:value={password} />
     {:else}
       <input
         type="password"
@@ -86,5 +79,5 @@
 <h2>Sign-In with Google</h2>
 
 <div>
-  <button on:click={submitGoogle} class="link-button">Sign-In</button>
+  <button on:click={submitGoogle} class="link-button">Continue with Google</button>
 </div>

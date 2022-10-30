@@ -30,9 +30,7 @@
   {#if $user?.auth}
     <p>
       <span>Logged in as {$user.auth.displayName ?? $user.auth.email}</span>
-      <button class="link-button" on:click={() => auth$.then((auth) => auth.signOut())}>
-        Log Out
-      </button>
+      <button class="link-button" on:click={() => auth$.then((auth) => auth.signOut())}> Log Out </button>
     </p>
   {:else}
     <p>
@@ -64,6 +62,7 @@
     width: 100%;
     display: flex;
     flex-direction: column;
+    overflow: hidden;
   }
   #footer {
     grid-area: footer;

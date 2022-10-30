@@ -47,6 +47,10 @@ body {
 		'. footer .' max-content / auto minmax(auto, 1280px) auto;
 }
 
+pre {
+	overflow: auto;
+}
+
 a:not(:visited) {
 	color: var(--link-color);
 }

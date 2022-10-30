@@ -29,9 +29,7 @@
   renderer.link = (href: string, title: string, text: string) => {
     const localLink = href.startsWith(`${location.protocol}//${location.hostname}`);
     const html = linkRenderer.call(renderer, href, title, text);
-    return localLink
-      ? html
-      : html.replace(/^<a /, `<a target="_blank" rel="noreferrer noopener nofollow" `);
+    return localLink ? html : html.replace(/^<a /, `<a target="_blank" rel="noreferrer noopener nofollow" `);
   };
 
   let defaultEntry = {
@@ -55,8 +53,7 @@
     load();
   });
 
-  const getParams = () =>
-    globalThis.location ? new URLSearchParams(globalThis.location.search) : null;
+  const getParams = () => (globalThis.location ? new URLSearchParams(globalThis.location.search) : null);
 
   function load() {
     const params = getParams();
@@ -127,9 +124,7 @@
       <option value="">-- Select Draft --</option>
       {#await drafts$ then drafts}
         {#each drafts as draft}
-          <option value={draft._id} selected={draft._id == getParams()?.get('id')}
-            >{draft.title}</option
-          >
+          <option value={draft._id} selected={draft._id == getParams()?.get('id')}>{draft.title}</option>
         {/each}
       {/await}
     </select>
@@ -148,21 +143,14 @@
         {preview ? 'Edit' : 'Preview'}
       </button>
       <button type="submit" style="margin-left: 2rem;" disabled={saving}>Save</button>
-      <button type="button" disabled={saving || !entry.draft} on:click={publishEntry}
-        >Publish</button
-      >
+      <button type="button" disabled={saving || !entry.draft} on:click={publishEntry}>Publish</button>
       <button type="button" disabled={saving} on:click={deleteEntry}>Delete</button>
     </span>
     {#if preview}
       <section class="preview-area">{@html entry.body}</section>
     {:else}
       <section class="edit-area">
-        <textarea
-          class="edit-area"
-          name="body_raw"
-          placeholder="Content"
-          bind:value={entry.body_raw}
-        />
+        <textarea class="edit-area" name="body_raw" placeholder="Content" bind:value={entry.body_raw} />
       </section>
     {/if}
   </form>
@@ -172,7 +160,7 @@
   form {
     display: grid;
     grid-auto-rows: max-content 1fr;
-    height: 50rem;
+    min-height: 50rem;
     gap: 1rem;
   }
   .edit-area textarea {
@@ -183,5 +171,12 @@
   .preview-area {
     padding: 1rem;
     outline: 1px solid black;
+    overflow: hidden;
+    white-space: normal;
+    text-align: justify;
+  }
+  .preview-area::first-letter {
+    font-size: 200%;
+    font-style: italic;
   }
 </style>

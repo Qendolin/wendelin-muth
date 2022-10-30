@@ -78,7 +78,7 @@
 </script>
 
 <details {open} class="comment-tree-node">
-  <summary>
+  <summary class="comment-tree-head">
     <span>{root.author}</span> &ndash;
     <time datetime={root.created_date.toISOString()}>{formatDate(root.created_date)}</time>
   </summary>
@@ -140,7 +140,7 @@
     display: flex;
     list-style: none;
     padding: 0;
-    padding-left: 1rem;
+    border-left: 1rem solid transparent;
     margin: 0;
     margin-block: 0.25rem;
     gap: 0.75rem;
@@ -151,9 +151,16 @@
     list-style: none;
   }
 
+  .comment-tree-head {
+    padding-left: 1rem;
+    text-indent: -1rem;
+  }
+
   .comment-tree-body {
     margin: 0;
-    padding-left: 1rem;
+    border-left: 1rem solid transparent;
     clip-path: inset(0);
+    overflow: auto;
+    width: 100%;
   }
 </style>

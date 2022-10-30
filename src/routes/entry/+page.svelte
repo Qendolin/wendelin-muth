@@ -3,7 +3,6 @@
   import CommentBox from '$lib/components/comment-box.svelte';
   import { comments, page, user } from '$lib/stores';
   import { onMount } from 'svelte';
-  import { dataset_dev } from 'svelte/internal';
   import UsernameForm from '$lib/components/username-form.svelte';
 
   const longDate = new Intl.DateTimeFormat('en-GB', {
@@ -42,6 +41,7 @@
       </span>
     </section>
     <section class="blog-entry-body">
+      <span />
       {@html $page.body}
     </section>
   </article>
@@ -67,6 +67,13 @@
 
   .blog-entry-body {
     margin-top: 1rem;
+    text-align: justify;
+    white-space: normal;
+  }
+
+  .blog-entry-body::first-letter {
+    font-size: 200%;
+    font-style: italic;
   }
 
   .blog-entry-heading {
