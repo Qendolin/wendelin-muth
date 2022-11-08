@@ -175,7 +175,7 @@
           {/if}
           {#each blogEntries as entry}
             <li class="blog-entry-item">
-              <article class="blog-entry" tabindex="0">
+              <article class="blog-entry">
                 <section class="blog-entry-header">
                   <span class="blog-entry-heading">
                     <a href={`/entry?id=${entry._id}`} class="blog-entry-link">
@@ -330,13 +330,6 @@
 
   .blog-entry-heading h2 {
     margin: unset;
-  }
-
-  .blog-entry:is(:focus-within, :focus) .blog-entry-anchor,
-  .blog-entry-heading:is(:hover) .blog-entry-anchor,
-  .blog-entry-anchor:is(:hover) {
-    opacity: 0.5;
-    display: block;
   }
 
   .blog-entry-edit {
