@@ -221,7 +221,7 @@
   <h3>The personal websites of my friends!</h3>
   <ul>
     <li>
-      Eduard Beke, Software Developer - <a href="http://https://eduard.beke.at/" target="_blank" rel="noopener noreferrer nofollow">eduard.beke.at</a>
+      Eduard Beke, Software Developer - <a href="https://eduard.beke.at/" target="_blank" rel="noopener noreferrer nofollow">eduard.beke.at</a>
     </li>
   </ul>
   <h3>Websites that deserve attention</h3>
