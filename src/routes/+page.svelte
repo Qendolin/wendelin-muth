@@ -27,15 +27,6 @@
   }
 
   const blogEntries$ = getBlogEntries();
-  blogEntries$.then(() => {
-    globalThis?.requestAnimationFrame?.(() => {
-      const hash = globalThis?.location?.hash;
-      if (hash?.length > 1) {
-        const target = globalThis?.document?.getElementById(hash.substring(1));
-        if (target != null) target.scrollIntoView();
-      }
-    });
-  });
 
   let isAdmin = false;
   auth$.then((auth) =>
@@ -184,11 +175,9 @@
           {/if}
           {#each blogEntries as entry}
             <li class="blog-entry-item">
-              <!-- svelte-ignore a11y-no-noninteractive-tabindex -->
               <article class="blog-entry" tabindex="0">
                 <section class="blog-entry-header">
                   <span class="blog-entry-heading">
-                    <a href={`#${entry._id}`} id={entry._id} class="blog-entry-anchor">#</a>
                     <a href={`/entry?id=${entry._id}`} class="blog-entry-link">
                       <h2>{entry.title}</h2>
                     </a>
@@ -341,20 +330,6 @@
 
   .blog-entry-heading h2 {
     margin: unset;
-  }
-
-  .blog-entry-anchor {
-    font-family: 'Times New Roman', Times, serif;
-    display: none;
-    opacity: 0;
-    color: white;
-    mix-blend-mode: difference;
-    display: inline-block;
-    width: 1rem;
-    margin-left: -1rem;
-    text-decoration: none;
-    font-size: 1.5rem;
-    position: absolute;
   }
 
   .blog-entry:is(:focus-within, :focus) .blog-entry-anchor,
