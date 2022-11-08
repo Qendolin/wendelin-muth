@@ -102,7 +102,7 @@
 <svelte:window on:resize={updateOverflowShadows} />
 
 <h1>Welcome to my Website!</h1>
-<hr />
+<hr style="width: 100%" />
 <header>
   <article>
     <h2>About Me</h2>
