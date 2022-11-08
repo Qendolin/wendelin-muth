@@ -31,6 +31,20 @@
     const html = linkRenderer.call(renderer, href, title, text);
     return localLink ? html : html.replace(/^<a /, `<a target="_blank" rel="noreferrer noopener nofollow" `);
   };
+  const imageRenderer = renderer.image;
+  renderer.image = (href: string, title: string, text: string) => {
+    const [, w, h] = text.match(/\s*\|\s*=(\d*)x(\d*)\s*$/) ?? [];
+    text = text.replace(/\s*\|\s*=(\d*)x(\d*)\s*$/, '');
+    let html = imageRenderer.call(renderer, href, title, text);
+    html = html.replace(/^<img /, `<img loading="lazy" `);
+    if (h) {
+      html = html.replace(/^<img /, `<img height="${h}" `);
+    }
+    if (w) {
+      html = html.replace(/^<img /, `<img width="${w}" `);
+    }
+    return html;
+  };
 
   let defaultEntry = {
     created_date: null as Timestamp | FieldValue | null,
@@ -73,15 +87,19 @@
     }
   }
 
-  let drafts$ = getDocs(query(blog, where('draft', '==', true))).then((snapshot) =>
-    snapshot.docs.map((doc) => ({ ...doc.data(), _id: doc.id } as any))
-  );
+  let drafts$ = getDocs(query(blog, where('draft', '==', true))).then((snapshot) => snapshot.docs.map((doc) => ({ ...doc.data(), _id: doc.id } as any)));
 
   let saving = false;
-  async function saveEntry() {
+  async function saveEntry(updateDate: boolean) {
     saving = true;
     renderEntry();
-    entry.modified_date = serverTimestamp();
+    if (updateDate) {
+      if (!confirm('Are you sure?')) {
+        saving = false;
+        return;
+      }
+      entry.modified_date = serverTimestamp();
+    }
     if (docRef) {
       await setDoc(docRef, entry);
     } else {
@@ -98,7 +116,7 @@
   function publishEntry() {
     entry.draft = false;
     entry.created_date = serverTimestamp();
-    saveEntry();
+    saveEntry(true);
   }
 
   function deleteEntry() {
@@ -130,8 +148,8 @@
     </select>
   </label>
 
-  <form on:submit|preventDefault={saveEntry}>
-    <span>
+  <form on:submit|preventDefault>
+    <span class="edit-toolbar">
       <input type="text" name="title" placeholder="Title" required bind:value={entry.title} />
       <button
         type="button"
@@ -142,7 +160,8 @@
       >
         {preview ? 'Edit' : 'Preview'}
       </button>
-      <button type="submit" style="margin-left: 2rem;" disabled={saving}>Save</button>
+      <button type="button" disabled={saving} on:click={() => saveEntry(false)}>Save</button>
+      <button type="button" disabled={saving} on:click={() => saveEntry(true)}>Republish</button>
       <button type="button" disabled={saving || !entry.draft} on:click={publishEntry}>Publish</button>
       <button type="button" disabled={saving} on:click={deleteEntry}>Delete</button>
     </span>
@@ -162,6 +181,10 @@
     grid-auto-rows: max-content 1fr;
     min-height: 50rem;
     gap: 1rem;
+  }
+  .edit-toolbar button {
+    padding: 0.5rem;
+    margin: 0.5rem;
   }
   .edit-area textarea {
     resize: none;

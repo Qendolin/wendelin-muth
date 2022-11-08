@@ -38,7 +38,7 @@ body {
 	overflow-x: hidden;
 	position: relative;
 	margin: 0 auto;
-	padding: 2rem;
+	padding: 1rem;
 
 	display: grid;
 	grid-template:
@@ -49,6 +49,21 @@ body {
 
 pre {
 	overflow: auto;
+}
+
+blockquote {
+	position: relative;
+	margin-inline-start: 2rem;
+}
+
+blockquote::before {
+	content: '';
+	position: absolute;
+	left: -1.5rem;
+	top: 0;
+	bottom: 0;
+	width: 3px;
+	background-color: var(--accent-background-color);
 }
 
 a:not(:visited) {

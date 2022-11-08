@@ -38,6 +38,13 @@ export type BlogEntry = {
 	draft: boolean;
 };
 
+export type WallPost = {
+	_id: string;
+	nickname: string;
+	content: string;
+	created_date: Date;
+};
+
 export type UserData = {
 	display_name: string;
 };
@@ -51,6 +58,52 @@ export const user = createUserStore();
 export const comments = createCommentsStore();
 
 export const page = createBlogStore();
+
+export const wall = createWallStore();
+
+function createWallStore() {
+	const { update, subscribe } = writable({ posts: null as WallPost[] | null, nickname: null as string | null });
+
+	let currentNickname = globalThis.localStorage?.getItem('wall-post-nickname');
+	if (currentNickname?.trim() == '') currentNickname = null;
+
+	const wall = collection(db, 'wall');
+
+	const mapPost = (data: any, id: string) => ({
+		...data,
+		_id: id,
+		created_date: new Date(data.created_date.seconds * 1000),
+		nickname: (data.nickname ?? '').trim()
+	});
+
+	getDocs(query(wall)).then((documents) => {
+		const posts = documents.docs.map((doc) => mapPost(doc.data(), doc.id)).sort((a, b) => b.created_date.getTime() - a.created_date.getTime());
+		update((state) => patch(state, { posts: posts }));
+	});
+	return {
+		subscribe,
+		async post(content: string) {
+			const resultRef = await addDoc(wall, {
+				content: content,
+				nickname: currentNickname,
+				created_date: serverTimestamp()
+			});
+			const resultDoc = await getDoc(resultRef);
+			update((state) =>
+				patch(state, {
+					posts: [mapPost(resultDoc.data(), resultDoc.id)].concat(state.posts)
+				})
+			);
+		},
+		setNickname(name: string) {
+			currentNickname = name;
+			globalThis.localStorage?.setItem('wall-post-nickname', name);
+		},
+		getNickname(): string | null {
+			return currentNickname;
+		}
+	};
+}
 
 function createUserStore() {
 	let currentUser = null as User | null;

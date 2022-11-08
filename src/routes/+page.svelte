@@ -1,5 +1,6 @@
 <script lang="ts">
   import { auth$, db } from '$lib/fire-context';
+  import { wall } from '$lib/stores';
   import { collection, getDocs, query, where } from 'firebase/firestore/lite';
   import { tick } from 'svelte';
 
@@ -71,87 +72,195 @@
   function updateOverflowShadowsNextTick(_: any) {
     tick().then(updateOverflowShadows);
   }
-</script>
 
-<header>
-  <h1>Welcome to my Blog!</h1>
-  Check out my
-  <a target="_blank" rel="noreferrer noopener nofollow" href="https://github.com/Qendolin/">GitHub</a>
-  and
-  <a target="_blank" rel="noreferrer noopener nofollow" href="https://www.linkedin.com/in/wendelin-muth">LinkedIn</a>.
-  Get in touch via my Email
-  <a target="_blank" rel="noreferrer noopener nofollow" href="mailto:wendelin.muth+website@gmail.com"
-    >wendelin.muth@gmail.com</a
-  >
-  or Discord
-  <a target="_blank" rel="noreferrer noopener nofollow" href="https://discordapp.com/users/Wendelin#7330">
-    Wendelin#7330
-  </a>
-  <hr />
-</header>
+  let randomSongs$ = fetch('/music-2022-11.json', {
+    priority: 'low'
+  } as any).then((resp) => resp.json());
+  async function pickRandomSong() {
+    const data = await randomSongs$;
+    const pool = [];
+    for (const drop of data) {
+      for (let i = 0; i < drop.weight; i++) {
+        pool.push(drop.tracks);
+      }
+    }
+    const tracks = pool[Math.trunc(Math.random() * pool.length)];
+    return tracks[Math.trunc(Math.random() * tracks.length)];
+  }
+
+  let randomSong$ = pickRandomSong();
+
+  let wallPostContent = '';
+  function onWallPost() {
+    if (wallPostContent.trim() == '') return;
+    if (!confirm(`Post to wall as ${wall.getNickname() ?? 'Anonymous'}?`)) return;
+    wall.post(wallPostContent);
+    wallPostContent = '';
+  }
+</script>
 
 <svelte:window on:resize={updateOverflowShadows} />
 
-{#await blogEntries$}
-  <p>Loading...</p>
-{:then blogEntries}
-  {#if blogEntries.length == 0}
-    <p>Sorry, no entries exist.</p>
-  {:else}
-    <ol class="blog-entry-list" use:updateOverflowShadowsNextTick>
-      {#if isAdmin}
-        <li>
-          <a href={`/admin/edit`} class="blog-entry-edit">Add Entry</a>
-        </li>
+<h1>Welcome to my Website!</h1>
+<hr />
+<header>
+  <article>
+    <h2>About Me</h2>
+    Hi, I'm Wendelin 👋, I have a passion for software development and am curretly studying computer science at<a
+      href="http://tuwien.at"
+      target="_blank"
+      rel="noreferrer noopener nofollow">TU Wien</a
+    >.
+    <br />
+    You should check out my
+    <a target="_blank" rel="noreferrer noopener nofollow" href="https://github.com/Qendolin/">GitHub</a>
+    and
+    <a target="_blank" rel="noreferrer noopener nofollow" href="https://www.linkedin.com/in/wendelin-muth">LinkedIn</a>.
+    <br />
+    If you want to get in touch contact me via
+    <a target="_blank" rel="noreferrer noopener nofollow" href="mailto:wendelin.muth+website@gmail.com"> wendelin.muth@gmail.com </a>
+    or Discord
+    <a target="_blank" rel="noreferrer noopener nofollow" href="https://discordapp.com/users/Wendelin#7330"> Wendelin#7330 </a>.
+    <br />
+    Here is a random song that I like:
+    {#await randomSong$}
+      ...
+    {:then title}
+      <button
+        on:click={() => {
+          randomSong$ = pickRandomSong();
+        }}>🎲</button
+      >
+      <a href={`https://www.youtube.com/results?search_query=${title}`} target="_blank" rel="noopener noreferrer nofollow">{title}</a>
+    {/await}
+  </article>
+</header>
+
+<section>
+  <h2>Wall</h2>
+  <em>This is a public wall, be respectful!</em>
+  <div class="wall-wrapper">
+    {#if $wall.posts == null}
+      <p>Loading...</p>
+    {:else if $wall.posts.length == 0}
+      <p>Be the first to post on my wall!</p>
+    {:else}
+      <ol class="wall-post-list">
+        {#each $wall.posts as post}
+          <li class="wall-post-item">
+            <p class="wall-post">
+              {post.content}
+              <br />
+              <span class="wall-post-footer">{post.nickname || 'Anonymous'} &mdash; {longDate.format(post.created_date)}</span>
+            </p>
+          </li>
+        {/each}
+      </ol>
+    {/if}
+  </div>
+  <br />
+  <textarea class="wall-edit-area" placeholder="Your website is really cool!" bind:value={wallPostContent} />
+  <br />
+  <button class="wall-post-button" on:click={onWallPost} disabled={wallPostContent.trim() == ''}>Post</button>
+  as
+  <input type="text" placeholder="Anonymous" value={$wall.nickname} on:change={(ev) => wall.setNickname(ev.currentTarget.value)} />
+  | <em>Note: Cannot be deleted or edited</em>
+</section>
+
+<section>
+  <h2>Blog</h2>
+  <div class="blog-wrapper">
+    {#await blogEntries$}
+      <p>Loading...</p>
+    {:then blogEntries}
+      {#if blogEntries.length == 0}
+        <p>Sorry, no entries exist.</p>
+      {:else}
+        <ol class="blog-entry-list" use:updateOverflowShadowsNextTick>
+          {#if isAdmin}
+            <li>
+              <a href={`/admin/edit`} class="blog-entry-edit">Add Entry</a>
+            </li>
+          {/if}
+          {#each blogEntries as entry}
+            <li class="blog-entry-item">
+              <!-- svelte-ignore a11y-no-noninteractive-tabindex -->
+              <article class="blog-entry" tabindex="0">
+                <section class="blog-entry-header">
+                  <span class="blog-entry-heading">
+                    <a href={`#${entry._id}`} id={entry._id} class="blog-entry-anchor">#</a>
+                    <a href={`/entry?id=${entry._id}`} class="blog-entry-link">
+                      <h2>{entry.title}</h2>
+                    </a>
+                    {#if isAdmin}
+                      <a href={`/admin/edit?id=${entry._id}`} class="blog-entry-edit">Edit</a>
+                    {/if}
+                  </span>
+                  <span class="blog-entry-time">
+                    <time datetime={entry.created_date.toISOString()}>
+                      {longDate.format(entry.created_date)} UTC
+                    </time>
+                    {#if entry.modified_date.getTime() - entry.created_date.getTime() > 1000 * 60 * 10}
+                      &mdash; Edited
+                      <time datetime={entry.modified_date.toISOString()}>
+                        {shortDate.format(entry.modified_date)}
+                      </time>
+                    {/if}
+                  </span>
+                </section>
+                <section class="blog-entry-body" data-overflowing="false">
+                  <div class="blog-entry-overflow-overlay">
+                    <a href={`/entry?id=${entry._id}`} class="blog-entry-overflow-link">Read Full Post</a>
+                  </div>
+                  <div>
+                    {@html entry.body}
+                  </div>
+                </section>
+              </article>
+            </li>
+          {/each}
+        </ol>
       {/if}
-      {#each blogEntries as entry}
-        <li class="blog-entry-item">
-          <!-- svelte-ignore a11y-no-noninteractive-tabindex -->
-          <article class="blog-entry" tabindex="0">
-            <section class="blog-entry-header">
-              <span class="blog-entry-heading">
-                <a href={`#${entry._id}`} id={entry._id} class="blog-entry-anchor">#</a>
-                <a href={`/entry?id=${entry._id}`} class="blog-entry-link">
-                  <h2>{entry.title}</h2>
-                </a>
-                {#if isAdmin}
-                  <a href={`/admin/edit?id=${entry._id}`} class="blog-entry-edit">Edit</a>
-                {/if}
-              </span>
-              <span class="blog-entry-time">
-                <time datetime={entry.created_date.toISOString()}>
-                  {longDate.format(entry.created_date)} UTC
-                </time>
-                {#if entry.modified_date.getTime() - entry.created_date.getTime() > 1000 * 60 * 10}
-                  &mdash; Edited
-                  <time datetime={entry.modified_date.toISOString()}>
-                    {shortDate.format(entry.modified_date)}
-                  </time>
-                {/if}
-              </span>
-            </section>
-            <section class="blog-entry-body" data-overflowing="false">
-              <div class="blog-entry-overflow-overlay">
-                <a href={`/entry?id=${entry._id}`} class="blog-entry-overflow-link">Read Full Post</a>
-              </div>
-              <div>
-                {@html entry.body}
-              </div>
-            </section>
-          </article>
-        </li>
-      {/each}
-    </ol>
-  {/if}
-{:catch error}
-  <p style="color: red">{error.message}</p>
-{/await}
+    {:catch error}
+      <p style="color: red">{error.message}</p>
+    {/await}
+  </div>
+</section>
 
 <style>
-  .blog-entry-list {
+  .blog-wrapper {
+    max-height: 80vh;
+    overflow: auto;
+    contain: content;
+    border: 4px double var(--accent-background-color);
+    padding: 4px;
+  }
+  .wall-wrapper {
+    max-height: 50vh;
+    overflow: auto;
+    border: 4px double var(--accent-background-color);
+    padding: 4px;
+  }
+  .blog-entry-list,
+  .wall-post-list {
     list-style: none;
     padding: unset;
     margin: unset;
+  }
+
+  .wall-post-footer {
+    inset: 1rem;
+    font-style: italic;
+    font-size: 0.8em;
+    padding-inline-start: 1em;
+    opacity: 0.8;
+  }
+
+  .wall-edit-area {
+    width: 100%;
+    height: 100px;
+    max-width: 400px;
+    resize: none;
   }
 
   .blog-entry-time {
