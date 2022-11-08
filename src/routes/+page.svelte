@@ -97,11 +97,8 @@
 <header>
   <article>
     <h2>About Me</h2>
-    Hi, I'm Wendelin 👋, I have a passion for software development and am curretly studying computer science at<a
-      href="http://tuwien.at"
-      target="_blank"
-      rel="noreferrer noopener nofollow">TU Wien</a
-    >.
+    Hi, I'm Wendelin 👋, I have a passion for software development and am curretly studying computer science at
+    <a href="http://tuwien.at" target="_blank" rel="noreferrer noopener nofollow">TU Wien</a>.
     <br />
     You should check out my
     <a target="_blank" rel="noreferrer noopener nofollow" href="https://github.com/Qendolin/">GitHub</a>
