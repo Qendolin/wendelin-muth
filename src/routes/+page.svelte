@@ -97,7 +97,7 @@
 <header>
   <article>
     <h2>About Me</h2>
-    Hi, I'm Wendelin 👋, I have a passion for software development and am curretly studying computer science at
+    Hi, I'm Wendelin<span class="waving-hand">👋</span>, I have a passion for software development and am curretly studying computer science at
     <a href="http://tuwien.at" target="_blank" rel="noreferrer noopener nofollow">TU Wien</a>.
     <br />
     You should check out my
@@ -105,10 +105,10 @@
     and
     <a target="_blank" rel="noreferrer noopener nofollow" href="https://www.linkedin.com/in/wendelin-muth">LinkedIn</a>.
     <br />
-    If you want to get in touch contact me via
-    <a target="_blank" rel="noreferrer noopener nofollow" href="mailto:wendelin.muth+website@gmail.com"> wendelin.muth@gmail.com </a>
+    If you want to get in touch, contact me via
+    <a target="_blank" rel="noreferrer noopener nofollow" href="mailto:wendelin.muth+website@gmail.com">wendelin.muth@gmail.com</a>
     or Discord
-    <a target="_blank" rel="noreferrer noopener nofollow" href="https://discordapp.com/users/Wendelin#7330"> Wendelin#7330 </a>.
+    <a target="_blank" rel="noreferrer noopener nofollow" href="https://discordapp.com/users/Wendelin#7330">Wendelin#7330</a>.
     <br />
     Here is a random song that I like:
     {#await randomSong$}
@@ -117,7 +117,7 @@
       <button
         on:click={() => {
           randomSong$ = pickRandomSong();
-        }}>🎲</button
+        }}><span class="randomize-dice">🎲</span></button
       >
       <a href={`https://www.youtube.com/results?search_query=${title}`} target="_blank" rel="noopener noreferrer nofollow">{title}</a>
     {/await}
@@ -126,7 +126,7 @@
 
 <section>
   <h2>Wall</h2>
-  <em>This is a public wall, be respectful!</em>
+  <em>This is a public wall, post something funny or random but be respectful!</em>
   <div class="wall-wrapper">
     {#if $wall.posts == null}
       <p>Loading...</p>
@@ -339,5 +339,53 @@
     margin-inline: 20px;
     margin-block: 1rem;
     border-bottom: 1px solid gray;
+  }
+
+  .waving-hand:hover {
+    display: inline-block;
+    animation-name: wave-hand;
+    animation-duration: 0.4s;
+    animation-timing-function: ease-in-out;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+    transform: rotate(0);
+    transform-origin: 50% 90%;
+    animation-fill-mode: both;
+  }
+
+  @keyframes wave-hand {
+    from {
+      transform: rotate(-10deg);
+    }
+    to {
+      transform: rotate(10deg);
+    }
+  }
+
+  *:hover > .randomize-dice {
+    display: inline-block;
+    animation-name: filp-dice;
+    animation-duration: 0.8s;
+    animation-timing-function: ease-in-out;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+    transform: translate(0, 0) rotate(0);
+    animation-fill-mode: both;
+    transform-origin: 50% 50%;
+  }
+
+  @keyframes filp-dice {
+    25% {
+      transform: translate(0, 0) rotate(0);
+    }
+    50% {
+      transform: translate(0, -100%) rotate(90deg);
+    }
+    75% {
+      transform: translate(0, 0) rotate(90deg);
+    }
+    100% {
+      transform: translate(0, 0) rotate(90deg);
+    }
   }
 </style>
