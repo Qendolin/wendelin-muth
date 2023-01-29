@@ -1,4 +1,5 @@
 <script lang="ts">
+  import './blogpost.css';
   import CommentList from '$lib/components/comment-list.svelte';
   import CommentBox from '$lib/components/comment-box.svelte';
   import { comments, page, user } from '$lib/stores';
@@ -63,17 +64,6 @@
 <style>
   .blog-entry {
     flex-grow: 1;
-  }
-
-  .blog-entry-body {
-    margin-top: 1rem;
-    text-align: justify;
-    white-space: normal;
-  }
-
-  .blog-entry-body::first-letter {
-    font-size: 200%;
-    font-style: italic;
   }
 
   .blog-entry-heading {

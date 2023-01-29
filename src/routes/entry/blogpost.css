@@ -1,0 +1,51 @@
+.blog-entry-body {
+	margin-top: 1rem;
+	text-align: justify;
+	white-space: normal;
+}
+
+.blog-entry-body::first-letter {
+	font-size: 200%;
+	font-style: italic;
+}
+
+.blog-entry-body code {
+	padding-inline: 4px;
+	background: var(--box-background-color);
+	font-family: 'Courier New', Courier, monospace;
+	font-style: italic;
+}
+
+.blog-entry-body pre > code {
+	display: block;
+	padding: 1rem;
+	padding-inline: min(calc(5vw - 1rem), 1rem);
+	overflow: auto;
+	line-height: 1.2em;
+	font-style: normal;
+	font-size: min(calc(1em - 0.03 * (500px - 100vw)), 1em);
+}
+
+.blog-entry-body pre {
+	padding-inline: min(calc(5vw - 1rem), 1rem);
+}
+
+.blog-entry-body blockquote {
+	background: var(--box-background-color);
+	position: relative;
+	padding-inline: 2px;
+	margin-inline-start: 2rem;
+	margin-inline-start: max(min(calc(5vw - 2rem), 2rem), 0.5rem);
+	margin-inline-end: 0;
+}
+
+.blog-entry-body blockquote::before {
+	content: '';
+	position: absolute;
+	left: -1.5rem;
+	left: min(max(calc(2rem - 5vw), -2rem), -0.5rem);
+	top: 0;
+	bottom: 0;
+	width: 3px;
+	background-color: var(--accent-background-color);
+}

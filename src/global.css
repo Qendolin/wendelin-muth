@@ -17,6 +17,7 @@
 	--text-color: black;
 	--accent-background-color: #404040;
 	--accent-color: white;
+	--box-background-color: #f0f0f0;
 }
 
 * {
@@ -49,21 +50,6 @@ body {
 
 pre {
 	overflow: auto;
-}
-
-blockquote {
-	position: relative;
-	margin-inline-start: 2rem;
-}
-
-blockquote::before {
-	content: '';
-	position: absolute;
-	left: -1.5rem;
-	top: 0;
-	bottom: 0;
-	width: 3px;
-	background-color: var(--accent-background-color);
 }
 
 a:not(:visited) {
@@ -151,5 +137,6 @@ summary {
 		--text-color: white;
 		--accent-background-color: #eeeeee;
 		--accent-color: black;
+		--box-background-color: #6b6b6b;
 	}
 }

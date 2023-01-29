@@ -1,4 +1,5 @@
 <script lang="ts">
+  import '../../entry/blogpost.css';
   import { db } from '$lib/fire-context';
   import {
     addDoc,
@@ -166,7 +167,7 @@
       <button type="button" disabled={saving} on:click={deleteEntry}>Delete</button>
     </span>
     {#if preview}
-      <section class="preview-area">{@html entry.body}</section>
+      <section class="preview-area blog-entry-body">{@html entry.body}</section>
     {:else}
       <section class="edit-area">
         <textarea class="edit-area" name="body_raw" placeholder="Content" bind:value={entry.body_raw} />
@@ -193,13 +194,7 @@
   }
   .preview-area {
     padding: 1rem;
-    outline: 1px solid black;
+    border: 1px solid black;
     overflow: hidden;
-    white-space: normal;
-    text-align: justify;
-  }
-  .preview-area::first-letter {
-    font-size: 200%;
-    font-style: italic;
   }
 </style>

@@ -1,4 +1,6 @@
 <script lang="ts">
+  import './entry/blogpost.css';
+  import type { Thing, WithContext } from 'schema-dts';
   import { auth$, db } from '$lib/fire-context';
   import { wall } from '$lib/stores';
   import { collection, getDocs, query, where } from 'firebase/firestore/lite';
@@ -88,15 +90,47 @@
     wall.post(wallPostContent);
     wallPostContent = '';
   }
+
+  function serializeSchema(thing: Thing | WithContext<Thing>) {
+    return `<${'script'} type="application/ld+json" >${JSON.stringify(thing, null, 2)}</${'script'}>`;
+  }
+  const microdata = serializeSchema({
+    '@context': 'https://schema.org',
+    '@type': 'Person',
+    '@id': 'https://www.wendelin-muth.cf/#myself',
+    name: 'Wendelin Muth',
+    givenName: 'Wendelin',
+    familyName: 'Muth',
+    email: 'wendelin.muth+website@gmail.com',
+    url: 'https://www.wendelin-muth.cf/',
+    nationality: {
+      '@type': 'Country',
+      name: 'Austria'
+    },
+    affiliation: {
+      '@type': 'EducationalOrganization',
+      address: 'Karlsplatz 13, 1040 Wien',
+      name: 'Technische Universität Wien',
+      url: 'https://www.tuwien.at/'
+    },
+    jobTitle: 'Student',
+    knowsLanguage: ['de', 'en']
+  });
 </script>
 
 <svelte:window on:resize={updateOverflowShadows} />
 
+<svelte:head>
+  {@html microdata}
+</svelte:head>
+
 <h1>Welcome to my Website!</h1>
 <hr style="width: 100%" />
 <header>
-  <article>
+  <article id="myself" itemscope itemtype="http://schema.org/Person" itemid="https://www.wendelin-muth.cf/#myself">
     <h2>About Me</h2>
+    <meta itemprop="name" content="Wendelin Muth" />
+    <meta itemprop="url" content="https://www.wendelin-muth.cf/" />
     Hi, I'm Wendelin<span class="waving-hand">👋</span>, I have a passion for software development and am curretly studying computer science at
     <a href="http://tuwien.at" target="_blank" rel="noreferrer noopener nofollow">TU Wien</a>.
     <br />
@@ -106,19 +140,19 @@
     <a target="_blank" rel="noreferrer noopener nofollow" href="https://www.linkedin.com/in/wendelin-muth">LinkedIn</a>.
     <br />
     If you want to get in touch, contact me via
-    <a target="_blank" rel="noreferrer noopener nofollow" href="mailto:wendelin.muth+website@gmail.com">wendelin.muth@gmail.com</a>
+    <a target="_blank" rel="noreferrer noopener nofollow" href="mailto:wendelin.muth+website@gmail.com">wendelin.muth+website@gmail.com</a>
     or Discord
     <a target="_blank" rel="noreferrer noopener nofollow" href="https://discordapp.com/users/Wendelin#7330">Wendelin#7330</a>.
     <br />
     Here is a random song that I like:
+    <button
+      on:click={() => {
+        randomSong$ = pickRandomSong();
+      }}><span>🎲</span></button
+    >
     {#await randomSong$}
       ...
     {:then title}
-      <button
-        on:click={() => {
-          randomSong$ = pickRandomSong();
-        }}><span class="randomize-dice">🎲</span></button
-      >
       <a href={`https://www.youtube.com/results?search_query=${title}`} target="_blank" rel="noopener noreferrer nofollow">{title}</a>
     {/await}
   </article>
@@ -155,7 +189,7 @@
   | <em>Note: Cannot be deleted or edited</em>
 </section>
 
-<section>
+<section itemscope itemtype="https://schema.org/Blog">
   <h2>Blog</h2>
   <div class="blog-wrapper">
     {#await blogEntries$}
@@ -172,9 +206,10 @@
           {/if}
           {#each blogEntries as entry}
             <li class="blog-entry-item">
-              <article class="blog-entry">
+              <article class="blog-entry" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+                <meta itemprop="author" itemtype="http://schema.org/Person" itemscope itemref="myself" />
                 <section class="blog-entry-header">
-                  <span class="blog-entry-heading">
+                  <span class="blog-entry-heading" itemprop="headline">
                     <a href={`/entry?id=${entry._id}`} class="blog-entry-link">
                       <h2>{entry.title}</h2>
                     </a>
@@ -183,12 +218,12 @@
                     {/if}
                   </span>
                   <span class="blog-entry-time">
-                    <time datetime={entry.created_date.toISOString()}>
+                    <time datetime={entry.created_date.toISOString()} itemprop="datePublished">
                       {longDate.format(entry.created_date)} UTC
                     </time>
                     {#if entry.modified_date.getTime() - entry.created_date.getTime() > 1000 * 60 * 10}
                       &mdash; Edited
-                      <time datetime={entry.modified_date.toISOString()}>
+                      <time datetime={entry.modified_date.toISOString()} itemprop="dateModified">
                         {shortDate.format(entry.modified_date)}
                       </time>
                     {/if}
@@ -196,9 +231,9 @@
                 </section>
                 <section class="blog-entry-body" data-overflowing="false">
                   <div class="blog-entry-overflow-overlay">
-                    <a href={`/entry?id=${entry._id}`} class="blog-entry-overflow-link">Read Full Post</a>
+                    <a itemprop="url" href={`/entry?id=${entry._id}`} class="blog-entry-overflow-link">Read Full Post</a>
                   </div>
-                  <div>
+                  <div itemprop="articleBody">
                     {@html entry.body}
                   </div>
                 </section>
@@ -272,9 +307,6 @@
   }
 
   .blog-entry-body {
-    margin-top: 1rem;
-    text-align: justify;
-    white-space: normal;
     max-height: 400px;
     overflow: hidden;
     position: relative;
@@ -313,11 +345,6 @@
     text-align: center;
     color: var(--accent-color);
     background: var(--accent-background-color);
-  }
-
-  .blog-entry-body::first-letter {
-    font-size: 200%;
-    font-style: italic;
   }
 
   .blog-entry-heading {
@@ -359,33 +386,6 @@
     }
     to {
       transform: rotate(10deg);
-    }
-  }
-
-  *:hover > .randomize-dice {
-    display: inline-block;
-    animation-name: filp-dice;
-    animation-duration: 0.8s;
-    animation-timing-function: ease-in-out;
-    animation-iteration-count: infinite;
-    animation-direction: alternate;
-    transform: translate(0, 0) rotate(0);
-    animation-fill-mode: both;
-    transform-origin: 50% 50%;
-  }
-
-  @keyframes filp-dice {
-    25% {
-      transform: translate(0, 0) rotate(0);
-    }
-    50% {
-      transform: translate(0, -100%) rotate(90deg);
-    }
-    75% {
-      transform: translate(0, 0) rotate(90deg);
-    }
-    100% {
-      transform: translate(0, 0) rotate(90deg);
     }
   }
 </style>
