@@ -1,4 +1,4 @@
-import { comments, page } from '$lib/stores';
+import { page } from '$lib/stores';
 import { error, type LoadEvent } from '@sveltejs/kit';
 
 export const prerender = false;

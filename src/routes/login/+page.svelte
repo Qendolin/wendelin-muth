@@ -1,10 +1,9 @@
 <script lang="ts">
-  import { browser } from '$app/environment';
   import { goto } from '$app/navigation';
   import { auth$ } from '$lib/fire-context';
   import { user } from '$lib/stores';
   import { getRedirectResult, GoogleAuthProvider, signInWithEmailAndPassword, signInWithRedirect } from 'firebase/auth';
-  import { onDestroy, onMount } from 'svelte';
+  import { onMount } from 'svelte';
 
   onMount(() => {
     if ($user.auth) goto('/');
@@ -58,18 +57,10 @@
     {#if passwordVisible}
       <input type="text" autocomplete="current-password" placeholder="·······" minlength="8" bind:value={password} />
     {:else}
-      <input
-        type="password"
-        autocomplete="current-password"
-        placeholder="·······"
-        minlength="8"
-        bind:value={password}
-      />
+      <input type="password" autocomplete="current-password" placeholder="·······" minlength="8" bind:value={password} />
     {/if}
 
-    <button class="link-button" on:click={() => (passwordVisible = !passwordVisible)} type="button">
-      {passwordVisible ? 'Hide' : 'Show'}</button
-    >
+    <button class="link-button" on:click={() => (passwordVisible = !passwordVisible)} type="button"> {passwordVisible ? 'Hide' : 'Show'}</button>
   </label>
   <br />
 

@@ -1,11 +1,7 @@
 <script lang="ts">
   import { goto } from '$app/navigation';
   import { auth$ } from '$lib/fire-context';
-  import {
-    createUserWithEmailAndPassword,
-    GoogleAuthProvider,
-    signInWithPopup
-  } from 'firebase/auth';
+  import { createUserWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
 
   let passwordVisible = false;
   let email = '';
@@ -47,38 +43,18 @@
   {/if}
   <label title="Email">
     <span aria-hidden="true">Email</span> <br />
-    <input
-      type="email"
-      autocomplete="email"
-      placeholder="max.mustermann@mail.com"
-      required
-      bind:value={email}
-    />
+    <input type="email" autocomplete="email" placeholder="max.mustermann@mail.com" required bind:value={email} />
   </label>
   <br />
   <label title="Password">
     <span aria-hidden="true">Password</span><br />
     {#if passwordVisible}
-      <input
-        type="text"
-        autocomplete="new-password"
-        placeholder="·······"
-        minlength="8"
-        bind:value={password}
-      />
+      <input type="text" autocomplete="new-password" placeholder="·······" minlength="8" bind:value={password} />
     {:else}
-      <input
-        type="password"
-        autocomplete="new-password"
-        placeholder="·······"
-        minlength="8"
-        bind:value={password}
-      />
+      <input type="password" autocomplete="new-password" placeholder="·······" minlength="8" bind:value={password} />
     {/if}
 
-    <button on:click={() => (passwordVisible = !passwordVisible)} type="button" class="link-button">
-      {passwordVisible ? 'Hide' : 'Show'}</button
-    >
+    <button on:click={() => (passwordVisible = !passwordVisible)} type="button" class="link-button"> {passwordVisible ? 'Hide' : 'Show'}</button>
   </label>
   <br />
 

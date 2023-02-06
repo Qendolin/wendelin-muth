@@ -6,11 +6,12 @@
 		"dev": "vite dev",
 		"build": "vite build",
 		"preview": "vite preview",
-		"publish:hosting": "firebase deploy --only hosting",
+		"deploy:hosting": "firebase deploy --only hosting",
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
 		"lint": "prettier --plugin-search-dir . --check . && eslint .",
-		"format": "prettier --plugin-search-dir . --write ."
+		"format": "prettier --plugin-search-dir . --write .",
+		"gen:sitemap": "node sitemap.js"
 	},
 	"devDependencies": {
 		"@sveltejs/adapter-auto": "next",
@@ -38,6 +39,7 @@
 		"@bbob/preset-html5": "^2.8.1",
 		"@types/marked": "^4.0.7",
 		"firebase": "^9.12.1",
-		"marked": "^4.1.1"
+		"marked": "^4.1.1",
+		"sitemap-generator": "^8.5.1"
 	}
 }
