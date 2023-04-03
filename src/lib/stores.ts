@@ -2,6 +2,7 @@ import type { User } from 'firebase/auth';
 import {
 	addDoc,
 	collection,
+	deleteDoc,
 	doc,
 	DocumentReference,
 	getDoc,
@@ -14,7 +15,7 @@ import {
 	where,
 	type DocumentData
 } from 'firebase/firestore/lite';
-import { writable } from 'svelte/store';
+import { get, writable } from 'svelte/store';
 import { auth$, db } from './fire-context';
 
 export type Comment = {
@@ -40,6 +41,7 @@ export type BlogEntry = {
 
 export type WallPost = {
 	_id: string;
+	user_ref: DocumentReference<DocumentData>;
 	nickname: string;
 	content: string;
 	created_date: Date;
@@ -64,10 +66,21 @@ export const wall = createWallStore();
 function createWallStore() {
 	const { update, subscribe } = writable({ posts: null as WallPost[] | null, nickname: null as string | null });
 
-	let currentNickname = globalThis.localStorage?.getItem('wall-post-nickname');
-	if (currentNickname?.trim() == '') currentNickname = null;
+	const setNickname = (name: string | null, keep: boolean) => {
+		if (name?.trim() == '') name = null;
+		update((state) => patch(state, { nickname: name }));
 
-	const wall = collection(db, 'wall');
+		if (keep) {
+			globalThis.localStorage?.setItem('wall-post-nickname', name);
+		}
+	};
+	setNickname(globalThis.localStorage?.getItem('wall-post-nickname'), false);
+
+	user.subscribe(({ auth }) => {
+		if (auth?.displayName) setNickname(auth.displayName, false);
+	});
+
+	const wallCollection = collection(db, 'wall');
 
 	const mapPost = (data: any, id: string) => ({
 		...data,
@@ -76,17 +89,20 @@ function createWallStore() {
 		nickname: (data.nickname ?? '').trim()
 	});
 
-	getDocs(query(wall)).then((documents) => {
+	getDocs(query(wallCollection)).then((documents) => {
 		const posts = documents.docs.map((doc) => mapPost(doc.data(), doc.id)).sort((a, b) => b.created_date.getTime() - a.created_date.getTime());
 		update((state) => patch(state, { posts: posts }));
 	});
 	return {
 		subscribe,
 		async post(content: string) {
-			const resultRef = await addDoc(wall, {
+			const name = get(wall).nickname;
+			const verified = user.get()?.displayName == name && name != null;
+			const resultRef = await addDoc(wallCollection, {
 				content: content,
-				nickname: currentNickname,
-				created_date: serverTimestamp()
+				nickname: name,
+				created_date: serverTimestamp(),
+				user_ref: verified ? user.getRef() : null
 			});
 			const resultDoc = await getDoc(resultRef);
 			update((state) =>
@@ -95,13 +111,15 @@ function createWallStore() {
 				})
 			);
 		},
-		setNickname(name: string) {
-			currentNickname = name;
-			globalThis.localStorage?.setItem('wall-post-nickname', name);
+		async delete(id: string) {
+			await deleteDoc(doc(db, 'wall', id));
+			update((state) =>
+				patch(state, {
+					posts: [...(state.posts ?? [])].filter((post) => post._id != id)
+				})
+			);
 		},
-		getNickname(): string | null {
-			return currentNickname;
-		}
+		setNickname
 	};
 }
 

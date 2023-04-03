@@ -86,7 +86,7 @@
   let wallPostContent = '';
   function onWallPost() {
     if (wallPostContent.trim() == '') return;
-    if (!confirm(`Post to wall as ${wall.getNickname() ?? 'Anonymous'}?`)) return;
+    if (!confirm(`Post to wall as ${$wall.nickname ?? 'Anonymous'}?`)) return;
     wall.post(wallPostContent);
     wallPostContent = '';
   }
@@ -173,7 +173,15 @@
             <p class="wall-post">
               {post.content}
               <br />
-              <span class="wall-post-footer">{post.nickname || 'Anonymous'} &mdash; {longDate.format(post.created_date)}</span>
+              <span class="wall-post-footer">
+                {post.nickname || 'Anonymous'}
+                {#if post.user_ref != null}
+                  <span class="wall-post-verification" title="Verified">&#x2714;</span>
+                {/if} &mdash; {longDate.format(post.created_date)}
+                {#if post.user_ref != null}
+                  <button class="link-button" on:click={wall.delete(post._id)}>Delete</button>
+                {/if}
+              </span>
             </p>
           </li>
         {/each}
@@ -185,8 +193,8 @@
   <br />
   <button class="wall-post-button" on:click={onWallPost} disabled={wallPostContent.trim() == ''}>Post</button>
   as
-  <input type="text" placeholder="Anonymous" value={$wall.nickname} on:change={(ev) => wall.setNickname(ev.currentTarget.value)} />
-  | <em>Note: Cannot be deleted or edited</em>
+  <input type="text" placeholder="Anonymous" value={$wall.nickname} on:change={(ev) => wall.setNickname(ev.currentTarget.value, true)} />
+  | <em>Note: Only verified posts can be deleted, none can be edited.</em>
 </section>
 
 <section itemscope itemtype="https://schema.org/Blog">
@@ -255,6 +263,9 @@
     <li>
       Eduard Beke, Software Developer - <a href="https://eduard.beke.at/" target="_blank" rel="noopener noreferrer nofollow">eduard.beke.at</a>
     </li>
+    <li>
+      Maximilian Mayrhofer, Software Developer - <a href="https://theblueone.dev/" target="_blank" rel="noopener noreferrer nofollow">theblueone.dev</a>
+    </li>
   </ul>
   <h3>Websites that deserve attention</h3>
   <ul>
@@ -289,6 +300,29 @@
     font-size: 0.8em;
     padding-inline-start: 1em;
     opacity: 0.8;
+  }
+
+  .wall-post-verification {
+    display: inline-block;
+    text-align: center;
+    vertical-align: middle;
+    animation-name: rainbow-color;
+    animation-duration: 5s;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
+    font-weight: bold;
+  }
+
+  @keyframes rainbow-color {
+    0% {
+      color: hsl(0, 100%, 50%);
+    }
+    50% {
+      color: hsl(180, 100%, 50%);
+    }
+    100% {
+      color: hsl(360, 100%, 50%);
+    }
   }
 
   .wall-edit-area {
