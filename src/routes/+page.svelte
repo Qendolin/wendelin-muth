@@ -2,7 +2,7 @@
   import './entry/blogpost.css';
   import type { Thing, WithContext } from 'schema-dts';
   import { auth$, db } from '$lib/fire-context';
-  import { wall } from '$lib/stores';
+  import { wall, user } from '$lib/stores';
   import { collection, getDocs, query, where } from 'firebase/firestore/lite';
   import { tick } from 'svelte';
 
@@ -178,8 +178,8 @@
                 {#if post.user_ref != null}
                   <span class="wall-post-verification" title="Verified">&#x2714;</span>
                 {/if} &mdash; {longDate.format(post.created_date)}
-                {#if post.user_ref != null}
-                  <button class="link-button" on:click={wall.delete(post._id)}>Delete</button>
+                {#if post.user_ref != null && post.user_ref.id == $user?.auth?.uid}
+                  <button class="link-button" on:click={() => wall.delete(post._id)}>Delete</button>
                 {/if}
               </span>
             </p>
