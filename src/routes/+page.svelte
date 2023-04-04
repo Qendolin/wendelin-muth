@@ -269,9 +269,13 @@
   <h2>See also</h2>
   <h3>My other stuff</h3>
   <ul>
-    <li>Shadertoy - <a href="https://www.shadertoy.com/user/Qendolin" target="_blank" rel="noopener noreferrer">www.shadertoy.com</a></li>
-    <li>Github - <a href="https://github.com/Qendolin/" target="_blank" rel="noopener noreferrer">github.com</a></li>
-    <li>Modrinth - <a href="https://modrinth.com/user/qendolin" target="_blank" rel="noopener noreferrer">modrinth.com</a></li>
+    <li>
+      Shadertoy: Pixel shader sandbox - <a href="https://www.shadertoy.com/user/Qendolin" target="_blank" rel="noopener noreferrer">
+        www.shadertoy.com/user/Qendolin
+      </a>
+    </li>
+    <li>GitHub: Open source projectts - <a href="https://github.com/Qendolin/" target="_blank" rel="noopener noreferrer">github.com/Qendolin</a></li>
+    <li>Modrinth: Minecraft mods - <a href="https://modrinth.com/user/qendolin" target="_blank" rel="noopener noreferrer">modrinth.com/user/qendolin</a></li>
   </ul>
   <h3>The personal websites of my friends!</h3>
   <ul>
