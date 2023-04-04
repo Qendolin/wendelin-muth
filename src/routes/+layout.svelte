@@ -38,6 +38,9 @@
       <a href="/register">Register</a>
     </p>
   {/if}
+  <p>
+    <a href="https://github.com/Qendolin/wendelin-muth" target="_blank" rel="noopener noreferrer">Source code on GitHub</a>
+  </p>
 </footer>
 
 <style>
@@ -66,5 +69,8 @@
   }
   #footer {
     grid-area: footer;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
   }
 </style>
