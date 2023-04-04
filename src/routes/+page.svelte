@@ -125,7 +125,7 @@
   <meta property="og:type" content="profile" />
   <meta property="og:title" content="Wendelin Muth - Homepage" />
   <meta property="og:url" content="https://www.wendelin-muth.cf/" />
-  <meta property="og:image" content="" />
+  <meta property="og:image" content="https://www.wendelin-muth.cf/og-image.webp" />
   <meta property="og:description" content="My personal website / blog. You should check it out!" />
   <meta property="profile:first_name" content="Wendelin" />
   <meta property="profile:last_name" content="Muth" />
