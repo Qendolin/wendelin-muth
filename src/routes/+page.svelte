@@ -122,6 +122,15 @@
 
 <svelte:head>
   {@html microdata}
+  <meta property="og:type" content="profile" />
+  <meta property="og:title" content="Wendelin Muth - Homepage" />
+  <meta property="og:url" content="https://www.wendelin-muth.cf/" />
+  <meta property="og:image" content="" />
+  <meta property="og:description" content="My personal website / blog. You should check it out!" />
+  <meta property="profile:first_name" content="Wendelin" />
+  <meta property="profile:last_name" content="Muth" />
+  <meta name="description" content="My personal website / blog. You should check it out!" />
+  <meta name="abstract" content="Hi, I'm Wendelin, I have a passion for software development and am curretly studying computer science at TU Wien." />
 </svelte:head>
 
 <h1>Welcome to my Website!</h1>
