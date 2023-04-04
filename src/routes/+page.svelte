@@ -274,7 +274,7 @@
         www.shadertoy.com/user/Qendolin
       </a>
     </li>
-    <li>GitHub: Open source projectts - <a href="https://github.com/Qendolin/" target="_blank" rel="noopener noreferrer">github.com/Qendolin</a></li>
+    <li>GitHub: Open source projects - <a href="https://github.com/Qendolin/" target="_blank" rel="noopener noreferrer">github.com/Qendolin</a></li>
     <li>Modrinth: Minecraft mods - <a href="https://modrinth.com/user/qendolin" target="_blank" rel="noopener noreferrer">modrinth.com/user/qendolin</a></li>
   </ul>
   <h3>The personal websites of my friends!</h3>
