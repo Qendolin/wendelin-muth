@@ -267,18 +267,24 @@
 <br />
 <section>
   <h2>See also</h2>
+  <h3>My other stuff</h3>
+  <ul>
+    <li>Shadertoy - <a href="https://www.shadertoy.com/user/Qendolin" target="_blank" rel="noopener noreferrer">www.shadertoy.com</a></li>
+    <li>Github - <a href="https://github.com/Qendolin/" target="_blank" rel="noopener noreferrer">github.com</a></li>
+    <li>Modrinth - <a href="https://modrinth.com/user/qendolin" target="_blank" rel="noopener noreferrer">modrinth.com</a></li>
+  </ul>
   <h3>The personal websites of my friends!</h3>
   <ul>
     <li>
-      Eduard Beke, Software Developer - <a href="https://eduard.beke.at/" target="_blank" rel="noopener noreferrer nofollow">eduard.beke.at</a>
+      Eduard Beke, Software Developer - <a href="https://eduard.beke.at/" target="_blank" rel="noopener noreferrer">eduard.beke.at</a>
     </li>
     <li>
-      Maximilian Mayrhofer, Software Developer - <a href="https://theblueone.dev/" target="_blank" rel="noopener noreferrer nofollow">theblueone.dev</a>
+      Maximilian Mayrhofer, Software Developer - <a href="https://theblueone.dev/" target="_blank" rel="noopener noreferrer">theblueone.dev</a>
     </li>
   </ul>
   <h3>Websites that deserve attention</h3>
   <ul>
-    <li>SS64, Command line reference - <a href="https://ss64.com/" target="_blank" rel="noopener noreferrer nofollow">ss64.com</a></li>
+    <li>SS64, Command line reference - <a href="https://ss64.com/" target="_blank" rel="noopener noreferrer">ss64.com</a></li>
   </ul>
 </section>
 
