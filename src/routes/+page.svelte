@@ -126,7 +126,15 @@
   <meta property="og:title" content="Wendelin Muth - Homepage" />
   <meta property="og:url" content="https://www.wendelin-muth.cf/" />
   <meta property="og:image" content="https://www.wendelin-muth.cf/og-image.webp" />
+  <meta property="og:image:type" content="image/webp" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
   <meta property="og:description" content="My personal website / blog. You should check it out!" />
+  <meta property="twitter:card" content="summary_large_image" />
+  <meta property="twitter:url" content="https://www.wendelin-muth.cf/" />
+  <meta property="twitter:title" content="Wendelin Muth - Homepage" />
+  <meta property="twitter:description" content="My personal website / blog. You should check it out!" />
+  <meta property="twitter:image" content="https://www.wendelin-muth.cf/og-image.webp" />
   <meta property="profile:first_name" content="Wendelin" />
   <meta property="profile:last_name" content="Muth" />
   <meta name="description" content="My personal website / blog. You should check it out!" />
