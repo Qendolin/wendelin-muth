@@ -71,7 +71,7 @@ function createWallStore() {
 		update((state) => patch(state, { nickname: name }));
 
 		if (keep) {
-			globalThis.localStorage?.setItem('wall-post-nickname', name);
+			globalThis.localStorage?.setItem('wall-post-nickname', name ?? '');
 		}
 	};
 	setNickname(globalThis.localStorage?.getItem('wall-post-nickname'), false);

@@ -2,7 +2,7 @@
   import './entry/blogpost.css';
   import type { Thing, WithContext } from 'schema-dts';
   import { auth$, db } from '$lib/fire-context';
-  import { wall, user } from '$lib/stores';
+  import { wall, user, type WallPost } from '$lib/stores';
   import { collection, getDocs, query, where } from 'firebase/firestore/lite';
   import { tick } from 'svelte';
 
@@ -89,6 +89,14 @@
     if (!confirm(`Post to wall as ${$wall.nickname ?? 'Anonymous'}?`)) return;
     wall.post(wallPostContent);
     wallPostContent = '';
+  }
+  function deleteWallPost(post: WallPost) {
+    let trimmedContent = post.content;
+    if (trimmedContent.length > 25) {
+      trimmedContent = trimmedContent.slice(0, 22) + '...';
+    }
+    if (!confirm(`Delete "${trimmedContent}" from wall?`)) return;
+    wall.delete(post._id);
   }
 
   function serializeSchema(thing: Thing | WithContext<Thing>) {
@@ -196,7 +204,7 @@
                   <span class="wall-post-verification" title="Verified">&#x2714;</span>
                 {/if} &mdash; {longDate.format(post.created_date)}
                 {#if post.user_ref != null && post.user_ref.id == $user?.auth?.uid}
-                  <button class="link-button" on:click={() => wall.delete(post._id)}>Delete</button>
+                  <button class="link-button" on:click={() => deleteWallPost(post)}>Delete</button>
                 {/if}
               </span>
             </p>
@@ -210,7 +218,7 @@
   <br />
   <button class="wall-post-button" on:click={onWallPost} disabled={wallPostContent.trim() == ''}>Post</button>
   as
-  <input type="text" placeholder="Anonymous" value={$wall.nickname} on:change={(ev) => wall.setNickname(ev.currentTarget.value, true)} />
+  <input type="text" placeholder="Anonymous" value={$wall.nickname ?? ''} on:change={(ev) => wall.setNickname(ev.currentTarget.value, true)} />
   | <em>Note: Only verified posts can be deleted, none can be edited.</em>
 </section>
 
