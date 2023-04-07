@@ -2,7 +2,7 @@
   import { goto } from '$app/navigation';
   import { auth$ } from '$lib/fire-context';
   import { user } from '$lib/stores';
-  import { getRedirectResult, GoogleAuthProvider, signInWithEmailAndPassword, signInWithRedirect } from 'firebase/auth';
+  import { getRedirectResult, GoogleAuthProvider, signInWithEmailAndPassword, signInWithPopup, signInWithRedirect } from 'firebase/auth';
   import { onMount } from 'svelte';
 
   onMount(() => {
@@ -34,7 +34,7 @@
   async function submitGoogle() {
     const auth = await auth$;
     try {
-      await signInWithRedirect(auth, provider);
+      await signInWithPopup(auth, provider);
     } catch (error: any) {
       errorMessage = error.message;
     }

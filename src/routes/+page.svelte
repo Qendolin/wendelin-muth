@@ -315,6 +315,8 @@
     contain: content;
     border: 4px double var(--accent-background-color);
     padding: 4px;
+    scrollbar-width: thin;
+    overflow: overlay;
   }
   .wall-wrapper {
     max-height: 50vh;
@@ -403,6 +405,20 @@
 
   .blog-entry-body:is([data-overflowing='true']) .blog-entry-overflow-overlay {
     display: block;
+  }
+
+  .blog-wrapper::-webkit-scrollbar {
+    width: 0.75rem;
+  }
+  .blog-wrapper::-webkit-scrollbar-thumb {
+    background-clip: padding-box;
+    background-color: #7f7f7fa0;
+    border: 3px solid rgba(0, 0, 0, 0);
+    border-radius: 10rem;
+  }
+  .blog-wrapper::-webkit-scrollbar-track {
+    position: absolute;
+    background: transparent;
   }
 
   .blog-entry-overflow-link {
