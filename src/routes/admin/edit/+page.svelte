@@ -132,7 +132,15 @@
     if (!id) return;
     goto(`/admin/edit?id=${id}`);
   }
+
+  function beforeUnload(event: Event) {
+    event.preventDefault();
+    event.returnValue = true;
+    return true;
+  }
 </script>
+
+<svelte:window on:beforeunload={beforeUnload} />
 
 {#if loading}
   <p>Loading....</p>
