@@ -167,7 +167,7 @@
     If you want to get in touch, contact me via
     <a target="_blank" rel="noreferrer noopener nofollow" href="mailto:wendelin.muth+website@gmail.com">wendelin.muth+website@gmail.com</a>
     or Discord
-    <a target="_blank" rel="noreferrer noopener nofollow" href="https://discord.com/users/qendolin_">@Qendolin_</a>.
+    <a target="_blank" rel="noreferrer noopener nofollow" href="https://discord.com/users/qendolin_">@qendolin_</a>.
     <br />
     Here is a random song that I like:
     <button
