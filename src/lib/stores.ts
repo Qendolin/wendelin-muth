@@ -64,7 +64,7 @@ export const page = createBlogStore();
 export const wall = createWallStore();
 
 function createWallStore() {
-	const { update, subscribe } = writable({ posts: null as WallPost[] | null, nickname: null as string | null });
+	const { update, subscribe } = writable({ isLoading: true, posts: [] as WallPost[], nickname: null as string | null });
 
 	const setNickname = (name: string | null, keep: boolean) => {
 		if (name?.trim() == '') name = null;
@@ -91,7 +91,7 @@ function createWallStore() {
 
 	getDocs(query(wallCollection)).then((documents) => {
 		const posts = documents.docs.map((doc) => mapPost(doc.data(), doc.id)).sort((a, b) => b.created_date.getTime() - a.created_date.getTime());
-		update((state) => patch(state, { posts: posts }));
+		update((state) => patch(state, { posts: posts, isLoading: false }));
 	});
 	return {
 		subscribe,

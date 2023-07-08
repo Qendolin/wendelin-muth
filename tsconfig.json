@@ -10,7 +10,7 @@
 		"sourceMap": true,
 		"strict": true,
 		"typeRoots": ["src/types/"],
-		"lib": ["ES2022", "ES2022.Intl"]
+		"lib": ["DOM", "ES2022", "ES2022.Intl"]
 	}
 	// Path aliased by https://kit.svelte.dev/docs/configuration#alias
 	//

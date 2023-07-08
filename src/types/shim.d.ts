@@ -14,28 +14,10 @@ declare module '@bbob/plugin-helper/lib/TagNode' {
 
 		public attr(name: string, value: string): string;
 		public append(value: Node): void;
-		public toTagStart({
-			openTag = '[',
-			closeTag = ']'
-		}: {
-			openTag: string;
-			closeTag: string;
-		}): string;
-		public toTagEnd({
-			openTag = '[',
-			closeTag = ']'
-		}: {
-			openTag: string;
-			closeTag: string;
-		}): string;
+		public toTagStart({ openTag = '[', closeTag = ']' }: { openTag: string; closeTag: string }): string;
+		public toTagEnd({ openTag = '[', closeTag = ']' }: { openTag: string; closeTag: string }): string;
 		public toTagNode(): TagNode;
-		public toString({
-			openTag = '[',
-			closeTag = ']'
-		}: {
-			openTag: string;
-			closeTag: string;
-		}): string;
+		public toString({ openTag = '[', closeTag = ']' }: { openTag: string; closeTag: string }): string;
 
 		public static create(tag: string, attrs?: Attributes, content?: Node[]): TagNode;
 		public static isOf(node: Tag, type: string): boolean;
