@@ -2,11 +2,11 @@
   import './entry/blogpost.css';
   import type { Thing, WithContext } from 'schema-dts';
   import { auth$, db } from '$lib/fire-context';
-  import { wall, user, type WallPost } from '$lib/stores';
+  import { wall, type WallPost } from '$lib/stores';
   import { collection, getDocs, query, where } from 'firebase/firestore/lite';
-  import { tick } from 'svelte';
-  import WallList from '$lib/components/wall-list.svelte';
+  import { onMount, tick } from 'svelte';
   import WallSection from '$lib/components/wall-section.svelte';
+  import { browser } from '$app/environment';
 
   type Entry = {
     _id: string;
@@ -68,9 +68,9 @@
     tick().then(updateOverflowShadows);
   }
 
-  let randomSongs$ = fetch('/music-2022-11.json', {
-    priority: 'low'
-  } as any).then((resp) => resp.json());
+  let randomSongs$ = browser ? fetch('/music-2022-11.json', {
+      priority: 'low'
+    } as any).then((resp) => resp.json()) : null;
   async function pickRandomSong() {
     const data = await randomSongs$;
     const pool = [];
