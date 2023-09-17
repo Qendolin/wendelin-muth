@@ -15,6 +15,10 @@
 			{
 				"source": "/entry/*",
 				"destination": "/200.html"
+			},
+			{
+				"source": "/entry",
+				"destination": "/200.html"
 			}
 		]
 	}
