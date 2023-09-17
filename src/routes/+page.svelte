@@ -1,15 +1,15 @@
 <script lang="ts">
-  import './entry/blogpost.css';
+  import './entry/[slug]/blogpost.css';
   import type { Thing, WithContext } from 'schema-dts';
   import { auth$, db } from '$lib/fire-context';
-  import { wall, type WallPost } from '$lib/stores';
   import { collection, getDocs, query, where } from 'firebase/firestore/lite';
-  import { onMount, tick } from 'svelte';
+  import { tick } from 'svelte';
   import WallSection from '$lib/components/wall-section.svelte';
   import { browser } from '$app/environment';
 
   type Entry = {
     _id: string;
+    slug: string;
     title: string;
     body: string;
     created_date: Date;
@@ -68,9 +68,11 @@
     tick().then(updateOverflowShadows);
   }
 
-  let randomSongs$ = browser ? fetch('/music-2022-11.json', {
-      priority: 'low'
-    } as any).then((resp) => resp.json()) : null;
+  let randomSongs$ = browser
+    ? fetch('/music-2022-11.json', {
+        priority: 'low'
+      } as any).then((resp) => resp.json())
+    : null;
   async function pickRandomSong() {
     const data = await randomSongs$;
     const pool = [];
@@ -84,22 +86,6 @@
   }
 
   let randomSong$ = pickRandomSong();
-
-  let wallPostContent = '';
-  function onWallPost() {
-    if (wallPostContent.trim() == '') return;
-    if (!confirm(`Post to wall as ${$wall.nickname ?? 'Anonymous'}?`)) return;
-    wall.post(wallPostContent);
-    wallPostContent = '';
-  }
-  function deleteWallPost(post: WallPost) {
-    let trimmedContent = post.content;
-    if (trimmedContent.length > 25) {
-      trimmedContent = trimmedContent.slice(0, 22) + '...';
-    }
-    if (!confirm(`Delete "${trimmedContent}" from wall?`)) return;
-    wall.delete(post._id);
-  }
 
   function serializeSchema(thing: Thing | WithContext<Thing>) {
     return `<${'script'} type="application/ld+json" >${JSON.stringify(thing, null, 2)}</${'script'}>`;
@@ -208,7 +194,7 @@
                 <meta itemprop="author" itemtype="http://schema.org/Person" itemscope itemref="myself" />
                 <section class="blog-entry-header">
                   <span class="blog-entry-heading" itemprop="headline">
-                    <a href={`/entry?id=${entry._id}`} class="blog-entry-link">
+                    <a href={`/entry/${entry.slug}`} class="blog-entry-link">
                       <h2>{entry.title}</h2>
                     </a>
                     {#if isAdmin}
@@ -229,7 +215,7 @@
                 </section>
                 <section class="blog-entry-body" data-overflowing="false">
                   <div class="blog-entry-overflow-overlay">
-                    <a itemprop="url" href={`/entry?id=${entry._id}`} class="blog-entry-overflow-link">Read Full Post</a>
+                    <a itemprop="url" href={`/entry/${entry.slug}`} class="blog-entry-overflow-link">Read Full Post</a>
                   </div>
                   <div itemprop="articleBody">
                     {@html entry.body}

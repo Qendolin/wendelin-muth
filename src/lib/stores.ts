@@ -13,7 +13,8 @@ import {
 	setDoc,
 	updateDoc,
 	where,
-	type DocumentData
+	type DocumentData,
+	limit
 } from 'firebase/firestore/lite';
 import { get, writable } from 'svelte/store';
 import { auth$, db } from './fire-context';
@@ -174,17 +175,20 @@ function createBlogStore() {
 
 	return {
 		subscribe,
-		loadEntry: async (id: string) => {
-			const entry = await getDoc(doc(db, 'blog', id));
-			if (!entry.exists()) {
+		loadEntry: async (slug: string) => {
+			const q = query(collection(db, 'blog'), where('slug', '==', slug));
+			const result = await getDocs(q);
+
+			if (result.empty) {
 				currentEntry = null;
 				set(null);
 				return null;
 			}
 
-			const data = entry.data();
+			const doc = result.docs[0];
+			const data = doc.data();
 			currentEntry = {
-				_id: id,
+				_id: doc.id,
 				title: data.title,
 				body: data.body,
 				created_date: new Date(data.created_date.seconds * 1000),

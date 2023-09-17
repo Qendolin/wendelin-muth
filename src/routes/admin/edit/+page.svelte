@@ -1,5 +1,5 @@
 <script lang="ts">
-  import '../../entry/blogpost.css';
+  import '../../entry/[slug]/blogpost.css';
   import { db } from '$lib/fire-context';
   import {
     addDoc,
@@ -53,6 +53,7 @@
     body: '',
     body_raw: '',
     title: '',
+    slug: '',
     draft: true
   };
   let entry: typeof defaultEntry;
@@ -70,6 +71,8 @@
 
   const getParams = () => (globalThis.location ? new URLSearchParams(globalThis.location.search) : null);
 
+  $: autoSlug = generateSlug(entry?.title);
+
   function load() {
     const params = getParams();
     if (params == null) return;
@@ -78,7 +81,11 @@
       docRef = doc(db, 'blog', params.get('id') as string);
       getDoc(docRef).then((doc) => {
         const data = doc.data();
-        if (data) entry = data as any;
+        if (data) {
+          entry = {
+            ...(data as any)
+          };
+        }
         loading = false;
       });
     } else {
@@ -88,14 +95,26 @@
     }
   }
 
+  function generateSlug(title: string) {
+    return (title ?? '')
+      .toLocaleLowerCase()
+      .replaceAll(' ', '-')
+      .replace(/\?\.\,/g, '-')
+      .replace(/[^a-z0-9-]/g, '')
+      .replace(/\-+$/g, '');
+  }
+
   let drafts$ = getDocs(query(blog, where('draft', '==', true))).then((snapshot) => snapshot.docs.map((doc) => ({ ...doc.data(), _id: doc.id } as any)));
 
   let saving = false;
   async function saveEntry(updateDate: boolean) {
     saving = true;
     renderEntry();
+    if (!entry.slug) {
+      entry.slug = autoSlug;
+    }
     if (updateDate) {
-      if (!confirm('Are you sure?')) {
+      if (!confirm('Are you sure to republish?')) {
         saving = false;
         return;
       }
@@ -160,6 +179,7 @@
   <form on:submit|preventDefault>
     <span class="edit-toolbar">
       <input type="text" name="title" placeholder="Title" required bind:value={entry.title} />
+      <input type="text" name="slug" placeholder={autoSlug} bind:value={entry.slug} />
       <button
         type="button"
         on:click={() => {

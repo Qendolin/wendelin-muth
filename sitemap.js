@@ -20,7 +20,11 @@ const db = getFirestore(app);
 async function fetchBlogEntries() {
 	const blog = collection(db, 'blog');
 	const documents = await getDocs(query(blog, where('draft', '==', false)));
-	return documents.docs.map((doc) => `${base}entry?id=${doc.id}`);
+	const entries = documents.docs.map((doc) => ({ ...doc.data(), _id: doc.id }));
+	for (const { _id, title, slug } of entries) {
+		if (!slug) throw new Error(`Entry "${title}" (${_id}) does not have a slug`);
+	}
+	return entries.map((doc) => `${base}entry/${doc.slug}`);
 }
 
 // create generator
