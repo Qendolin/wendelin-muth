@@ -19,6 +19,8 @@
   import { onMount } from 'svelte';
   import { marked } from 'marked';
   import { afterNavigate, goto } from '$app/navigation';
+  import { stripStorageToken, uploadStaticPublicFile } from '$lib/storage';
+  import { getDownloadURL } from 'firebase/storage';
 
   const blog = collection(db, 'blog');
 
@@ -157,6 +159,29 @@
     event.returnValue = true;
     return true;
   }
+
+  let textarea: HTMLTextAreaElement;
+
+  async function handleFileUpload(ev: DragEvent) {
+    ev.preventDefault();
+
+    if (!ev?.dataTransfer?.files) return;
+
+    let insertIndex = textarea.selectionEnd;
+    if (document.activeElement != textarea) {
+      insertIndex = entry.body_raw.length;
+    }
+
+    for (const file of ev.dataTransfer.files) {
+      const ref = await uploadStaticPublicFile(file);
+      const url = stripStorageToken(await getDownloadURL(ref));
+      console.log("Uploaded '%s' to '%s'", file.name, url);
+      const isMedia = file.type.startsWith('image/') || file.type.startsWith('video/') || file.type.startsWith('audio/');
+      const text = ` ${isMedia ? '!' : ''}[${file.name}](${url})`;
+      entry.body_raw = entry.body_raw.slice(0, insertIndex) + text + entry.body_raw.slice(insertIndex);
+      insertIndex += text.length;
+    }
+  }
 </script>
 
 <svelte:window on:beforeunload={beforeUnload} />
@@ -197,9 +222,11 @@
     {#if preview}
       <section class="preview-area blog-entry-body">{@html entry.body}</section>
     {:else}
-      <section class="edit-area">
-        <textarea class="edit-area" name="body_raw" placeholder="Content" bind:value={entry.body_raw} />
-      </section>
+      <div style="display: contents" on:dragover|preventDefault on:drop={handleFileUpload} role="region">
+        <section class="edit-area">
+          <textarea class="edit-area" name="body_raw" placeholder="Content" bind:this={textarea} bind:value={entry.body_raw} />
+        </section>
+      </div>
     {/if}
   </form>
 {/if}

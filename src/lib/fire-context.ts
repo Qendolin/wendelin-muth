@@ -2,6 +2,7 @@
 import { browser } from '$app/environment';
 import { initializeApp } from 'firebase/app';
 import { getFirestore } from 'firebase/firestore/lite';
+import { getStorage } from 'firebase/storage';
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -21,6 +22,8 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 
 const db = getFirestore(app);
+
+const storage = getStorage(app);
 
 const auth$ = import('firebase/auth').then(({ getAuth }) => {
 	return getAuth(app);
@@ -47,4 +50,4 @@ const analytics$ = new Promise((resolve) => {
 	})
 );
 
-export { app, analytics$, auth$, db };
+export { app, analytics$, auth$, db, storage };
