@@ -304,10 +304,8 @@
     image-rendering: pixelated;
   }
 
-  @media (prefers-color-scheme: dark) {
-    .blog-entry-overflow-overlay {
-      background-image: url('/img/dither-24-dark.png');
-    }
+  :is(:root[data-theme='dark'] .blog-entry-overflow-overlay) {
+    background-image: url('/img/dither-24-dark.png');
   }
 
   .blog-entry-body:is([data-overflowing='true']) .blog-entry-overflow-overlay {

@@ -4,6 +4,21 @@
   import { user } from '$lib/stores';
 
   import '../global.css';
+
+  type Theme = 'system' | 'light' | 'dark';
+
+  const themes: Theme[] = ['system', 'light', 'dark'];
+  let theme = (globalThis.localStorage?.getItem('theme') ?? 'system') as Theme;
+  function cycleTheme() {
+    theme = themes[(themes.indexOf(theme) + 1) % themes.length];
+    globalThis.localStorage?.setItem('theme', theme);
+    let preferredTheme = theme;
+    if (theme == 'system') {
+      const prefersDark = globalThis.matchMedia('(prefers-color-scheme: dark)').matches;
+      preferredTheme = prefersDark ? 'dark' : 'light';
+    }
+    document.documentElement.dataset.theme = preferredTheme;
+  }
 </script>
 
 <svelte:head>
@@ -14,7 +29,7 @@
     <form method="dialog">
       <strong><h2>This Website requires JavaScript to be enabled!</h2></strong>
       <p>Thank you for your understanding.</p>
-      <button type="submit" autofocus>Ok</button>
+      <button type="submit">Ok</button>
     </form>
   </dialog>
 </noscript>
@@ -38,6 +53,9 @@
       <a href="/register">Register</a>
     </p>
   {/if}
+  <p>
+    <button class="link-button" on:click={cycleTheme}>Theme: {theme}</button>
+  </p>
   <p>
     <a href="https://github.com/Qendolin/wendelin-muth" target="_blank" rel="noopener noreferrer">Source code on GitHub</a>
   </p>
