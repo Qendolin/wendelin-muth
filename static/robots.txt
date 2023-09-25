@@ -4,4 +4,4 @@ Disallow: /admin/
 Disallow: /login
 Disallow: /register
 
-Sitemap: https://www.wendelin-muth.cf/sitemap.xml
+Sitemap: https://www.webindex.page/sitemap.xml

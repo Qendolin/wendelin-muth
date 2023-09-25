@@ -35,6 +35,7 @@
     const auth = await auth$;
     try {
       await signInWithPopup(auth, provider);
+      goto('/');
     } catch (error: any) {
       errorMessage = error.message;
     }
