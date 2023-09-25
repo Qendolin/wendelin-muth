@@ -19,7 +19,7 @@
   </dialog>
 </noscript>
 <header id="header">
-  {#if $page.routeId != ''}
+  {#if $page?.route?.id != '/'}
     <a href="/">Go to Home</a>
   {/if}
 </header>

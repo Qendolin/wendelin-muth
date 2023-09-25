@@ -21,6 +21,7 @@
   import { afterNavigate, goto } from '$app/navigation';
   import { stripStorageToken, uploadStaticPublicFile } from '$lib/storage';
   import { getDownloadURL } from 'firebase/storage';
+  import katex from 'katex';
 
   const blog = collection(db, 'blog');
 
@@ -111,28 +112,39 @@
   let saving = false;
   async function saveEntry(updateDate: boolean) {
     saving = true;
-    renderEntry();
-    if (!entry.slug) {
-      entry.slug = autoSlug;
-    }
-    if (updateDate) {
-      if (!confirm('Are you sure to republish?')) {
-        saving = false;
-        return;
+    try {
+      renderEntry();
+      if (!entry.slug) {
+        entry.slug = autoSlug;
       }
-      entry.modified_date = serverTimestamp();
-    }
-    if (docRef) {
-      await setDoc(docRef, entry);
-    } else {
-      const ref = await addDoc(blog, entry);
-      goto(`/admin/edit?id=${ref.id}`);
+      if (updateDate) {
+        if (!confirm('Are you sure to republish?')) {
+          saving = false;
+          return;
+        }
+        entry.modified_date = serverTimestamp();
+      }
+      if (docRef) {
+        await setDoc(docRef, entry);
+      } else {
+        const ref = await addDoc(blog, entry);
+        goto(`/admin/edit?id=${ref.id}`);
+      }
+    } catch (error) {
+      alert('Error: ' + error);
     }
     saving = false;
   }
 
   function renderEntry() {
-    entry.body = marked.parse(entry.body_raw, { renderer });
+    let content = marked.parse(entry.body_raw, { renderer });
+    content = content.replace(/\$\$([^$]+)\$\$/g, (_match, group) => {
+      return katex.renderToString(group, { displayMode: true, output: 'html', fleqn: true });
+    });
+    content = content.replace(/\$([^$]+)\$/g, (_match, group) => {
+      return katex.renderToString(group, { displayMode: false, output: 'html' });
+    });
+    entry.body = content;
   }
 
   function publishEntry() {
@@ -232,6 +244,8 @@
 {/if}
 
 <style>
+  @import '/static/katex_0.16.8.min.css';
+
   form {
     display: grid;
     grid-auto-rows: max-content 1fr;
