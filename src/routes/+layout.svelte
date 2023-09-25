@@ -2,8 +2,10 @@
   import { page } from '$app/stores';
   import { auth$ } from '$lib/fire-context';
   import { user } from '$lib/stores';
+  import { onMount } from 'svelte';
 
   import '../global.css';
+  import { addBackgroundEffect } from '$lib/background-effect';
 
   type Theme = 'system' | 'light' | 'dark';
 
@@ -19,6 +21,10 @@
     }
     document.documentElement.dataset.theme = preferredTheme;
   }
+
+  onMount(() => {
+    addBackgroundEffect();
+  });
 </script>
 
 <svelte:head>
