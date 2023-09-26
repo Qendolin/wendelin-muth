@@ -11,15 +11,21 @@
 
   const themes: Theme[] = ['system', 'light', 'dark'];
   let theme = (globalThis.localStorage?.getItem('theme') ?? 'system') as Theme;
+  const themeQuery = globalThis.matchMedia?.('(prefers-color-scheme: dark)');
+  themeQuery?.addEventListener('change', applyTheme);
+
+  function applyTheme() {
+    let preferredTheme = theme;
+    if (theme == 'system') {
+      preferredTheme = themeQuery.matches ? 'dark' : 'light';
+    }
+    document.documentElement.dataset.theme = preferredTheme;
+  }
+
   function cycleTheme() {
     theme = themes[(themes.indexOf(theme) + 1) % themes.length];
     globalThis.localStorage?.setItem('theme', theme);
-    let preferredTheme = theme;
-    if (theme == 'system') {
-      const prefersDark = globalThis.matchMedia('(prefers-color-scheme: dark)').matches;
-      preferredTheme = prefersDark ? 'dark' : 'light';
-    }
-    document.documentElement.dataset.theme = preferredTheme;
+    applyTheme();
   }
 
   onMount(() => {
