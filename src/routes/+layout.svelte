@@ -48,23 +48,26 @@
   <slot />
 </main>
 <footer id="footer">
-  {#if $user?.auth}
+  <hr style="width: 100%" />
+  <div class="footer-wrapper">
+    {#if $user?.auth}
+      <p>
+        <span>Logged in as {$user.auth.displayName ?? $user.auth.email}</span>
+        <button class="link-button" on:click={() => auth$.then((auth) => auth.signOut())}> Log Out </button>
+      </p>
+    {:else}
+      <p>
+        <a href="/login">Login</a> |
+        <a href="/register">Register</a>
+      </p>
+    {/if}
     <p>
-      <span>Logged in as {$user.auth.displayName ?? $user.auth.email}</span>
-      <button class="link-button" on:click={() => auth$.then((auth) => auth.signOut())}> Log Out </button>
+      <button class="link-button" on:click={cycleTheme}>Theme: {theme}</button>
     </p>
-  {:else}
     <p>
-      <a href="/login">Login</a> |
-      <a href="/register">Register</a>
+      <a href="https://github.com/Qendolin/wendelin-muth" target="_blank" rel="noopener noreferrer">Source code on GitHub</a>
     </p>
-  {/if}
-  <p>
-    <button class="link-button" on:click={cycleTheme}>Theme: {theme}</button>
-  </p>
-  <p>
-    <a href="https://github.com/Qendolin/wendelin-muth" target="_blank" rel="noopener noreferrer">Source code on GitHub</a>
-  </p>
+  </div>
 </footer>
 
 <style>
@@ -93,8 +96,20 @@
   }
   #footer {
     grid-area: footer;
+  }
+
+  .footer-wrapper {
     display: flex;
     justify-content: space-between;
     flex-wrap: wrap;
+  }
+
+  .footer-wrapper > * {
+    flex-basis: 300px;
+    flex-shrink: 0;
+    flex-grow: 1;
+    text-align: center;
+    min-width: 300px;
+    margin-block: 6px;
   }
 </style>

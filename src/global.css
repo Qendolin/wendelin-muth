@@ -29,6 +29,7 @@ html {
 	width: 100%;
 	max-width: 100%;
 	scrollbar-gutter: stable;
+	color: var(--text-color);
 }
 
 body {
@@ -128,6 +129,10 @@ summary {
 	to {
 		transform: translate(-50%, -50%) rotate(360deg);
 	}
+}
+
+:root[data-theme='light'] {
+	color-scheme: light;
 }
 
 :root[data-theme='dark'] {

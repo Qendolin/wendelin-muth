@@ -62,7 +62,7 @@ class BackgroundEffect {
 
 	stop() {
 		this.stopped = true;
-		this.canvas.remove();
+		this.wrapper.remove();
 		document.removeEventListener('pointermove', this.moveListener);
 		document.removeEventListener('scroll', this.scrollListener);
 	}
