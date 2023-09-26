@@ -24,7 +24,7 @@
 
     setTimeout(init, 1500);
 
-    window.history.pushState({ closeLufiaSecret: true }, '');
+    window.history.pushState({ ...window.history.state, lufiaSecretOpen: true }, '', '#lufia-secret');
 
     return () => {
       visible = false;
@@ -98,9 +98,8 @@
     dispatch('close');
   }
 
-  function onBack(ev: PopStateEvent) {
-    if (ev.state.closeLufiaSecret) {
-      window.history.replaceState(null, '');
+  function onPopState(ev: PopStateEvent) {
+    if (!ev.state.lufiaSecretOpen) {
       dialogElem.close();
     }
   }
@@ -111,7 +110,7 @@
   }
 </script>
 
-<svelte:window on:popstate={onBack} />
+<svelte:window on:popstate={onPopState} />
 
 <dialog class="lufia-secret-container" hidden={!visible} inert={!visible} bind:this={dialogElem} on:close={onClose}>
   <div class="lufia-secret-center">
