@@ -15,5 +15,7 @@
 #background-effect > canvas {
 	image-rendering: pixelated;
 	background: transparent;
-	width: 100%;
+	width: auto;
+	transform-origin: top left;
+	scale: 500%;
 }
