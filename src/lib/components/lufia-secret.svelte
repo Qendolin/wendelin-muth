@@ -24,6 +24,8 @@
 
     setTimeout(init, 1500);
 
+    window.history.pushState({ closeLufiaSecret: true }, '');
+
     return () => {
       visible = false;
       ctx?.close();
@@ -96,11 +98,20 @@
     dispatch('close');
   }
 
+  function onBack(ev: PopStateEvent) {
+    if (ev.state.closeLufiaSecret) {
+      window.history.replaceState(null, '');
+      dialogElem.close();
+    }
+  }
+
   function setVolume(vol: number) {
     volume = vol;
     gainNode?.gain?.setValueAtTime(Math.pow(volume / 100, 2), ctx!.currentTime);
   }
 </script>
+
+<svelte:window on:popstate={onBack} />
 
 <dialog class="lufia-secret-container" hidden={!visible} inert={!visible} bind:this={dialogElem} on:close={onClose}>
   <div class="lufia-secret-center">
@@ -222,11 +233,11 @@
     width: 50vmin;
     height: 50vmin;
     border-radius: 100vmax;
-    font-size: 20vh;
+    font-size: 20vmin;
     text-align: center;
     text-shadow: 0 0 20vmin black, 0 0 20vmin black, 0 0 20vmin black, 0 0 20px black;
     user-select: none;
-    line-height: 20vh;
+    line-height: 20vmin;
     vertical-align: middle;
   }
 
