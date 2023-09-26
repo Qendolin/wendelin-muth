@@ -6,6 +6,7 @@
   import { tick } from 'svelte';
   import WallSection from '$lib/components/wall-section.svelte';
   import { browser } from '$app/environment';
+  import LufiaSecret from '$lib/components/lufia-secret.svelte';
 
   type Entry = {
     _id: string;
@@ -112,6 +113,13 @@
     jobTitle: 'Student',
     knowsLanguage: ['de', 'en']
   });
+
+  function openLufiaSecret() {
+    const lufia = new LufiaSecret({
+      target: document.body
+    });
+    lufia.$on('close', () => lufia.$destroy());
+  }
 </script>
 
 <svelte:window on:resize={updateOverflowShadows} />
@@ -233,7 +241,7 @@
 </section>
 <br />
 <section>
-  <h2>See also</h2>
+  <h2>See also <button class="lufia-secret-button" on:click={openLufiaSecret}>Click Me!</button></h2>
   <h3>My other stuff</h3>
   <ul>
     <li>
@@ -377,5 +385,12 @@
     to {
       transform: rotate(10deg);
     }
+  }
+
+  .lufia-secret-button {
+    background-color: transparent;
+    border: none;
+    color: var(--background-color);
+    cursor: unset;
   }
 </style>
