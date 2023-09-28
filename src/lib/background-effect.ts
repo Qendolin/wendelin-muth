@@ -9,7 +9,12 @@ export function addBackgroundEffect() {
 	instance?.stop();
 	instance = new BackgroundEffect();
 	(globalThis as any)[symbol] = instance;
-	instance.loop();
+
+	if (document.readyState !== 'complete') {
+		window.addEventListener('load', () => instance.loop(), { once: true });
+	} else {
+		instance.loop();
+	}
 }
 
 type PointerPos = {
@@ -27,6 +32,7 @@ class BackgroundEffect {
 	private scrollListener: any;
 	private line: { x: number; y: number } | null = null;
 	private pointer: PointerPos | null = null;
+	private sizeInitialized = false;
 
 	constructor() {
 		this.wrapper = document.createElement('div');
@@ -34,7 +40,7 @@ class BackgroundEffect {
 		this.wrapper.inert = true;
 		this.canvas = document.createElement('canvas');
 		this.wrapper.append(this.canvas);
-		document.body.prepend(this.wrapper);
+		document.body.append(this.wrapper);
 		this.ctx = this.canvas.getContext('2d')!;
 		this.ctx.beginPath();
 		this.ctx.imageSmoothingEnabled = false;
@@ -43,7 +49,7 @@ class BackgroundEffect {
 		this.pointerEvents = [];
 		this.moveListener = this.onPointerMove.bind(this);
 		this.scrollListener = this.onScroll.bind(this);
-		document.addEventListener('pointermove', this.moveListener);
+		document.addEventListener('mousemove', this.moveListener);
 		document.addEventListener('scroll', this.scrollListener);
 	}
 
@@ -53,7 +59,7 @@ class BackgroundEffect {
 		this.pointerEvents.push({ x: this.pointer.x, y: this.pointer.y });
 	}
 
-	private onPointerMove(ev: PointerEvent) {
+	private onPointerMove(ev: MouseEvent) {
 		this.pointer ??= {} as PointerPos;
 		this.pointer.x = ev.clientX;
 		this.pointer.y = ev.clientY;
@@ -63,7 +69,7 @@ class BackgroundEffect {
 	stop() {
 		this.stopped = true;
 		this.wrapper.remove();
-		document.removeEventListener('pointermove', this.moveListener);
+		document.removeEventListener('mousemove', this.moveListener);
 		document.removeEventListener('scroll', this.scrollListener);
 	}
 
@@ -72,11 +78,12 @@ class BackgroundEffect {
 
 		let expectedWidth = Math.max(this.canvas.width, Math.ceil(document.body.offsetWidth / 5));
 		let expectedHeight = Math.max(this.canvas.height, Math.ceil(document.body.offsetHeight / 5));
-		if (this.canvas.width != expectedWidth || this.canvas.height != expectedHeight) {
-			const data = this.ctx.getImageData(0, 0, this.canvas.width, this.canvas.height);
+		if (!this.sizeInitialized || this.canvas.width != expectedWidth || this.canvas.height != expectedHeight) {
+			const data = this.sizeInitialized ? this.ctx.getImageData(0, 0, this.canvas.width, this.canvas.height) : null;
 			this.canvas.width = expectedWidth;
 			this.canvas.height = expectedHeight;
-			this.ctx.putImageData(data, 0, 0);
+			if (data) this.ctx.putImageData(data, 0, 0);
+			this.sizeInitialized = true;
 		}
 
 		if (this.pointerEvents.length > 0) {
