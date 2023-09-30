@@ -41,7 +41,7 @@
     <form method="dialog">
       <strong><h2>This Website requires JavaScript to be enabled!</h2></strong>
       <p>Thank you for your understanding.</p>
-      <button type="submit">Ok</button>
+      <button type="submit">Close</button>
     </form>
   </dialog>
 </noscript>
