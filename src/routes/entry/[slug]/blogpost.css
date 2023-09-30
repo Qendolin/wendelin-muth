@@ -54,3 +54,7 @@
 	max-width: 100%;
 	object-fit: contain;
 }
+
+.blog-entry-body iframe {
+	max-width: 100%;
+}
