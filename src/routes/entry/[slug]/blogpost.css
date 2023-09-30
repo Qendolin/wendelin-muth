@@ -49,3 +49,8 @@
 	width: 3px;
 	background-color: var(--accent-background-color);
 }
+
+.blog-entry-body img {
+	max-width: 100%;
+	object-fit: contain;
+}
