@@ -259,7 +259,7 @@
 {/if}
 
 <style>
-  @import '/static/katex_0.16.8.min.css';
+  @import '/static/fonts/KaTeX/katex_0.16.8.min.css';
 
   form {
     display: grid;

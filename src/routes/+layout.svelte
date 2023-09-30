@@ -4,7 +4,6 @@
   import { user } from '$lib/stores';
   import { onMount } from 'svelte';
 
-  import '../global.css';
   import { addBackgroundEffect } from '$lib/background-effect';
 
   type Theme = 'system' | 'light' | 'dark';
@@ -77,6 +76,9 @@
 </footer>
 
 <style>
+  @import '../global.css';
+  @import '/static/fonts/CourierPrime/courier_prime.css';
+
   .js-disabled-dialog {
     position: fixed;
     inset: 0;
