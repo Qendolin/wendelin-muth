@@ -50,6 +50,34 @@
 	background-color: var(--accent-background-color);
 }
 
+.blog-entry-body figure {
+	position: relative;
+	width: fit-content;
+	margin: 0;
+	max-width: 100%;
+	display: inline-block;
+}
+
+.blog-entry-body figure figcaption {
+	position: absolute;
+	bottom: 0;
+	width: 100%;
+	backdrop-filter: brightness(0.2);
+	padding: 0.5rem;
+	opacity: 0;
+	transition: opacity 0.15s ease;
+	pointer-events: none;
+	--link-color: var(--dark-link-color);
+	--text-color: var(--dark-text-color);
+	--link-visited-color: var(--dark-link-visited-color);
+}
+
+.blog-entry-body figure:hover figcaption,
+.blog-entry-body figcaption:focus-within {
+	opacity: 1;
+	pointer-events: auto;
+}
+
 .blog-entry-body img {
 	max-width: 100%;
 	object-fit: contain;

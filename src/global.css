@@ -12,12 +12,29 @@
 	-moz-osx-font-smoothing: grayscale;
 	-webkit-text-size-adjust: 100%;
 
-	--link-color: #3131dd;
-	--background-color: white;
-	--text-color: black;
-	--accent-background-color: #404040;
-	--accent-color: white;
-	--box-background-color: #f0f0f0;
+	--light-link-color: #3131dd;
+	--light-link-visited-color: #551a8b;
+	--light-background-color: white;
+	--light-text-color: black;
+	--light-accent-background-color: #404040;
+	--light-accent-color: white;
+	--light-box-background-color: #f0f0f0;
+
+	--dark-link-color: #9e9eff;
+	--dark-link-visited-color: #d0adf0;
+	--dark-background-color: #121212;
+	--dark-text-color: white;
+	--dark-accent-background-color: #eeeeee;
+	--dark-accent-color: black;
+	--dark-box-background-color: #2c2c2c;
+
+	--link-color: var(--light-link-color);
+	--link-visited-color: var(--light-link-visited-color);
+	--background-color: var(--light-background-color);
+	--text-color: var(--light-text-color);
+	--accent-background-color: var(--light-accent-background-color);
+	--accent-color: var(--light-accent-color);
+	--box-background-color: var(--light-box-background-color);
 }
 
 * {
@@ -60,6 +77,10 @@ pre {
 
 a:not(:visited) {
 	color: var(--link-color);
+}
+
+a:visited {
+	color: var(--link-visited-color);
 }
 
 button:hover {
@@ -145,12 +166,13 @@ summary {
 }
 
 :root[data-theme='dark'] {
-	--link-color: #9e9eff;
-	--background-color: #121212;
-	--text-color: white;
-	--accent-background-color: #eeeeee;
-	--accent-color: black;
-	--box-background-color: #2c2c2c;
+	--link-color: var(--dark-link-color);
+	--link-visited-color: var(--dark-link-visited-color);
+	--background-color: var(--dark-background-color);
+	--text-color: var(--dark-text-color);
+	--accent-background-color: var(--dark-accent-background-color);
+	--accent-color: var(--dark-accent-color);
+	--box-background-color: var(--dark-box-background-color);
 	color-scheme: dark;
 }
 

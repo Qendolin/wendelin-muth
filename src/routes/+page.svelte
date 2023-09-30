@@ -310,6 +310,7 @@
     background-position: bottom 24px left;
     background-size: 8px 48px;
     image-rendering: pixelated;
+    z-index: 1;
   }
 
   :is(:root[data-theme='dark'] .blog-entry-overflow-overlay) {

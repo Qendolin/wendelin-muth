@@ -37,8 +37,18 @@
   };
   const imageRenderer = renderer.image;
   renderer.image = (href: string, title: string, text: string) => {
-    const [, w, h] = text.match(/\s*\|\s*=(\d*)x(\d*)\s*$/) ?? [];
-    text = text.replace(/\s*\|\s*=(\d*)x(\d*)\s*$/, '');
+    const attribs = ' ' + (text.match(/\s*\|([^\|]*)$/)?.[1] ?? '') + ' ';
+    const [, w, h] = attribs.match(/=(\d*)x(\d*)/) ?? [];
+    const raw = attribs.match(/\sraw\s/) != null;
+    const org = href;
+    text = text.replace(/\s*\|[^\|]*$/, '');
+    if (!raw) {
+      href = `https://wsrv.nl/?url=${encodeURIComponent(href)}&output=webp&q=80&maxage=3M`;
+      if (w || h) {
+        if (w) href += `&w=${w}`;
+        if (h) href += `&h=${h}`;
+      }
+    }
     let html = imageRenderer.call(renderer, href, title, text);
     html = html.replace(/^<img /, `<img loading="lazy" `);
     if (h) {
@@ -47,8 +57,13 @@
     if (w) {
       html = html.replace(/^<img /, `<img width="${w}" `);
     }
+    html = `<figure>${html}<figcaption><a target="_blank" rel="noreferrer noopener nofollow" href="${escape(org)}">${escape(text)}</a></figcaption></figure>`;
     return html;
   };
+
+  function escape(text: string): string {
+    return text.replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;').replaceAll('"', '&quot;').replaceAll("'", '&#039;');
+  }
 
   let defaultEntry = {
     created_date: null as Timestamp | FieldValue | null,
