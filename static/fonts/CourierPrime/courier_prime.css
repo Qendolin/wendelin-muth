@@ -17,14 +17,12 @@
 	font-style: normal;
 	font-weight: 400;
 	font-display: swap;
-	font-display: swap;
 	src: url(/fonts/CourierPrime/CourierPrime-Regular.woff2) format('woff2'), url(/fonts/CourierPrime/CourierPrime-Regular.ttf) format('ttf');
 }
 @font-face {
 	font-family: 'Courier Prime';
 	font-style: normal;
 	font-weight: 700;
-	font-display: swap;
 	font-display: swap;
 	src: url(/fonts/CourierPrime/CourierPrime-Bold.woff2) format('woff2'), url(/fonts/CourierPrime/CourierPrime-Bold.ttf) format('ttf');
 }
