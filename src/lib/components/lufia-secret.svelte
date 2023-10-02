@@ -127,11 +127,20 @@
     </picture>
     <section class="lufia-secret-controls">
       <button class="lufia-secret-playpause" on:click={() => (playing ? pause() : resume())}>
-        {#if playing}
-          ❚❚
-        {:else}
-          ▶
-        {/if}
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+          <defs>
+            <filter id="drop-shadow" filterUnits="userSpaceOnUse" width="28" height="28">
+              <feDropShadow stdDeviation="1" dx="0" dy="0" flood-color="black" flood-opacity="1.0" />
+              <feDropShadow stdDeviation="2" dx="0" dy="0" flood-color="black" flood-opacity="1.0" />
+            </filter>
+          </defs>
+          {#if playing}
+            <rect x="6" y="6" width="4" height="12" fill="currentColor" filter="url(#drop-shadow)" />
+            <rect x="14" y="6" width="4" height="12" fill="currentColor" filter="url(#drop-shadow)" />
+          {:else}
+            <polygon points="6,6 18,12 6,18" fill="currentColor" filter="url(#drop-shadow)" />
+          {/if}
+        </svg>
       </button>
 
       <input
@@ -232,12 +241,13 @@
     width: 50vmin;
     height: 50vmin;
     border-radius: 100vmax;
-    font-size: 20vmin;
-    text-align: center;
-    text-shadow: 0 0 20vmin black, 0 0 20vmin black, 0 0 20vmin black, 0 0 20px black;
-    user-select: none;
-    line-height: 20vmin;
-    vertical-align: middle;
+    transition: opacity 0.5s 1s ease;
+    opacity: 0;
+  }
+
+  .lufia-secret-playpause:is(:hover, :focus-visible, :active) {
+    transition: opacity 0.1s;
+    opacity: 1;
   }
 
   .lufia-secret-time {

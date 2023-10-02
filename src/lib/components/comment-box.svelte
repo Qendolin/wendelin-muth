@@ -112,22 +112,22 @@
       <summary> You can use BBCode in comments. </summary>
       <table class="comment-box-reference">
         <tbody>
-          <tr><td> <b>Bold</b> </td> <td> <code>[b]text[/b]</code> </td></tr>
-          <tr><td> <i>Italic</i> </td> <td> <code>[i]text[/i]</code> </td></tr>
+          <tr><td> <b>Bold</b> </td> <td> <code>[b]<wbr />text<wbr />[/b]</code> </td></tr>
+          <tr><td> <i>Italic</i> </td> <td> <code>[i]<wbr />text<wbr />[/i]</code> </td></tr>
           <tr>
             <td> <span style="text-decoration: underline;">Underline</span> </td>
-            <td> <code>[u]text[/u]</code> </td>
+            <td> <code>[u]<wbr />text<wbr />[/u]</code> </td>
           </tr>
-          <tr><td> <s>Strikethrough</s> </td> <td> <code>[s]text[/s]</code> </td></tr>
-          <tr><td> Color </td> <td> <code>[color=&lt;color&gt;]text[/color]</code> </td></tr>
-          <tr><td> Quote </td> <td> <code>[quote]text[/quote]</code> </td></tr>
-          <tr><td> Spoiler </td> <td> <code>[spoiler]text[/spoiler]</code> </td></tr>
-          <tr><td> Url </td> <td> <code>[url=&lt;url&gt;]text[/url]</code> </td></tr>
+          <tr><td> <s>Strikethrough</s> </td> <td> <code>[s]<wbr />text<wbr />[/s]</code> </td></tr>
+          <tr><td> Color </td> <td> <code>[color=<wbr />&lt;color&gt;]<wbr />text<wbr />[/color]</code> </td></tr>
+          <tr><td> Quote </td> <td> <code>[quote]<wbr />text<wbr />[/quote]</code> </td></tr>
+          <tr><td> Spoiler </td> <td> <code>[spoiler]<wbr />text<wbr />[/spoiler]</code> </td></tr>
+          <tr><td> Url </td> <td> <code>[url=<wbr />&lt;url&gt;]<wbr />text<wbr />[/url]</code> </td></tr>
           <tr
             ><td> Image </td>
-            <td> <code>[img width=&lt;px&gt; height=&lt;px&gt;]&lt;url&gt;[/img]</code> </td></tr
+            <td> <code>[img width=<wbr />&lt;px&gt; height=<wbr />&lt;px&gt;]<wbr />&lt;url&gt;<wbr />[/img]</code> </td></tr
           >
-          <tr><td> Code </td> <td> <code>[code]text[/code]</code> </td></tr>
+          <tr><td> Code </td> <td> <code>[code]<wbr />text<wbr />[/code]</code> </td></tr>
           <tr><td> Line Break </td> <td> <code>[br][/br]</code> </td></tr>
         </tbody>
       </table>
@@ -172,7 +172,8 @@
     position: absolute;
     z-index: 1;
 
-    padding: 1rem;
+    font-size: 0.9rem;
+    padding: 0.5rem;
     background-color: var(--background-color);
   }
   .comment-box-reference tbody {
