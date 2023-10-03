@@ -156,7 +156,7 @@
     content = content.replace(/\$\$([^$]+)\$\$/g, (_match, group) => {
       return katex.renderToString(group, { displayMode: true, output: 'html', fleqn: true });
     });
-    content = content.replace(/\$([^$]+)\$/g, (_match, group) => {
+    content = content.replace(/\$([^$\n]+)\$/g, (_match, group) => {
       return katex.renderToString(group, { displayMode: false, output: 'html' });
     });
     entry.body = content;
