@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>https://www.webindex.page/entry/installing-rstudio-on-termux</loc>
+    <changefreq>weekly</changefreq>
+  </url>
+  <url>
     <loc>https://www.webindex.page/entry/unsafe-bbcode</loc>
     <changefreq>weekly</changefreq>
   </url>
@@ -14,6 +18,10 @@
   </url>
   <url>
     <loc>https://www.webindex.page/entry/chat-gpt--have-you-used-it</loc>
+    <changefreq>weekly</changefreq>
+  </url>
+  <url>
+    <loc>https://www.webindex.page/entry/eso-is-a-mess</loc>
     <changefreq>weekly</changefreq>
   </url>
   <url>
