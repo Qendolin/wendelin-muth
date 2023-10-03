@@ -3,10 +3,11 @@
   import type { Thing, WithContext } from 'schema-dts';
   import { auth$, db } from '$lib/fire-context';
   import { collection, getDocs, query, where } from 'firebase/firestore/lite';
-  import { tick } from 'svelte';
+  import { onMount, tick } from 'svelte';
   import WallSection from '$lib/components/wall-section.svelte';
   import { browser } from '$app/environment';
   import LufiaSecret from '$lib/components/lufia-secret.svelte';
+  import { title } from '$lib/stores';
 
   type Entry = {
     _id: string;
@@ -120,6 +121,10 @@
     });
     lufia.$on('close', () => lufia.$destroy());
   }
+
+  onMount(() => {
+    title.set(null);
+  });
 </script>
 
 <svelte:window on:resize={updateOverflowShadows} />

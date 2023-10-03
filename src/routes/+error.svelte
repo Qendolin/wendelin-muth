@@ -1,5 +1,11 @@
 <script>
   import { page } from '$app/stores';
+  import { title } from '$lib/stores';
+  import { onMount } from 'svelte';
+
+  onMount(() => {
+    title.set('Error');
+  });
 </script>
 
 <svelte:head>

@@ -1,8 +1,8 @@
 <script lang="ts">
-  import { page } from '$app/stores';
+  import { navigating, page } from '$app/stores';
   import { auth$ } from '$lib/fire-context';
-  import { user } from '$lib/stores';
-  import { onMount } from 'svelte';
+  import { title, user } from '$lib/stores';
+  import { onDestroy, onMount } from 'svelte';
 
   import { addBackgroundEffect } from '$lib/background-effect';
 
@@ -27,13 +27,37 @@
     applyTheme();
   }
 
+  const titleSuffix = "Wendelin's Homepage";
+  let fullTitle = titleSuffix;
+  $: {
+    if (globalThis.document) document.title = fullTitle;
+  }
+
+  const unsubscribeNavigating = navigating.subscribe((value) => {
+    if (value) title.set(null);
+  });
+
+  const unsubscribeTitle = title.subscribe((value) => {
+    if (value) {
+      fullTitle = value + ' – ';
+    } else {
+      fullTitle = '';
+    }
+    fullTitle += titleSuffix;
+  });
+
+  onDestroy(() => {
+    unsubscribeNavigating();
+    unsubscribeTitle();
+  });
+
   onMount(() => {
     addBackgroundEffect();
   });
 </script>
 
 <svelte:head>
-  <title>Wendelin's Homepage</title>
+  <title>{fullTitle ?? titleSuffix}</title>
 </svelte:head>
 <noscript>
   <dialog open class="js-disabled-dialog">

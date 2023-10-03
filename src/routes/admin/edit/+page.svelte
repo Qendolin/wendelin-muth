@@ -22,6 +22,7 @@
   import { stripStorageToken, uploadStaticPublicFile } from '$lib/storage';
   import { getDownloadURL } from 'firebase/storage';
   import katex from 'katex';
+  import { title } from '$lib/stores';
 
   const blog = collection(db, 'blog');
 
@@ -209,6 +210,10 @@
       insertIndex += text.length;
     }
   }
+
+  onMount(() => {
+    title.set('Admin');
+  });
 </script>
 
 <svelte:window on:beforeunload={beforeUnload} />

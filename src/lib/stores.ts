@@ -13,10 +13,9 @@ import {
 	setDoc,
 	updateDoc,
 	where,
-	type DocumentData,
-	limit
+	type DocumentData
 } from 'firebase/firestore/lite';
-import { get, writable } from 'svelte/store';
+import { get, writable, type Writable } from 'svelte/store';
 import { auth$, db } from './fire-context';
 
 export type Comment = {
@@ -38,6 +37,7 @@ export type BlogEntry = {
 	created_date: Date;
 	modified_date: Date;
 	draft: boolean;
+	slug: string;
 };
 
 export type WallPost = {
@@ -63,6 +63,8 @@ export const comments = createCommentsStore();
 export const page = createBlogStore();
 
 export const wall = createWallStore();
+
+export const title = writable(null) as Writable<string | null>;
 
 function createWallStore() {
 	const { update, subscribe } = writable({ isLoading: true, posts: [] as WallPost[], nickname: null as string | null });
@@ -193,7 +195,8 @@ function createBlogStore() {
 				body: data.body,
 				created_date: new Date(data.created_date.seconds * 1000),
 				modified_date: new Date(data.modified_date.seconds * 1000),
-				draft: data.draft
+				draft: data.draft,
+				slug: data.slug
 			};
 			set(currentEntry);
 			return currentEntry;

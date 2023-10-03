@@ -1,7 +1,7 @@
 <script lang="ts">
   import { goto } from '$app/navigation';
   import { auth$ } from '$lib/fire-context';
-  import { user } from '$lib/stores';
+  import { title, user } from '$lib/stores';
   import { getRedirectResult, GoogleAuthProvider, signInWithEmailAndPassword, signInWithPopup, signInWithRedirect } from 'firebase/auth';
   import { onMount } from 'svelte';
 
@@ -40,6 +40,10 @@
       errorMessage = error.message;
     }
   }
+
+  onMount(() => {
+    title.set('Login');
+  });
 </script>
 
 <h1>Account Log-in</h1>

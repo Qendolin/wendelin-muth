@@ -2,8 +2,8 @@
   import './blogpost.css';
   import CommentList from '$lib/components/comment-list.svelte';
   import CommentBox from '$lib/components/comment-box.svelte';
-  import { comments, page, user } from '$lib/stores';
-  import { onMount } from 'svelte';
+  import { comments, page, title, user } from '$lib/stores';
+  import { onDestroy, onMount } from 'svelte';
   import UsernameForm from '$lib/components/username-form.svelte';
 
   const longDate = new Intl.DateTimeFormat('en-GB', {
@@ -17,11 +17,31 @@
     timeZone: 'UTC'
   });
 
+  const unsubscribe = page.subscribe((value) => {
+    title.set(value?.title ?? null);
+  });
+
+  onDestroy(unsubscribe);
+
   onMount(() => {
     comments.clear();
     comments.reload();
   });
 </script>
+
+<svelte:head>
+  {#if $page}
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content={$page.title} />
+    <meta property="og:url" content={`https://www.webindex.page/entry/${$page.slug}`} />
+    <meta property="og:image" content="https://www.webindex.page/og-image.webp" />
+    <meta property="og:image:type" content="image/webp" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="My personal website / blog. You should check it out!" />
+    <meta name="description" content="My personal website / blog. You should check it out!" />
+  {/if}
+</svelte:head>
 
 {#if $page}
   <article class="blog-entry">

@@ -1,7 +1,9 @@
 <script lang="ts">
   import { goto } from '$app/navigation';
   import { auth$ } from '$lib/fire-context';
+  import { title } from '$lib/stores';
   import { createUserWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
+  import { onMount } from 'svelte';
 
   let passwordVisible = false;
   let email = '';
@@ -29,6 +31,10 @@
       errorMessage = error.message;
     }
   }
+
+  onMount(() => {
+    title.set('Registration');
+  });
 </script>
 
 <h1>Account Registration</h1>
