@@ -17,6 +17,10 @@
     <changefreq>weekly</changefreq>
   </url>
   <url>
+    <loc>https://www.webindex.page/entry/learning-lua</loc>
+    <changefreq>weekly</changefreq>
+  </url>
+  <url>
     <loc>https://www.webindex.page/entry/chat-gpt--have-you-used-it</loc>
     <changefreq>weekly</changefreq>
   </url>
@@ -38,6 +42,10 @@
   </url>
   <url>
     <loc>https://www.webindex.page/entry/graphics-development-resources</loc>
+    <changefreq>weekly</changefreq>
+  </url>
+  <url>
+    <loc>https://www.webindex.page/entry/sveltekit-run-script-after-build</loc>
     <changefreq>weekly</changefreq>
   </url>
   <url>
