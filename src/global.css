@@ -1,8 +1,9 @@
 :root {
 	font-family: 'Courier Prime', 'Courier New', Courier, monospace;
-	font-size: 16px;
-	line-height: 24px;
+	font-size: 15px;
+	line-height: 22.5px;
 	font-weight: normal;
+	overflow-wrap: break-word;
 
 	color-scheme: light dark;
 
@@ -174,6 +175,12 @@ summary {
 	--accent-color: var(--dark-accent-color);
 	--box-background-color: var(--dark-box-background-color);
 	color-scheme: dark;
+}
+
+ul,
+ol {
+	padding-inline-start: 1.5rem;
+	padding-inline-start: min(1.5rem, 40px);
 }
 
 [hidden] {
