@@ -44,7 +44,7 @@
           {#if post.user_ref != null && post.user_ref.id == $user?.auth?.uid}
             <button class="link-button" on:click={() => deleteWallPost(post)}>Delete</button>
           {/if}
-          {#if $user?.claims?.admin && post.user_ref?.id != $user?.auth?.uid}
+          {#if $user.claims?.admin && post.user_ref?.id != $user?.auth?.uid}
             <button class="link-button" on:click={() => removeWallPostAdmin(post)}>Remove</button>
           {/if}
         </span>

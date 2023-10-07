@@ -7,7 +7,7 @@
   import WallSection from '$lib/components/wall-section.svelte';
   import { browser } from '$app/environment';
   import LufiaSecret from '$lib/components/lufia-secret.svelte';
-  import { title } from '$lib/stores';
+  import { title, user } from '$lib/stores';
 
   type Entry = {
     _id: string;
@@ -33,17 +33,6 @@
   }
 
   const blogEntries$ = getBlogEntries();
-
-  let isAdmin = false;
-  auth$.then((auth) =>
-    auth.onAuthStateChanged((user) => {
-      if (!user) isAdmin = false;
-      else
-        user.getIdTokenResult().then((token) => {
-          isAdmin = !!token.claims.admin;
-        });
-    })
-  );
 
   const longDate = new Intl.DateTimeFormat('en-GB', {
     dateStyle: 'full',
@@ -196,7 +185,7 @@
         <p>Sorry, no entries exist.</p>
       {:else}
         <ol class="blog-entry-list" use:updateOverflowShadowsNextTick>
-          {#if isAdmin}
+          {#if $user.claims?.admin}
             <li>
               <a href={`/admin/edit`} class="blog-entry-edit">Add Entry</a>
             </li>
@@ -210,7 +199,7 @@
                     <a href={`/entry/${entry.slug}`} class="blog-entry-link">
                       <h2>{entry.title}</h2>
                     </a>
-                    {#if isAdmin}
+                    {#if $user.claims?.admin}
                       <a href={`/admin/edit?id=${entry._id}`} class="blog-entry-edit">Edit</a>
                     {/if}
                   </span>
@@ -312,7 +301,7 @@
     height: 72px;
     background-image: url('/img/dither-24-light.png');
     background-repeat: repeat-x;
-    background-position: bottom 24px left;
+    background-position: bottom 22px left;
     background-size: 8px 48px;
     image-rendering: pixelated;
     z-index: 1;
