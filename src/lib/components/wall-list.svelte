@@ -10,6 +10,15 @@
     wall.delete(post._id);
   }
 
+  function removeWallPostAdmin(post: WallPost) {
+    let trimmedContent = post.content;
+    if (trimmedContent.length > 25) {
+      trimmedContent = trimmedContent.slice(0, 22) + '...';
+    }
+    if (!confirm(`Remove "${trimmedContent}" from wall as admin?`)) return;
+    wall.removeAsAdmin(post._id);
+  }
+
   const longDate = new Intl.DateTimeFormat('en-GB', {
     dateStyle: 'full',
     timeStyle: 'short',
@@ -21,7 +30,11 @@
   {#each $wall.posts as post}
     <li class="wall-post-item">
       <p class="wall-post">
-        {post.content}
+        {#if post.removedByAdmin}
+          <i class="wall-post-rba-text">[Removed by admin]</i>
+        {:else}
+          {post.content}
+        {/if}
         <br />
         <span class="wall-post-footer">
           {post.nickname || 'Anonymous'}
@@ -30,6 +43,9 @@
           {/if} &mdash; {longDate.format(post.created_date)}
           {#if post.user_ref != null && post.user_ref.id == $user?.auth?.uid}
             <button class="link-button" on:click={() => deleteWallPost(post)}>Delete</button>
+          {/if}
+          {#if $user?.claims?.admin && post.user_ref?.id != $user?.auth?.uid}
+            <button class="link-button" on:click={() => removeWallPostAdmin(post)}>Remove</button>
           {/if}
         </span>
       </p>
@@ -73,5 +89,9 @@
     100% {
       color: hsl(360, 100%, 50%);
     }
+  }
+
+  .wall-post-rba-text {
+    opacity: 0.5;
   }
 </style>

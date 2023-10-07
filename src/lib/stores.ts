@@ -1,4 +1,4 @@
-import type { User } from 'firebase/auth';
+import type { ParsedToken, User } from 'firebase/auth';
 import {
 	addDoc,
 	collection,
@@ -46,6 +46,7 @@ export type WallPost = {
 	nickname: string;
 	content: string;
 	created_date: Date;
+	removedByAdmin: boolean | undefined;
 };
 
 export type UserData = {
@@ -122,6 +123,16 @@ function createWallStore() {
 				})
 			);
 		},
+		async removeAsAdmin(id: string) {
+			await updateDoc(doc(db, 'wall', id), {
+				removedByAdmin: true
+			});
+			update((state) =>
+				patch(state, {
+					posts: [...(state.posts ?? [])].map((post) => (post._id != id ? post : { ...post, removedByAdmin: true }))
+				})
+			);
+		},
 		setNickname
 	};
 }
@@ -129,8 +140,9 @@ function createWallStore() {
 function createUserStore() {
 	let currentUser = null as User | null;
 	let currentUserData = null as UserData | null;
+	let currentUserClaims = null as ParsedToken | null;
 
-	const { update, subscribe } = writable({ auth: currentUser, data: currentUserData });
+	const { update, subscribe } = writable({ auth: currentUser, data: currentUserData, claims: null as typeof currentUserClaims });
 	auth$.then((auth) => {
 		auth.onAuthStateChanged((user) => {
 			currentUser = user;
@@ -145,20 +157,28 @@ function createUserStore() {
 						currentUserData = userData;
 						update((state) => patch(state, { data: userData }));
 					});
+				currentUser.getIdTokenResult().then((token) => {
+					currentUserClaims = token.claims;
+					update((state) => patch(state, { claims: currentUserClaims }));
+				});
 			}
 		});
 	});
 	return {
 		subscribe,
-		get(): User | null {
+		get: (): User | null => {
 			return currentUser;
 		},
-		getRef(): DocumentReference | null {
+		isAdmin: (): boolean => {
+			if (currentUserClaims == null) return false;
+			return !!currentUserClaims.admin;
+		},
+		getRef: (): DocumentReference | null => {
 			if (currentUser == null) return null;
 			return doc(db, 'users', currentUser.uid);
 		},
-		async createUser(name: string) {
-			if (currentUser == null) throw 'No user';
+		createUser: async (name: string) => {
+			if (currentUser == null) throw 'No logged in user';
 			await setDoc(doc(db, 'users', currentUser.uid), {
 				display_name: name
 			});
@@ -201,10 +221,10 @@ function createBlogStore() {
 			set(currentEntry);
 			return currentEntry;
 		},
-		get(): BlogEntry | null {
+		get: (): BlogEntry | null => {
 			return currentEntry;
 		},
-		getRef(): DocumentReference | null {
+		getRef: (): DocumentReference | null => {
 			if (currentEntry == null) return null;
 			return doc(db, 'blog', currentEntry._id);
 		}
