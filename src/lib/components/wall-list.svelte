@@ -24,6 +24,31 @@
     timeStyle: 'short',
     timeZone: 'UTC'
   });
+
+  function renderContent(raw: string) {
+    if (globalThis.document == null) return '';
+    const regexp = /(https?:\/\/[A-Za-z0-9-._~:/?#[\]@!$&'()*+,;%=]+)/g;
+    let match: RegExpExecArray | null;
+    let root = document.createElement('span');
+    let advance = 0;
+    while ((match = regexp.exec(raw)) != null) {
+      let before = raw.substring(advance, match.index);
+      if (before.length > 0) {
+        root.append(before);
+      }
+      let link = document.createElement('a');
+      link.href = match[0];
+      link.textContent = match[0];
+      root.append(link);
+
+      advance = regexp.lastIndex;
+    }
+    let after = raw.substring(advance);
+    if (after.length > 0) {
+      root.append(after);
+    }
+    return root.innerHTML;
+  }
 </script>
 
 <ol class="wall-post-list">
@@ -33,7 +58,7 @@
         {#if post.removedByAdmin}
           <i class="wall-post-rba-text">[Removed by admin]</i>
         {:else}
-          {post.content}
+          {@html renderContent(post.content)}
         {/if}
         <br />
         <span class="wall-post-footer">
