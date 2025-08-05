@@ -246,19 +246,6 @@
     <li>GitHub: Open source projects - <a href="https://github.com/Qendolin/" target="_blank" rel="noopener noreferrer">github.com/Qendolin</a></li>
     <li>Modrinth: Minecraft mods - <a href="https://modrinth.com/user/qendolin" target="_blank" rel="noopener noreferrer">modrinth.com/user/qendolin</a></li>
   </ul>
-  <h3>The personal websites of my friends!</h3>
-  <ul>
-    <li>
-      Eduard Beke, Software Developer - <a href="https://eduard.beke.at/" target="_blank" rel="noopener noreferrer">eduard.beke.at</a>
-    </li>
-    <li>
-      Maximilian Mayrhofer, Software Developer - <a href="https://theblueone.dev/" target="_blank" rel="noopener noreferrer">theblueone.dev</a>
-    </li>
-  </ul>
-  <h3>Websites that deserve attention</h3>
-  <ul>
-    <li>SS64, Command line reference - <a href="https://ss64.com/" target="_blank" rel="noopener noreferrer">ss64.com</a></li>
-  </ul>
 </section>
 
 <style>

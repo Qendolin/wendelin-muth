@@ -177,8 +177,7 @@ summary {
 	color-scheme: dark;
 }
 
-ul,
-ol {
+ul {
 	padding-inline-start: 1.5rem;
 	padding-inline-start: min(1.5rem, 40px);
 }
