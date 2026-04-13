@@ -22,7 +22,7 @@
     const blog = collection(db, 'blog');
     const documents = await getDocs(query(blog, where('draft', '==', false)));
     const entries = documents.docs
-      .map((doc) => ({ ...doc.data(), _id: doc.id } as any))
+      .map((doc) => ({ ...doc.data(), _id: doc.id }) as any)
       .map((doc) => ({
         ...doc,
         created_date: new Date(doc.created_date.seconds * 1000),

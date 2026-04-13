@@ -8,6 +8,7 @@
 	},
 	"hosting": {
 		"predeploy": "npm run build",
+		"site": "old-wendelin-muth",
 		"public": "build",
 		"cleanUrls": true,
 		"ignore": ["firebase.json", "**/.*", "**/node_modules/**"],

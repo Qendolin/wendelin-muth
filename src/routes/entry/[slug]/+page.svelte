@@ -33,8 +33,8 @@
   {#if $page}
     <meta property="og:type" content="article" />
     <meta property="og:title" content={$page.title} />
-    <meta property="og:url" content={`https://www.webindex.page/entry/${$page.slug}`} />
-    <meta property="og:image" content="https://www.webindex.page/og-image.webp" />
+    <meta property="og:url" content={`https://old.webindex.page/entry/${$page.slug}`} />
+    <meta property="og:image" content="https://old.webindex.page/og-image.webp" />
     <meta property="og:image:type" content="image/webp" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />

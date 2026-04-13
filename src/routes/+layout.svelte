@@ -94,7 +94,7 @@
       <button class="link-button" on:click={cycleTheme}>Theme: {theme}</button>
     </p>
     <p>
-      <a href="https://github.com/Qendolin/wendelin-muth" target="_blank" rel="noopener noreferrer">Source code on GitHub</a>
+      <a href="https://github.com/Qendolin/wendelin-muth/tree/sveltekit" target="_blank" rel="noopener noreferrer">Source code on GitHub</a>
     </p>
   </div>
 </footer>

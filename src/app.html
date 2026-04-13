@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
@@ -28,8 +28,52 @@
 			}
 			document.documentElement.dataset.theme = theme;
 		</script>
+		<style>
+			#legacy-notice-modal {
+				display: none;
+				position: fixed;
+				bottom: 20px;
+				right: 20px;
+				max-width: 400px;
+				color: black;
+				background: #ffffff;
+				border: 1px solid #8d9299;
+				box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.5);
+				padding: 1.5rem;
+				z-index: 9999;
+				border-radius: 8px;
+				font-family: sans-serif;
+				max-width: calc(100vw - 40px);
+			}
+			#legacy-notice-modal a {
+				color: #2563eb;
+				text-decoration: underline;
+			}
+			#legacy-notice-modal button {
+				margin-top: 1rem;
+				display: block;
+				cursor: pointer;
+				background: #f1f5f9;
+				color: black;
+				border: none;
+				padding: 0.5rem 1rem;
+				border-radius: 4px;
+			}
+		</style>
 	</head>
 	<body>
+		<div id="legacy-notice-modal">
+			<div>You are viewing an older version of this site. Visit the <a href="https://www.webindex.com">new version here</a>.</div>
+			<button onclick="document.getElementById('legacy-notice-modal').style.display = 'none'">Dismiss</button>
+		</div>
 		<div style="display: contents">%sveltekit.body%</div>
+		<script>
+			(function () {
+				if (!window.hasShownLegacyModal) {
+					document.getElementById('legacy-notice-modal').style.display = 'block';
+					window.hasShownLegacyModal = true;
+				}
+			})();
+		</script>
 	</body>
 </html>

@@ -12,7 +12,7 @@ const firebaseConfig = {
 	measurementId: 'G-X73GPRXRWM'
 };
 
-const base = 'https://www.webindex.page/';
+const base = 'https://old.webindex.page/';
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
