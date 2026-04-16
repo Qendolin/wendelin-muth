@@ -1,5 +1,8 @@
 # allow crawling everything by default
 User-agent: *
-Disallow:
+Disallow: /fonts/
+Disallow: /sveltex/
+Disallow: /_app/
+Disallow: /404.html
 
 Sitemap: https://www.webindex.page/sitemap.xml
