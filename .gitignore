@@ -25,4 +25,6 @@ vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
 
 # Firebase
+/.firebase
 *-creds.json
+firebase-debug.log

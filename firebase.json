@@ -1,0 +1,9 @@
+{
+	"hosting": {
+		"predeploy": "deno run build",
+		"site": "wendelin-muth",
+		"public": "build",
+		"cleanUrls": true,
+		"ignore": ["firebase.json", "**/.*", "**/node_modules/**"]
+	}
+}
