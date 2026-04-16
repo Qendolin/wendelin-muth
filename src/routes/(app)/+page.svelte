@@ -1,5 +1,6 @@
 <script lang="ts">
   import type { PageProps } from './$types';
+  import type { Thing, WithContext } from 'schema-dts';
   import Link from '$lib/components/Link.svelte';
   import ProjectFeaturedEntry from '$lib/components/ProjectFeaturedEntry.svelte';
   import BlogFeaturedEntry from '$lib/components/BlogFeaturedEntry.svelte';
@@ -7,10 +8,69 @@
   import Poll from '$lib/components/Poll.svelte';
 
   let { data }: PageProps = $props();
+
+  function serializeSchema(thing: Thing | WithContext<Thing>) {
+    return `<${'script'} type="application/ld+json" >${JSON.stringify(thing, null, 2)}</${'script'}>`;
+  }
+  const microdata = serializeSchema({
+    '@context': 'https://schema.org',
+    '@type': 'Person',
+    '@id': 'https://www.webindex.page/#myself',
+    name: 'Wendelin Muth',
+    givenName: 'Wendelin',
+    familyName: 'Muth',
+    email: 'wendelin.muth+website@gmail.com',
+    url: 'https://www.webindex.page/',
+    hasCredential: {
+      '@type': 'EducationalOccupationalCredential',
+      name: 'Bachelor of Science in Computer Science',
+      credentialCategory: 'degree',
+      educationalLevel: 'Bachelor',
+      about: {
+        '@type': 'Thing',
+        name: 'Computer Science'
+      },
+      recognizedBy: {
+        '@type': 'EducationalOrganization',
+        name: 'Technische Universität Wien',
+        address: 'Karlsplatz 13, 1040 Wien',
+        url: 'https://www.tuwien.at/'
+      }
+    },
+    nationality: {
+      '@type': 'Country',
+      name: 'Austria'
+    },
+    alumniOf: {
+      '@type': 'EducationalOrganization',
+      address: 'Karlsplatz 13, 1040 Wien',
+      name: 'Technische Universität Wien',
+      url: 'https://www.tuwien.at/'
+    },
+    knowsLanguage: ['de', 'en']
+  });
 </script>
 
 <svelte:head>
   <title>Wendelin's Homepage</title>
+
+  {@html microdata}
+  <meta property="og:type" content="profile" />
+  <meta property="og:title" content="Wendelin Muth - Homepage" />
+  <meta property="og:url" content="https://www.webindex.page/" />
+  <meta property="og:image" content="https://www.webindex.page/og-image.webp" />
+  <meta property="og:image:type" content="image/webp" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:description" content="My personal website / blog. You should check it out!" />
+  <meta property="twitter:card" content="summary_large_image" />
+  <meta property="twitter:url" content="https://www.webindex.page/" />
+  <meta property="twitter:title" content="Wendelin Muth - Homepage" />
+  <meta property="twitter:description" content="My personal website / blog. You should check it out!" />
+  <meta property="twitter:image" content="https://www.webindex.page/og-image.webp" />
+  <meta property="profile:first_name" content="Wendelin" />
+  <meta property="profile:last_name" content="Muth" />
+  <meta name="description" content="My personal website / blog. You should check it out!" />
 </svelte:head>
 
 <section class="header-row">
