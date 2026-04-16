@@ -1,9 +1,16 @@
 {
-	"hosting": {
-		"predeploy": "deno run build",
-		"site": "wendelin-muth",
-		"public": "build",
-		"cleanUrls": true,
-		"ignore": ["firebase.json", "**/.*", "**/node_modules/**"]
-	}
+  "hosting": {
+    "predeploy": "deno run build",
+    "site": "wendelin-muth",
+    "public": "build",
+    "cleanUrls": true,
+    "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
+    "redirects": [
+      {
+        "source": "/entry/:post*",
+        "destination": "/blog/:post",
+        "type": 301
+      }
+    ]
+  }
 }
