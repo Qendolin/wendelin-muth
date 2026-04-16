@@ -7,6 +7,7 @@
 
 <svelte:head>
   <title>Projects &ndash; Wendelin Muth</title>
+  <meta name="description" content="A list of all my projects." />
 </svelte:head>
 
 <h1 class="flex justify-between border-b tracking-[-0.05em]">Projects<span class="self-center text-lg text-neutral-500">{data.projects.length}</span></h1>

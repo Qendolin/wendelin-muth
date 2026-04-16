@@ -7,6 +7,7 @@
 
 <svelte:head>
   <title>Blog &ndash; Wendelin Muth</title>
+  <meta name="description" content="A list of all my blog entries." />
 </svelte:head>
 
 <h1 class="flex justify-between border-b tracking-[-0.05em]">

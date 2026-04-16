@@ -3,7 +3,7 @@ import type { BlogEntryMeta } from '$lib/blog-entries';
 import { SimpleDate } from '$lib/date';
 
 export const _meta: BlogEntryMeta = {
-  title: "Restoring Mahiro Maeda's 'Outtakes From Evangelion (Vol.1)' Cover Illustration",
+  title: "Restoring the 'Outtakes From Evangelion' Cover Illustration",
   description:
     'Combining archival research and image restoration techniques, this piece details bringing back the detail of an Evangelion album cover using specialized denoising and upscaling.',
   createdDate: SimpleDate(2023, 9, 30),

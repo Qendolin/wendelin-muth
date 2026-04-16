@@ -7,12 +7,12 @@
   import CurrentDate from '$lib/components/CurrentDate.svelte';
   import NavBar from '$lib/components/NavBar.svelte';
   import { page } from '$app/state';
-  import { PUBLIC_BASE_URL, PUBLIC_BUILD_TIMESTAMP } from '$env/static/public';
+  import { PUBLIC_BASE_URL } from '$env/static/public';
   import BuildDate from '$lib/components/BuildDate.svelte';
 
   let { children } = $props();
 
-  const canonicalUrl = new URL(page.url.pathname, PUBLIC_BASE_URL).href;
+  const canonicalUrl = $derived(new URL(page.url.pathname, PUBLIC_BASE_URL).href);
 
   onMount(() => {
     addBackgroundEffect();

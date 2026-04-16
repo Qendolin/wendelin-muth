@@ -21,7 +21,6 @@
 <svelte:head>
   <title>{meta.title} &ndash; Wendelin Muth</title>
   <meta name="description" content={meta.description} />
-  <link rel="canonical" href={absoluteUrl} />
 
   <meta property="og:type" content="article" />
   <meta property="og:url" content={absoluteUrl} />
