@@ -1,0 +1,7 @@
+Since I want to add a comment section to this site, I looked into adding [Disqus](https://disqus.com/), after all it seems easy to set up and does exactly what I need.
+
+Then I learned about all the trackers that it loads and about its bundle size. 
+
+I get that providing a free service is not a profitable business model, but I don't think giving up your privacy to 100 different trackers is a fair price either. It's hard to imagine how many sites use Disqus without knowing or caring about the privacy impact on their users. 
+
+That's why I decided, also because I'm a software engineer, to roll my own commenting system using Firebase Firestore. So far I am only getting started but I hope that it will not drag on for too long.

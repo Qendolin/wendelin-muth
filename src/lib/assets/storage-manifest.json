@@ -1,0 +1,442 @@
+{
+  "/img/og-image.png": {
+    "url": "https://firebasestorage.googleapis.com/v0/b/wendelin-muth.appspot.com/o/public%2Fcontent%2F59bef5ae-4be0-4797-92b6-8977463057f3_og-image.png?alt=media",
+    "hash": "949a6413918cc9d8",
+    "bucketFilename": "59bef5ae-4be0-4797-92b6-8977463057f3_og-image.png",
+    "width": 1200,
+    "height": 630,
+    "blurhash": "UQIECR^*s8?FE+~U$$xZNK9ajYWC%0axI;og"
+  },
+  "/img/og-image.webp": {
+    "url": "https://firebasestorage.googleapis.com/v0/b/wendelin-muth.appspot.com/o/public%2Fcontent%2F0334b3fa-e2a8-4593-9426-54442bee05c4_og-image.webp?alt=media",
+    "hash": "54b1de72ba5e5f89",
+    "bucketFilename": "0334b3fa-e2a8-4593-9426-54442bee05c4_og-image.webp",
+    "width": 1200,
+    "height": 630,
+    "blurhash": "UQIECR^*s8?FE+~U$$xZNK9ajYWC%0axI;og"
+  },
+  "/img/project/advanced-gl/3d-text.webp": {
+    "url": "https://firebasestorage.googleapis.com/v0/b/wendelin-muth.appspot.com/o/public%2Fcontent%2Fb12db66d-0364-481e-b6c4-344102600342_3d-text.webp?alt=media",
+    "hash": "88f4dc6db2710529",
+    "bucketFilename": "b12db66d-0364-481e-b6c4-344102600342_3d-text.webp",
+    "width": 968,
+    "height": 873,
+    "blurhash": "U9B|KZ?b00IU~qNGt7xuj[oz?bIU~qofWBRj"
+  },
+  "/img/project/advanced-gl/hero.webp": {
+    "url": "https://firebasestorage.googleapis.com/v0/b/wendelin-muth.appspot.com/o/public%2Fcontent%2Fa8dcbca7-a825-4c01-9682-2fb84fa740de_hero.webp?alt=media",
+    "hash": "c5ec78b156692f3a",
+    "bucketFilename": "a8dcbca7-a825-4c01-9682-2fb84fa740de_hero.webp",
+    "width": 2560,
+    "height": 1440,
+    "blurhash": "UKEooWIVI=X8V[?ZM{s.~pIVkBRktRt7aebF"
+  },
+  "/img/project/advanced-gl/msdf-text-wrap.webp": {
+    "url": "https://firebasestorage.googleapis.com/v0/b/wendelin-muth.appspot.com/o/public%2Fcontent%2F338c881d-ede9-43f3-a324-10ca2df09d83_msdf-text-wrap.webp?alt=media",
+    "hash": "06e740184bb98022",
+    "bucketFilename": "338c881d-ede9-43f3-a324-10ca2df09d83_msdf-text-wrap.webp",
+    "width": 802,
+    "height": 1032,
+    "blurhash": "U9C6+9~qIUxu_3t7Rjay?bayayay~qt7WBWB"
+  },
+  "/img/project/advanced-gl/pcc-1.webp": {
+    "url": "https://firebasestorage.googleapis.com/v0/b/wendelin-muth.appspot.com/o/public%2Fcontent%2F95e0c1f5-58e9-43df-b52b-fff36256c165_pcc-1.webp?alt=media",
+    "hash": "6f2fdfbd4512bf8d",
+    "bucketFilename": "95e0c1f5-58e9-43df-b52b-fff36256c165_pcc-1.webp",
+    "width": 2560,
+    "height": 1440,
+    "blurhash": "U47UM5ROD%t7~qadbIRj~qofogRj~qogRjWB"
+  },
+  "/img/project/advanced-gl/pcc-2.webp": {
+    "url": "https://firebasestorage.googleapis.com/v0/b/wendelin-muth.appspot.com/o/public%2Fcontent%2F8d442ccb-b745-4ac6-bcbf-a60f64a83f6c_pcc-2.webp?alt=media",
+    "hash": "04e35d0b898c975e",
+    "bucketFilename": "8d442ccb-b745-4ac6-bcbf-a60f64a83f6c_pcc-2.webp",
+    "width": 2560,
+    "height": 1440,
+    "blurhash": "U7CP#5WB0K-;pKadIUWAjExukDM{~qbHoft7"
+  },
+  "/img/project/advanced-gl/pcc-3.webp": {
+    "url": "https://firebasestorage.googleapis.com/v0/b/wendelin-muth.appspot.com/o/public%2Fcontent%2Fa1bcbb99-3fbc-4ec0-8ead-165cfa1ae136_pcc-3.webp?alt=media",
+    "hash": "2352630d6f494ee2",
+    "bucketFilename": "a1bcbb99-3fbc-4ec0-8ead-165cfa1ae136_pcc-3.webp",
+    "width": 2560,
+    "height": 1440,
+    "blurhash": "UABDKIM{Ip%2_NoeIUt7xuoJt7V@%Mflt7Rj"
+  },
+  "/img/project/advanced-gl/pcc-4.webp": {
+    "url": "https://firebasestorage.googleapis.com/v0/b/wendelin-muth.appspot.com/o/public%2Fcontent%2F6d11372c-1eb6-4476-8733-d491d39fb84a_pcc-4.webp?alt=media",
+    "hash": "dd05dc6c6479ccda",
+    "bucketFilename": "6d11372c-1eb6-4476-8733-d491d39fb84a_pcc-4.webp",
+    "width": 2560,
+    "height": 1440,
+    "blurhash": "UEE.@NM|4:?H~pt69Ft7M{adxuRk%MogtRRi"
+  },
+  "/img/project/ascent/ambient-constant.webp": {
+    "url": "https://firebasestorage.googleapis.com/v0/b/wendelin-muth.appspot.com/o/public%2Fcontent%2Fccc3c0fd-487e-4a39-80d7-dbd172578c45_ambient-constant.webp?alt=media",
+    "hash": "5c870c84255fff11",
+    "bucketFilename": "ccc3c0fd-487e-4a39-80d7-dbd172578c45_ambient-constant.webp",
+    "width": 2560,
+    "height": 1440,
+    "blurhash": "U1G+Ua0000OY=gNM9aMx00-;is4m00In~q.8"
+  },
+  "/img/project/ascent/ambient-ibl.webp": {
+    "url": "https://firebasestorage.googleapis.com/v0/b/wendelin-muth.appspot.com/o/public%2Fcontent%2Ff5ed054f-addb-4923-94b9-333bb584123f_ambient-ibl.webp?alt=media",
+    "hash": "bc34f23a7959ace0",
+    "bucketFilename": "f5ed054f-addb-4923-94b9-333bb584123f_ambient-ibl.webp",
+    "width": 2560,
+    "height": 1440,
+    "blurhash": "U2I5fF0000XmQ:R:9GIT00%MD#000KIo~p-="
+  },
+  "/img/project/ascent/blender.webp": {
+    "url": "https://firebasestorage.googleapis.com/v0/b/wendelin-muth.appspot.com/o/public%2Fcontent%2F7e1b8ddf-e282-4d32-ad28-5359c07b7764_blender.webp?alt=media",
+    "hash": "f335cf7a6ae1d7d1",
+    "bucketFilename": "7e1b8ddf-e282-4d32-ad28-5359c07b7764_blender.webp",
+    "width": 2560,
+    "height": 1440,
+    "blurhash": "UFFY.J~q4n-;xuayWBRjM{Rjj[M{-;j[ayof"
+  },
+  "/img/project/ascent/gtao-off.webp": {
+    "url": "https://firebasestorage.googleapis.com/v0/b/wendelin-muth.appspot.com/o/public%2Fcontent%2F2ec7e6b1-7c80-45e6-99ca-9697fffc5f95_gtao-off.webp?alt=media",
+    "hash": "025792a9ec21b0cc",
+    "bucketFilename": "2ec7e6b1-7c80-45e6-99ca-9697fffc5f95_gtao-off.webp",
+    "width": 2560,
+    "height": 1440,
+    "blurhash": "UTCZeV_4tSM{E2Rkt7t7IUIUM|ofWBfPa#WC"
+  },
+  "/img/project/ascent/gtao-on.webp": {
+    "url": "https://firebasestorage.googleapis.com/v0/b/wendelin-muth.appspot.com/o/public%2Fcontent%2F2f0c4608-b65b-433d-8c22-7ed1b09ee1d9_gtao-on.webp?alt=media",
+    "hash": "5bd1ad7cd6720fdf",
+    "bucketFilename": "2f0c4608-b65b-433d-8c22-7ed1b09ee1d9_gtao-on.webp",
+    "width": 2560,
+    "height": 1440,
+    "blurhash": "UTCGW0_4tSM{E2Rkt7t7IUIUM|ofWBfPa}WV"
+  },
+  "/img/project/ascent/hero.webp": {
+    "url": "https://firebasestorage.googleapis.com/v0/b/wendelin-muth.appspot.com/o/public%2Fcontent%2F82dc715c-e032-45a8-82f1-e43e24142faa_hero.webp?alt=media",
+    "hash": "f08ea96fa8e00930",
+    "bucketFilename": "82dc715c-e032-45a8-82f1-e43e24142faa_hero.webp",
+    "width": 1920,
+    "height": 1080,
+    "blurhash": "U2D]*#0n00vy0B_4^%Ip00$J=_I[00Iq?wrW"
+  },
+  "/img/project/ascent/lens-effects.webp": {
+    "url": "https://firebasestorage.googleapis.com/v0/b/wendelin-muth.appspot.com/o/public%2Fcontent%2F85085d86-11f3-465b-9f5c-9e192b1c7706_lens-effects.webp?alt=media",
+    "hash": "f77a26f556f67e36",
+    "bucketFilename": "85085d86-11f3-465b-9f5c-9e192b1c7706_lens-effects.webp",
+    "width": 2560,
+    "height": 1440,
+    "blurhash": "UFI~Jp0000~UI9NGX9-p4TR:t7IoNHe:t3R*"
+  },
+  "/img/project/ascent/particles.webp": {
+    "url": "https://firebasestorage.googleapis.com/v0/b/wendelin-muth.appspot.com/o/public%2Fcontent%2F73e26471-0fca-4845-a998-2183b7857297_particles.webp?alt=media",
+    "hash": "a5363ce218133156",
+    "bucketFilename": "73e26471-0fca-4845-a998-2183b7857297_particles.webp",
+    "width": 853,
+    "height": 480,
+    "blurhash": "UGI5#@Dh9Ex^?dIUROxt9Zt7MwR%Ipt4ofj]"
+  },
+  "/img/project/city-lights/cascades.webp": {
+    "url": "https://firebasestorage.googleapis.com/v0/b/wendelin-muth.appspot.com/o/public%2Fcontent%2Fc2ffadfa-1d89-46ca-94ea-4c9dc1662a7a_cascades.webp?alt=media",
+    "hash": "96f84593a40dd404",
+    "bucketFilename": "c2ffadfa-1d89-46ca-94ea-4c9dc1662a7a_cascades.webp",
+    "width": 2560,
+    "height": 1417,
+    "blurhash": "UPG]dXXTD+I-cbr^MyI.#StOV[M}b]RkRjo3"
+  },
+  "/img/project/city-lights/depth.webp": {
+    "url": "https://firebasestorage.googleapis.com/v0/b/wendelin-muth.appspot.com/o/public%2Fcontent%2F5006341c-de8d-4421-8c48-d0f1ebbc7aa2_depth.webp?alt=media",
+    "hash": "79eea49e073b5adb",
+    "bucketFilename": "5006341c-de8d-4421-8c48-d0f1ebbc7aa2_depth.webp",
+    "width": 2560,
+    "height": 1417,
+    "blurhash": "USHC1Rxuxuof00t7t7j[~qWBayayIUj[ayj["
+  },
+  "/img/project/city-lights/hero.webp": {
+    "url": "https://firebasestorage.googleapis.com/v0/b/wendelin-muth.appspot.com/o/public%2Fcontent%2Fbb4c46ef-4b5d-424d-8b6c-dd3c226c85fc_hero.webp?alt=media",
+    "hash": "ceee01b9030f57e7",
+    "bucketFilename": "bb4c46ef-4b5d-424d-8b6c-dd3c226c85fc_hero.webp",
+    "width": 2560,
+    "height": 1440,
+    "blurhash": "U28NOo_3000000IT-qtRD$M_?b_3TexurWIT"
+  },
+  "/img/project/city-lights/light-tiles-heatmap.webp": {
+    "url": "https://firebasestorage.googleapis.com/v0/b/wendelin-muth.appspot.com/o/public%2Fcontent%2F9f8ef4e0-7856-474e-8776-4514c3869920_light-tiles-heatmap.webp?alt=media",
+    "hash": "d955bd7d097673d6",
+    "bucketFilename": "9f8ef4e0-7856-474e-8776-4514c3869920_light-tiles-heatmap.webp",
+    "width": 1920,
+    "height": 1080,
+    "blurhash": "URBEaZEnVvi|ZLt2W=ox91#QtLR-_KJVnkS4"
+  },
+  "/img/project/city-lights/light-tiles-visual.webp": {
+    "url": "https://firebasestorage.googleapis.com/v0/b/wendelin-muth.appspot.com/o/public%2Fcontent%2F35b2531b-80e8-4961-823f-a3b82afdb85a_light-tiles-visual.webp?alt=media",
+    "hash": "bbf4eb21f1d91076",
+    "bucketFilename": "35b2531b-80e8-4961-823f-a3b82afdb85a_light-tiles-visual.webp",
+    "width": 1920,
+    "height": 1080,
+    "blurhash": "UC7_1dIUbHj?%Mt7WBofM{%MjtWC~qM{ozRj"
+  },
+  "/img/project/city-lights/raw-output.webp": {
+    "url": "https://firebasestorage.googleapis.com/v0/b/wendelin-muth.appspot.com/o/public%2Fcontent%2F6f97f3d7-6d93-4fa4-9a78-3339eaa5ef6b_raw-output.webp?alt=media",
+    "hash": "4a3388354045d3e7",
+    "bucketFilename": "6f97f3d7-6d93-4fa4-9a78-3339eaa5ef6b_raw-output.webp",
+    "width": 2560,
+    "height": 1417,
+    "blurhash": "UdBW.1MxDitS_NRPD%tR-:V@IUbYx[WBWBR%"
+  },
+  "/img/project/city-lights/ssao-white.webp": {
+    "url": "https://firebasestorage.googleapis.com/v0/b/wendelin-muth.appspot.com/o/public%2Fcontent%2F1eac9e9a-2dfc-4c73-8141-a90a7392f37f_ssao-white.webp?alt=media",
+    "hash": "c0256f2777edf423",
+    "bucketFilename": "1eac9e9a-2dfc-4c73-8141-a90a7392f37f_ssao-white.webp",
+    "width": 2560,
+    "height": 1417,
+    "blurhash": "U3IFY^V?8{%f9uMxR5xu~pafIBxux[s,MykD"
+  },
+  "/img/project/city-lights/ssao.webp": {
+    "url": "https://firebasestorage.googleapis.com/v0/b/wendelin-muth.appspot.com/o/public%2Fcontent%2Fb07d25aa-4eee-4e7a-8311-689f51378ad6_ssao.webp?alt=media",
+    "hash": "574fae56c6b229f1",
+    "bucketFilename": "b07d25aa-4eee-4e7a-8311-689f51378ad6_ssao.webp",
+    "width": 1280,
+    "height": 708,
+    "blurhash": "UBSY{qIU9FofIUofM{t7~qofxuj[ofIUt7WB"
+  },
+  "/img/project/city-lights/volumetric-lights.webp": {
+    "url": "https://firebasestorage.googleapis.com/v0/b/wendelin-muth.appspot.com/o/public%2Fcontent%2F1f27dcdb-25af-4fde-9262-e11df9cb0cc7_volumetric-lights.webp?alt=media",
+    "hash": "9c26e92150577434",
+    "bucketFilename": "1f27dcdb-25af-4fde-9262-e11df9cb0cc7_volumetric-lights.webp",
+    "width": 2560,
+    "height": 1417,
+    "blurhash": "U24oo?.k4UHtL,R7%yx]HuRQyobrS^X4aLn+"
+  },
+  "/img/project/city-lights/with-bloom.webp": {
+    "url": "https://firebasestorage.googleapis.com/v0/b/wendelin-muth.appspot.com/o/public%2Fcontent%2F5e94a6c0-505f-44ee-a804-447fa06e7a41_with-bloom.webp?alt=media",
+    "hash": "a7b91c4ee5f30081",
+    "bucketFilename": "5e94a6c0-505f-44ee-a804-447fa06e7a41_with-bloom.webp",
+    "width": 2560,
+    "height": 1417,
+    "blurhash": "U78}GVIT00a$~qjD00M{?badD*M{xtj]Rkj]"
+  },
+  "/img/project/city-lights/without-bloom.webp": {
+    "url": "https://firebasestorage.googleapis.com/v0/b/wendelin-muth.appspot.com/o/public%2Fcontent%2Fe02effef-426d-454a-b7f8-42e77bf9eeb4_without-bloom.webp?alt=media",
+    "hash": "ab334f718ac477c1",
+    "bucketFilename": "e02effef-426d-454a-b7f8-42e77bf9eeb4_without-bloom.webp",
+    "width": 2560,
+    "height": 1417,
+    "blurhash": "U59HO*Dh00tS~qV=00M|?cV?E1M{xtj]Nbog"
+  },
+  "/img/project/path-tracing/complex.webp": {
+    "url": "https://firebasestorage.googleapis.com/v0/b/wendelin-muth.appspot.com/o/public%2Fcontent%2F59e5ab8d-eb8e-4367-bb76-be5ec0a30f74_complex.webp?alt=media",
+    "hash": "b1093d597db6e9e6",
+    "bucketFilename": "59e5ab8d-eb8e-4367-bb76-be5ec0a30f74_complex.webp",
+    "width": 500,
+    "height": 500,
+    "blurhash": "ULBN=[wwEawcyWjXRObI?wbcMxWUx?bIR6WV"
+  },
+  "/img/project/path-tracing/curtain.webp": {
+    "url": "https://firebasestorage.googleapis.com/v0/b/wendelin-muth.appspot.com/o/public%2Fcontent%2Fed1257c6-d984-461c-88da-6d5710343fe3_curtain.webp?alt=media",
+    "hash": "2fe55750dec1178b",
+    "bucketFilename": "ed1257c6-d984-461c-88da-6d5710343fe3_curtain.webp",
+    "width": 500,
+    "height": 500,
+    "blurhash": "UBLz~wRk00IU~qt7M{WB00xu?bWA?bofIUWB"
+  },
+  "/img/project/path-tracing/final-render.webp": {
+    "url": "https://firebasestorage.googleapis.com/v0/b/wendelin-muth.appspot.com/o/public%2Fcontent%2F45afe61b-2e02-4ef8-9e63-0b6b79fc0492_final-render.webp?alt=media",
+    "hash": "3da996f08b75a7bc",
+    "bucketFilename": "45afe61b-2e02-4ef8-9e63-0b6b79fc0492_final-render.webp",
+    "width": 1920,
+    "height": 1080,
+    "blurhash": "UNJH%L4nIU-:_44nRPof%1xtM{WBD%xu%LM{"
+  },
+  "/img/project/path-tracing/path-guiding.webp": {
+    "url": "https://firebasestorage.googleapis.com/v0/b/wendelin-muth.appspot.com/o/public%2Fcontent%2Fa6b81a75-5b6a-4776-ad4b-8a284d8ff37c_path-guiding.webp?alt=media",
+    "hash": "a0ab84f0e5f12d7c",
+    "bucketFilename": "a6b81a75-5b6a-4776-ad4b-8a284d8ff37c_path-guiding.webp",
+    "width": 1920,
+    "height": 1003,
+    "blurhash": "U69s#q~E0c0v%2t6XNo354NakBR,WBV^jFNF"
+  },
+  "/img/project/path-tracing/suzanne.webp": {
+    "url": "https://firebasestorage.googleapis.com/v0/b/wendelin-muth.appspot.com/o/public%2Fcontent%2F7f6defb6-1faa-4e9c-8a66-b2bb92c81d1c_suzanne.webp?alt=media",
+    "hash": "2549eeee4fb5818c",
+    "bucketFilename": "7f6defb6-1faa-4e9c-8a66-b2bb92c81d1c_suzanne.webp",
+    "width": 500,
+    "height": 500,
+    "blurhash": "U28#Tp?vD$.STKI9bcI917X9xZkq00nhx]aJ"
+  },
+  "/img/project/path-tracing/veach.webp": {
+    "url": "https://firebasestorage.googleapis.com/v0/b/wendelin-muth.appspot.com/o/public%2Fcontent%2F824a2e3c-dfb6-4410-be8d-29c657e6217c_veach.webp?alt=media",
+    "hash": "3b03708d73124500",
+    "bucketFilename": "824a2e3c-dfb6-4410-be8d-29c657e6217c_veach.webp",
+    "width": 500,
+    "height": 500,
+    "blurhash": "UFC6$0_3D%M{~q?bRjD%WC%MxuD%IUR*t7of"
+  },
+  "/img/project/webigeo-clouds/hero.webp": {
+    "url": "https://firebasestorage.googleapis.com/v0/b/wendelin-muth.appspot.com/o/public%2Fcontent%2F160be215-acae-4363-a4ee-042c2bb784af_hero.webp?alt=media",
+    "hash": "7e20368603f52794",
+    "bucketFilename": "160be215-acae-4363-a4ee-042c2bb784af_hero.webp",
+    "width": 2560,
+    "height": 1440,
+    "blurhash": "UlG]5UM{t7WB_4WAoeWBIUt6ayWB9FxaWCWB"
+  },
+  "/img/project/webigeo-clouds/satellite.webp": {
+    "url": "https://firebasestorage.googleapis.com/v0/b/wendelin-muth.appspot.com/o/public%2Fcontent%2F3f219565-1072-4dc5-b5dd-3e6e511a9855_satellite.webp?alt=media",
+    "hash": "dd14180dc3c0cfa4",
+    "bucketFilename": "3f219565-1072-4dc5-b5dd-3e6e511a9855_satellite.webp",
+    "width": 2389,
+    "height": 1344,
+    "blurhash": "U6DJV2?I00%g0000ofIA~q.8oeIU?bt7WVIU"
+  },
+  "/img/project/webigeo-clouds/top-down.webp": {
+    "url": "https://firebasestorage.googleapis.com/v0/b/wendelin-muth.appspot.com/o/public%2Fcontent%2F103eb502-095a-4225-83cf-6f7b5f8a651b_top-down.webp?alt=media",
+    "hash": "369e33a13b9813d2",
+    "bucketFilename": "103eb502-095a-4225-83cf-6f7b5f8a651b_top-down.webp",
+    "width": 2389,
+    "height": 1344,
+    "blurhash": "UUN^e-?c?bIT%M-;RjWB~qIURjxuIU9FWBxu"
+  },
+  "/img/project/webigeo-clouds/with-detail.webp": {
+    "url": "https://firebasestorage.googleapis.com/v0/b/wendelin-muth.appspot.com/o/public%2Fcontent%2F5da2af0c-fd12-4231-8bf6-8fdebdcbb6e1_with-detail.webp?alt=media",
+    "hash": "7451803d77218e50",
+    "bucketFilename": "5da2af0c-fd12-4231-8bf6-8fdebdcbb6e1_with-detail.webp",
+    "width": 2560,
+    "height": 1440,
+    "blurhash": "UINwcuIU~q-pIVWBRjxaIUWBIUj[9FWBofj["
+  },
+  "/img/project/webigeo-clouds/with-recovery.webp": {
+    "url": "https://firebasestorage.googleapis.com/v0/b/wendelin-muth.appspot.com/o/public%2Fcontent%2Fee2d5e71-93e9-41e2-b37f-5c878970d295_with-recovery.webp?alt=media",
+    "hash": "cbd5cddb5a25c4d6",
+    "bucketFilename": "ee2d5e71-93e9-41e2-b37f-5c878970d295_with-recovery.webp",
+    "width": 2560,
+    "height": 1440,
+    "blurhash": "U8O|b2?b~qM_4nIUIoof_3axofxu00ofofRj"
+  },
+  "/img/project/webigeo-clouds/without-detail.webp": {
+    "url": "https://firebasestorage.googleapis.com/v0/b/wendelin-muth.appspot.com/o/public%2Fcontent%2Ff316a4d1-e701-4b9a-9c48-53e4d9b40a3e_without-detail.webp?alt=media",
+    "hash": "7a2a8e10bd4411ea",
+    "bucketFilename": "f316a4d1-e701-4b9a-9c48-53e4d9b40a3e_without-detail.webp",
+    "width": 2560,
+    "height": 1440,
+    "blurhash": "UBONF19F~q?H9ZkCM|xa9GfjD*ay4nWBofj["
+  },
+  "/img/project/webigeo-clouds/without-recovery.webp": {
+    "url": "https://firebasestorage.googleapis.com/v0/b/wendelin-muth.appspot.com/o/public%2Fcontent%2Fa261be6c-aa6d-4d1e-8256-cb0c09e43647_without-recovery.webp?alt=media",
+    "hash": "8976e25ca2ac91cf",
+    "bucketFilename": "a261be6c-aa6d-4d1e-8256-cb0c09e43647_without-recovery.webp",
+    "width": 2560,
+    "height": 1440,
+    "blurhash": "UHOp*{?I~q9EM{RjD%of~qRjIUxu9FWBt7Ri"
+  },
+  "/img/project/better-clouds/banner.webp": {
+    "url": "https://firebasestorage.googleapis.com/v0/b/wendelin-muth.appspot.com/o/public%2Fcontent%2Fc7b2b7c6-7198-436e-b056-1af0a5534a65_banner.webp?alt=media",
+    "hash": "bb9f23ddc11b6301",
+    "bucketFilename": "c7b2b7c6-7198-436e-b056-1af0a5534a65_banner.webp",
+    "width": 1920,
+    "height": 600,
+    "blurhash": "UiD,D_.Ao~xFtUx_t8n~bajFoJWBadV@V@j="
+  },
+  "/img/project/fabric-mod-bisect/main-page-start.webp": {
+    "url": "https://firebasestorage.googleapis.com/v0/b/wendelin-muth.appspot.com/o/public%2Fcontent%2Fbc7c7151-2773-4510-aaca-edeb98df339e_main-page-start.webp?alt=media",
+    "hash": "0552e0a41e2beac7",
+    "bucketFilename": "bc7c7151-2773-4510-aaca-edeb98df339e_main-page-start.webp",
+    "width": 1115,
+    "height": 628,
+    "blurhash": "U79%^-x^?vxv~qM{t8WCROIUV@WB00oIWAjY"
+  },
+  "/img/project/fabric-mod-bisect/result-page.webp": {
+    "url": "https://firebasestorage.googleapis.com/v0/b/wendelin-muth.appspot.com/o/public%2Fcontent%2F7dcf0459-1fdd-40e3-b94d-19d0cef74159_result-page.webp?alt=media",
+    "hash": "c395e342ae85a0c7",
+    "bucketFilename": "7dcf0459-1fdd-40e3-b94d-19d0cef74159_result-page.webp",
+    "width": 1115,
+    "height": 628,
+    "blurhash": "U77_D{tSI9s+DhjY.9S6?wbIIAs,V?ofxvWE"
+  },
+  "/img/project/fabric-mod-bisect/setup-page.webp": {
+    "url": "https://firebasestorage.googleapis.com/v0/b/wendelin-muth.appspot.com/o/public%2Fcontent%2Fd36a9df7-db17-499c-a2d8-c75c46b1fbfd_setup-page.webp?alt=media",
+    "hash": "62e6b4e85fb28f61",
+    "bucketFilename": "d36a9df7-db17-499c-a2d8-c75c46b1fbfd_setup-page.webp",
+    "width": 1115,
+    "height": 628,
+    "blurhash": "UA9aQ[xa?bof?wjExuofM{WBIUay4TogD%WB"
+  },
+  "/img/project/fabric-mod-bisect/test-page.webp": {
+    "url": "https://firebasestorage.googleapis.com/v0/b/wendelin-muth.appspot.com/o/public%2Fcontent%2F02471a30-cdb1-4f54-bb73-bb6c43ae2301_test-page.webp?alt=media",
+    "hash": "575b3e5419c5f404",
+    "bucketFilename": "02471a30-cdb1-4f54-bb73-bb6c43ae2301_test-page.webp",
+    "width": 1115,
+    "height": 628,
+    "blurhash": "U98qZ~f+MvjZI9aex^WVoIWCxvbH?wbHMwjY"
+  },
+  "/img/project/java-old/chess.webp": {
+    "url": "https://firebasestorage.googleapis.com/v0/b/wendelin-muth.appspot.com/o/public%2Fcontent%2Fdda28ba4-1039-41e7-98ca-9c5c2f2ca724_chess.webp?alt=media",
+    "hash": "0fbb67c27fdb9690",
+    "bucketFilename": "dda28ba4-1039-41e7-98ca-9c5c2f2ca724_chess.webp",
+    "width": 2050,
+    "height": 1164,
+    "blurhash": "UMP%hd-;?vWBY8ITM{RjX:of9Fxa0Kt7%Lj["
+  },
+  "/img/project/java-old/snake.webp": {
+    "url": "https://firebasestorage.googleapis.com/v0/b/wendelin-muth.appspot.com/o/public%2Fcontent%2Ff9d0db59-14bb-47f9-b610-5f4cf292176c_snake.webp?alt=media",
+    "hash": "1d1bd6cc07f980c6",
+    "bucketFilename": "f9d0db59-14bb-47f9-b610-5f4cf292176c_snake.webp",
+    "width": 2560,
+    "height": 1440,
+    "blurhash": "U8S?DVof~qRjxvfQM{fQ^,WB9Ft7D%ay%Ma|"
+  },
+  "/img/project/botball/arena.webp": {
+    "url": "https://firebasestorage.googleapis.com/v0/b/wendelin-muth.appspot.com/o/public%2Fcontent%2F20f4dde2-fd76-43b5-9966-32387b53314d_arena.webp?alt=media",
+    "hash": "8a9d9530e5313ece",
+    "bucketFilename": "20f4dde2-fd76-43b5-9966-32387b53314d_arena.webp",
+    "width": 1782,
+    "height": 1080,
+    "blurhash": "UKQmCt-o_3oeM}%LNGay~qs:a$WBRkWBs.WB"
+  },
+  "/img/project/botball/team.webp": {
+    "url": "https://firebasestorage.googleapis.com/v0/b/wendelin-muth.appspot.com/o/public%2Fcontent%2Fe9bc86c0-890d-45e5-b8d1-fba5d3120873_team.webp?alt=media",
+    "hash": "ce5706c07111df72",
+    "bucketFilename": "e9bc86c0-890d-45e5-b8d1-fba5d3120873_team.webp",
+    "width": 3292,
+    "height": 1556,
+    "blurhash": "UCCGSuRPE0EL~Rs=S6E1ota}s:RPJWM{R5xv"
+  },
+  "/img/project/botball/botball-1.webp": {
+    "url": "https://firebasestorage.googleapis.com/v0/b/wendelin-muth.appspot.com/o/public%2Fcontent%2F634c4cda-78f9-4795-bdbc-d02da7eef3ad_botball-1.webp?alt=media",
+    "hash": "c18b67922ea54fc9",
+    "bucketFilename": "634c4cda-78f9-4795-bdbc-d02da7eef3ad_botball-1.webp",
+    "width": 1599,
+    "height": 1200,
+    "blurhash": "UDH.E59F~q~q00RP4nIU_MD%D%IU00WVIo%M"
+  },
+  "/img/project/botball/botball-2.webp": {
+    "url": "https://firebasestorage.googleapis.com/v0/b/wendelin-muth.appspot.com/o/public%2Fcontent%2F1fdc9a0c-f0d2-4fa6-884a-0dfde8d4138a_botball-2.webp?alt=media",
+    "hash": "82d042b874605d01",
+    "bucketFilename": "1fdc9a0c-f0d2-4fa6-884a-0dfde8d4138a_botball-2.webp",
+    "width": 1920,
+    "height": 1080,
+    "blurhash": "UAGlIv%M~V%gx]xa4nR-^$xuIVIADixvX9Di"
+  },
+  "/img/project/botball/botball-3.webp": {
+    "url": "https://firebasestorage.googleapis.com/v0/b/wendelin-muth.appspot.com/o/public%2Fcontent%2Fcad2b144-5b20-4004-988f-d8690a0703fe_botball-3.webp?alt=media",
+    "hash": "9f1fe8970d02d728",
+    "bucketFilename": "cad2b144-5b20-4004-988f-d8690a0703fe_botball-3.webp",
+    "width": 1920,
+    "height": 1080,
+    "blurhash": "UAGIo*00~p4n00oLf,M{_3R+XSIU8_s;M{%M"
+  },
+  "/img/project/jupiter/jupiter.webp": {
+    "url": "https://firebasestorage.googleapis.com/v0/b/wendelin-muth.appspot.com/o/public%2Fcontent%2F84213767-4680-438c-bb93-1d1d853f813f_jupiter.webp?alt=media",
+    "hash": "b60e9f5be1ab3a04",
+    "bucketFilename": "84213767-4680-438c-bb93-1d1d853f813f_jupiter.webp",
+    "width": 1080,
+    "height": 1840,
+    "blurhash": "U5PP},L1~oml4T0%IA?azn9|I9RQ005T^*,C"
+  },
+  "/img/project/jupiter/untis.webp": {
+    "url": "https://firebasestorage.googleapis.com/v0/b/wendelin-muth.appspot.com/o/public%2Fcontent%2F017d1c3e-6f81-4ca0-9981-f08d20b7b04b_untis.webp?alt=media",
+    "hash": "7c41bd65c6409408",
+    "bucketFilename": "017d1c3e-6f81-4ca0-9981-f08d20b7b04b_untis.webp",
+    "width": 1080,
+    "height": 1840,
+    "blurhash": "UWR_w|V?*0RjvKf+Rkoft7axVro0icozn#V?"
+  }
+}

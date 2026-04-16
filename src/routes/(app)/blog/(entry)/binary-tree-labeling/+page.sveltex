@@ -1,0 +1,24 @@
+We need to stop naming the descendants in a binary tree **"left"** and **"right"**. 
+Every tutorial on binary trees or BSTs I've ever seen uses these stupid naming convention.
+Giving a node the property of being on the left or right side is completely arbitrary and meaningless.
+Take a binary search tree for example. Instead of defining it like this:
+```c
+struct Node {
+    int   value;
+    Node *left;
+    Node *right;
+}
+```
+use names that actually have a meaning given their intended purpose:
+
+```c
+struct Node {
+    int   value;
+    Node *lessThan;
+    Node *greaterOrEqual;
+}
+```
+and if you prefer shorter names you can use `lt` and `ge`. 
+This has the added benefit that you never need to think about on which *"side"* equal values go, the name provides all the information by itself.
+
+Of course there are some cases where you need to define an ordering, for example when you want to visualize, but that is almost never the primary use of such a tree.

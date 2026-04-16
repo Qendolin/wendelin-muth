@@ -1,0 +1,19 @@
+I am currently trying to up the visuals of my mod [Better Clouds](https://modrinth.com/mod/better-clouds). It's fairly well known that blending colors isn't commutative,  
+*100% white + 50% green = 100% light green.*  
+*50% green + 100% white = 100% white*  
+Because of this games usually have to render translucent surfaces back-to-front or use other tricks. So far I was able to avoid that because I was drawing all the cubes with the same color. 
+To allow for more creative control over the look of my mod I decided to change that. First I tried depth sorting but that was way too slow. After looking at plenty of different solutions I decided on an algorithm called "weighted blended order independent transparency" (WB-OIT) that colesly approximates the correct result but without requiring sorting the geometry (hence 'order independent'). I was very impressed with how nice it looked, but alas it wasn't fast enough. I got rendering times of around two milliseconds on my mid range laptop (1080p, GTX 1650). 
+This led me down a path of optimization, beginning with frustum culling. Once that was done I was very happy to get a 7% speedup 💀. Finally realizing that trying to fix the issue without even knowing what it was, wasn't going to get me anywhere, I looked into proper profiling and downloaded NVIDIA Nsight Graphics. At first it was very daunting but eventually, after a lot of confused googling, I found out that the bottleneck was the CROP (Color Render Output Unit) which is responsible for blending and probably some other stuff. Looking further into it I also saw that I was blending 50 to 100 colors per pixel.
+Apparently I was simply limited by the pixel throughput that my GPU can handle. 
+
+After being stuck on this fact without any working solution I had a (imo) brilliant idea. All blended fragments have roughly the same color and opacity, so maybe I could defer the coloring to a later step and use blending to only calculate the final alpha values. 
+My rendering pass looked like this:
+1. Calculate a per pixel coverage value
+    Use a red-only color attachment
+    Enable additive blending
+    Render the clouds with 1/255 as the red component for each fragment
+2. Calculate the final color
+    Bind the coverage texture
+    Enable proper blending
+    Render a fullscreen quad, calculate the pixel color and the opacity by sampling the coverage
+

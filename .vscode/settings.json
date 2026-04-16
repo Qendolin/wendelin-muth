@@ -1,0 +1,11 @@
+{
+  "files.associations": {
+    "*.css": "tailwindcss",
+    "*.sveltex": "markdown",
+    "wrangler.json": "jsonc"
+  },
+  "css.customData": [".vscode/tailwind.json"],
+  "[sveltex]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  }
+}

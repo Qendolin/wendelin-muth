@@ -1,0 +1,7 @@
+Had some fun playing with ComputerCraft recently. Got a script to mine out a contiguous blob of resources, and another one (unpublished) to follow a line and deliver items.
+
+To keep it short, imo Lua has some strange behavior and syntax but with type hints and intellisense it's not too bad. I still prefer JS with JSDoc tho.
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/MRddONoRUgc?si=1CbNK-dJcpikkSq3" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+Check out my *[amazing code](https://forums.computercraft.cc/index.php?topic=559.0)*.

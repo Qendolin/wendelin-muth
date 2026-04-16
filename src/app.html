@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en" class="font-serif">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" href="%sveltekit.assets%/favicon.png" />
+    <link rel="preconnect" href="https://firestore.googleapis.com/" />
+    <link rel="preconnect" href="https://firebase.googleapis.com/" />
+    <link rel="preconnect" href="https://identitytoolkit.googleapis.com/" />
+    <link rel="preconnect" href="https://wsrv.nl/" />
+    <link rel="preload" href="/fonts/CourierPrime/CourierPrime-Italic.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/CourierPrime/CourierPrime-BoldItalic.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/CourierPrime/CourierPrime-Regular.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/CourierPrime/CourierPrime-Bold.woff2" as="font" type="font/woff2" crossorigin />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    %sveltekit.head%
+    <script>
+      (() => {
+        const mq = globalThis.matchMedia('(prefers-color-scheme: dark)');
+        const update = () => {
+          let theme = globalThis.localStorage?.getItem('theme') ?? 'system';
+          console.log('Theme: ', theme);
+          if (theme == 'system') {
+            const prefersDark = mq?.matches ?? false;
+            theme = prefersDark ? 'dark' : 'light';
+          }
+          document.documentElement.dataset.theme = theme;
+        };
+        window.addEventListener('storage', update);
+        mq.addEventListener('change', update);
+        update();
+      })();
+    </script>
+  </head>
+  <body>
+    <div style="display: contents">%sveltekit.body%</div>
+  </body>
+</html>

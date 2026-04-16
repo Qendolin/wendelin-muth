@@ -1,0 +1,54 @@
+Here is something that I only learned about recently. If you are writing an `equals` method in f.e. Java manually it's super easy to make a certain mistake.
+
+Take this pseudo-code for example:
+```java
+class Line {
+  int width
+
+  Line(int width) { this.width = width }
+
+  equals(Object other) {
+    if(!(other instanceof Line line)) return false
+    return width == line.width
+  }
+}
+
+class Rect extends Line {
+  int height
+
+  Rect(int width, int height) { this.width = width; this.height = height }
+
+  equals(Object other) {
+    if(!(other instanceof Rect rect)) return false
+    return width == rect.width && height == rect.height
+  }
+}
+```
+
+The issue isn't obvious at first, but take this snippet will make it obvious:
+
+```java
+var line = new Line(5)
+var rect = new Rect(5, 7)
+
+line.equals(rect) // true
+rect.equals(line) // false
+```
+
+To make it right the dynamic type needs to be checked:
+
+```java
+equals(Object other) {
+    if (other == null || getClass() != other.getClass()) return false
+    Line line = (Line) other
+    return width == line.width
+}
+
+equals(Object other) {
+    if (other == null || getClass() != other.getClass()) return false
+    Rect rect = (Rect) other
+    return width == rect.width && height == rect.height
+}
+```
+
+I wonder how many times I've made such an error without knowing 🤔

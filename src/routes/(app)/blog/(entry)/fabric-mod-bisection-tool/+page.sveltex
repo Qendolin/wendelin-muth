@@ -1,0 +1,9 @@
+It's a little late, I just finished it, so I'm not gonna write much.
+
+[https://github.com/Qendolin/fabric-mod-bisect-tool](https://github.com/Qendolin/fabric-mod-bisect-tool)
+
+I'm really quite proud of it, so, check it out!
+
+Some people will surely complain that I used LLMs for this project, and it's true, I made extensive use of Gemini 2.5 Pro, currently it's completely free to use on Google's AI Studio and the limits are very generous. It was kind of an experiment for me to see how much it can help me in the development. And I must say, it's really good already. I did have to make multiple chats, because even with the enormous 1M context size, I was still reaching Gemini's limit. Also their website starts lagging, really, really badly if the chat history is too long.
+
+For more information, see the dedicated [project page](/project/fabric-mod-bisect).

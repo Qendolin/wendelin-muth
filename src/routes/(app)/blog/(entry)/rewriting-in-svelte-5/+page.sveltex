@@ -1,0 +1,120 @@
+
+Instead of just migrating the old codebase I decided to rewrite it from scratch because I wanted to change the fundamental architecture of the site. I had a few specific goals in mind for this version. I wanted to move toward file based entries instead of relying on Firestore for content. I also aimed for full static generation for every page to keep things fast. This version also functions as a proper showcase for my projects which is something the old site did not have at all.
+
+The styling approach changed as well. I am using Tailwind CSS now. I used to really dislike it because I did not want my HTML cluttered with utility classes. However since Tailwind 4 you can mix in classes with @apply and that basically solves that gripe. Now I can take advantage of their utility classes while still grouping them into larger classes with proper names to avoid clutter. I also made the switch to Deno for the runtime environment.
+
+## Markdown and SvelTeX
+
+Migrating the markdown was surprisingly difficult. At the time of writing [MDsveX](https://mdsvex.pngwn.io/) which is the most popular markdown preprocessor for SvelteKit does not really support Svelte 5 as seen in [issue #485](https://github.com/pngwn/MDsveX/issues/485). In my old codebase I used marked and some regexes to customize the generated HTML. This time I wanted the markdown to actually take advantage of my Svelte components for links and images to keep things consistent.
+
+A preprocessor quickly hits a roadblock because you have to import components to use them in the generated Svelte page. There is not really a way to do that without telling the preprocessor the import paths as string literals and that feels suboptimal. After wasting a day trying to implement my own preprocessor I finally settled on [SvelTeX](https://sveltex.dev/). I wanted to have LaTeX or MathJax support for a long time anyway so this plugin really ticked most of the boxes on my wishlist.
+
+## Code Highlighting
+
+I also wanted to add syntax highlighting for code blocks using [Shiki](https://shiki.style/). The SvelTeX files allow a mix of Svelte and markdown and LaTeX syntax and the plugin handles passing those markdown code blocks through Shiki automatically. However I also wanted to have code blocks in regular Svelte files.
+
+At first I considered making a custom component or a preprocessor for this. I wasted another day writing a preprocessor but I eventually gave up because VS Code gave me too many headaches. It struggled with the syntax highlighting and it also tried to lint the code blocks which caused it to complain about missing variables and other errors.
+
+My final solution ended up being much simpler and it is still quite ergonomic. I wanted to be able to write the code inline inside the template while keeping things clean. I simply defined a highlight function that basically just calls `codeToHtml` from Shiki and used the Svelte @html tag.
+
+```svelte
+<script>
+import { highlight } from '$lib/code';
+</script>
+
+This is an example codeblock
+{@html highlight('javascript', `
+  console.log("Hello World!");
+`)}
+```
+
+Unfortunately I did not get the syntax highlighting to work inside the VS Code editor for those specific strings but the overall solution was nice and simple.
+
+## Modern SSG and Metadata
+
+I previously experimented with prototypes that stored entry metadata inside the page as a comment or with special syntax. That had the benefit of keeping everything contained in one file but I decided to stick to the KISS principle. Having it all in one file is nice but using a sidecar file is so much simpler and honestly not really less ergonomic. Now I just have a `+page.sveltex` and a `+page.ts` for each entry.
+
+```ts
+import type { BlogEntryMeta } from '$lib/blog-entries';
+
+export const _meta: BlogEntryMeta = { ... };
+
+export const load = () => {
+  return { meta: _meta }; // Allows easy access in a +layout.svelte via `page.data.meta`
+};
+```
+
+Together with Vite this setup gives you some really amazing SSG features. You just create a file in $lib with a [glob import](https://vite.dev/guide/features#glob-import) and then you can make any transformation that you want.
+
+```ts
+// Underscore prefix is required for non standard exports in +page.ts files
+const modules = import.meta.glob<{ _meta: BlogEntryMeta }>('/src/routes/\\(app\\)/blog/(entry)/*/+page.ts', { eager: true });
+
+export const blogEntries: BlogEntry[] = Object.entries(modules)
+  .map(([path, mod]: [string, { _meta: BlogEntryMeta }]) => {
+    const slug = path.replace('/src/routes/(app)/blog/(entry)/', '').replace('/+page.ts', '');
+    const meta = mod._meta as BlogEntryMeta;
+
+    return {
+      path: `/blog/${slug}`,
+      meta: meta
+    };
+  })
+```
+
+If you need to render a list of all entries on some other page you can simply create a `+page.server.ts` and return the list.
+
+```ts
+import type { PageServerLoad } from './$types';
+import { blogEntries } from '$lib/blog-entries';
+
+export const load: PageServerLoad = () => {
+  return { blogEntries };
+};
+
+export const prerender = true;
+```
+
+Then you can use it in your Svelte component and it works perfectly with SSG. I really like SvelteKit for making this so easy.
+
+## Asset Pipeline and Images
+
+I also needed to add a lot of images for my project pages. Previously I just added them to my static folder or uploaded them manually to the Firebase storage bucket but that was not scalable. I needed a way to manage hundreds of assets without manual work.
+
+My solution was to write a script that syncs my local folder structure to the storage bucket at production build time. Locally I just have a path like `img/project/example/hero.webp `and that is also the path I use in my source code. A script traverses that folder and finds all images to generate a manifest file. This manifest contains key value pairs where the key is the local path and the value is a metadata object.
+
+```ts
+type ManifestEntry = {
+  url: string;
+  hash: string;
+  bucketFilename: string;
+  width: number;
+  height: number;
+  blurhash: string;
+};
+```
+
+Any images that are new or changed based on the hash are uploaded to the storage bucket. In the bucket they have a flat hierarchy with a prefixed UUID to avoid name collisions. My image component then loads the manifest and resolves the paths to their final URLs during the build.
+
+```ts
+import manifestJson from '../assets/storage-manifest.json' with { type: 'json' };
+const manifest = manifestJson as Record<string, ManifestEntry>;
+
+export function resolveUrl(src: string): string {
+  if (dev) return src;
+
+  if (!src.startsWith('/') && !src.startsWith('.')) {
+    return src;
+  }
+
+  const manifestUrl = manifest[src]?.url;
+  if (!manifestUrl) throw new Error(`Local image ${src} does not have manifest entry.`);
+  return manifestUrl;
+}
+```
+
+The image component also uses the stored width and height and blurhash to give them a nice preview while they are still loading. Since Google storage buckets do not have the best latency I also use [wsrv.nl](https://wsrv.nl/) to proxy them. One shortcoming is that the path gets re-resolved when the page is hydrated but the pre-rendered HTML file already contains the final img tag with the resolved URL. I would also like to bake the metadata for remote images but that is tricky for now.
+
+## Conclusion
+
+I am happy that Deno is at a stage where I could use it without hiccups. I am also glad that front end frameworks have evolved to a point where SSG with hydration is a viable and hassle-free option. We no longer need SPAs or complicated server administration for a simple blog. It seems that the server side JS ecosystem has finally outgrown its transition pains from CommonJS to ES6 module syntax.

@@ -1,0 +1,23 @@
+{
+  "compilerOptions": {
+    "lib": ["esnext", "dom", "deno.ns", "dom.iterable"],
+    "checkJs": true,
+    "strict": true,
+    "types": ["./.svelte-kit/ambient.d.ts", "./.svelte-kit/non-ambient.d.ts"],
+    "rootDirs": [".", "./.svelte-kit/types"],
+    "moduleResolution": "bundler"
+  },
+  "imports": {
+    "$lib": "./src/lib/",
+    "$lib/": "./src/lib/",
+    "$app/types": "./.svelte-kit/types/index.d.ts",
+    "@std/fs": "jsr:@std/fs@^1.0.23",
+    "@std/path": "jsr:@std/path@^1.1.4"
+  },
+  "exclude": ["dist/", "node_modules/"],
+  "lint": {
+    "rules": {
+      "exclude": ["no-sloppy-imports"]
+    }
+  }
+}

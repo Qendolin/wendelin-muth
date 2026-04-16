@@ -1,0 +1,137 @@
+@import 'tailwindcss';
+@plugin '@tailwindcss/typography';
+
+@custom-variant dark (&:where(:root[data-theme=dark] *));
+
+@layer base {
+  h1 {
+    @apply mt-6 mb-2 text-4xl font-bold;
+  }
+  h2 {
+    @apply mt-6 mb-2 text-3xl font-bold;
+  }
+  h3 {
+    @apply mt-6 mb-2 text-2xl font-bold;
+  }
+  h4 {
+    @apply mt-3 mb-1 text-xl font-bold;
+  }
+  h5 {
+    @apply mt-3 mb-1 text-lg font-bold;
+  }
+  h6 {
+    @apply mt-3 mb-1 text-base italic;
+  }
+  ul {
+    @apply list-inside list-disc;
+  }
+  ol {
+    @apply list-inside list-decimal;
+  }
+  dl > dd {
+    @apply indent-4;
+  }
+  hr {
+    @apply my-5;
+  }
+  p {
+    @apply my-2;
+  }
+  button {
+    cursor: pointer;
+  }
+  input {
+    cursor: pointer;
+    appearance: none;
+    -webkit-appearance: none;
+    height: 2rem;
+    display: inline-block;
+    position: relative;
+  }
+  :root {
+    @apply transition-colors duration-200;
+    width: 100%;
+    min-width: 100%;
+    overflow-x: auto;
+    background-color: var(--color-primary);
+    scrollbar-gutter: stable;
+  }
+
+  :root[data-theme='light'] {
+    color-scheme: light;
+    color-scheme: light only;
+  }
+
+  :root[data-theme='dark'] {
+    color-scheme: dark;
+    color-scheme: dark only;
+  }
+
+  body {
+    position: relative;
+  }
+  img {
+    height: revert-layer;
+  }
+}
+
+@theme {
+  --font-serif: 'Courier Prime', 'Courier New', Courier, monospace;
+  /* --color-primary: light-dark(#faf9f7, #141414); */
+  /* --color-secondary: light-dark(#444444, #e8e0d4); */
+
+  --color-fg: light-dark(oklch(38.666% 0.00004 271.152), oklch(90.974% 0.01824 78.171));
+  --color-bg: light-dark(oklch(98.233% 0.00275 84.299), oklch(19.125% 0.00002 271.152));
+
+  --color-primary: var(--color-bg);
+  --color-secondary: var(--color-fg);
+
+  --color-text-primary: var(--color-fg);
+
+  --color-fg-50: oklch(from var(--color-fg) 98.5% c h);
+  --color-fg-100: oklch(from var(--color-fg) 97% c h);
+  --color-fg-200: oklch(from var(--color-fg) 92.2% c h);
+  --color-fg-300: oklch(from var(--color-fg) 87% c h);
+  --color-fg-400: oklch(from var(--color-fg) 70.8% c h);
+  --color-fg-500: oklch(from var(--color-fg) 55.6% c h);
+  --color-fg-600: oklch(from var(--color-fg) 43.9% c h);
+  --color-fg-700: oklch(from var(--color-fg) 37.1% c h);
+  --color-fg-800: oklch(from var(--color-fg) 26.9% c h);
+  --color-fg-900: oklch(from var(--color-fg) 20.5% c h);
+  --color-fg-950: oklch(from var(--color-fg) 14.5% c h);
+}
+
+/*
+ * Shiki
+ */
+
+.shiki {
+  @apply p-2;
+  --shiki-lineno-color: light-dark(rgba(124, 127, 147, 0.6), rgba(147, 154, 183, 0.6));
+}
+
+/* Sadly requires duplicate code */
+:root[data-theme='dark'] .shiki,
+:root[data-theme='dark'] .shiki span {
+  color: var(--shiki-dark) !important;
+  background-color: var(--shiki-dark-bg) !important;
+  /* Optional, if you also want font styles */
+  font-style: var(--shiki-dark-font-style) !important;
+  font-weight: var(--shiki-dark-font-weight) !important;
+  text-decoration: var(--shiki-dark-text-decoration) !important;
+}
+
+.shiki > code {
+  counter-reset: step;
+  counter-increment: step 0;
+}
+
+.shiki > code .line::before {
+  content: counter(step);
+  counter-increment: step;
+  width: 1rem;
+  margin-right: 1rem;
+  display: inline-block;
+  text-align: right;
+  color: var(--shiki-lineno-color);
+}

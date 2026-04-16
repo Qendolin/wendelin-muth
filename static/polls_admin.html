@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow" />
+
+    <title>Poll Admin</title>
+    <style>
+        body { font-family: sans-serif; max-width: 800px; margin: 2rem auto; color: #333; }
+        input, textarea, button { font-size: 1rem; padding: 8px; margin: 4px 0; }
+        fieldset { border: 1px solid #ccc; padding: 1rem; margin-bottom: 1rem; }
+        legend { font-weight: bold; }
+        .poll-card { border: 1px solid #ddd; padding: 1rem; margin-bottom: 1rem; }
+        .poll-card h3 { margin-top: 0; }
+        .options-list { list-style: none; padding-left: 0; }
+        .options-list li { display: flex; align-items: center; gap: 8px; margin-bottom: 4px; }
+        .options-list li span { flex-grow: 1; }
+        .error { color: red; font-weight: bold; }
+        .hidden { display: none; }
+    </style>
+</head>
+<body>
+
+    <h1>Poll Admin Panel</h1>
+
+    <fieldset>
+        <legend>Configuration</legend>
+        <label for="apiUrl">API URL:</label>
+        <input type="text" id="apiUrl" value="https://wendelin-muth.wendelin-muth.workers.dev/">
+        <br>
+        <label for="adminSecret">Admin Secret:</label>
+        <input type="password" id="adminSecret" placeholder="Enter your secret here">
+    </fieldset>
+
+    <fieldset>
+        <legend>Create New Poll</legend>
+        <form id="createPollForm">
+            <label for="pollId">Poll ID (slug):</label>
+            <input type="text" id="pollId" placeholder="e.g., favorite-color" required>
+            <br>
+            <label for="pollOptions">Options (one per line):</label>
+            <br>
+            <textarea id="pollOptions" rows="4" cols="50" required></textarea>
+            <br>
+            <button type="submit">Create Poll</button>
+        </form>
+    </fieldset>
+
+    <hr>
+
+    <h2>Existing Polls</h2>
+    <button id="refreshBtn">Refresh Polls</button>
+    <p id="errorMessage" class="error hidden"></p>
+    <div id="pollsList"></div>
+
+    <script>
+        const apiUrlInput = document.getElementById('apiUrl');
+        const adminSecretInput = document.getElementById('adminSecret');
+        const createPollForm = document.getElementById('createPollForm');
+        const refreshBtn = document.getElementById('refreshBtn');
+        const pollsListDiv = document.getElementById('pollsList');
+        const errorMessage = document.getElementById('errorMessage');
+
+        // --- CORE API FETCHER ---
+        async function apiFetch(endpoint, options = {}) {
+            const url = `${apiUrlInput.value}${endpoint}`;
+            const secret = adminSecretInput.value;
+
+            if (!secret) {
+                alert('Please enter the Admin Secret.');
+                throw new Error('Admin secret is missing.');
+            }
+
+            const headers = {
+                'Authorization': `Bearer ${secret}`,
+                'Content-Type': 'application/json',
+                ...options.headers,
+            };
+
+            const response = await fetch(url, { ...options, headers });
+
+            if (response.status === 401) {
+                errorMessage.textContent = 'Unauthorized. Is your Admin Secret correct?';
+                errorMessage.classList.remove('hidden');
+            } else {
+                errorMessage.classList.add('hidden');
+            }
+
+            if (!response.ok) {
+                const errorText = await response.text();
+                throw new Error(`API Error (${response.status}): ${errorText}`);
+            }
+
+            // Return JSON only if there's content, otherwise return the response object
+            const contentType = response.headers.get("content-type");
+            if (contentType && contentType.indexOf("application/json") !== -1) {
+                return response.json();
+            }
+            return response;
+        }
+
+        // --- RENDER LOGIC ---
+        async function fetchAndRenderPolls() {
+            try {
+                pollsListDiv.innerHTML = '<p>Loading...</p>';
+                const polls = await apiFetch('/admin/polls');
+
+                // We need to fetch options for each poll separately.
+                // This is simpler for this UI than a complex SQL join.
+                const pollData = await Promise.all(
+                    polls.map(async poll => {
+                        const { results } = await apiFetch(`/polls/${poll.id}`);
+                        return { ...poll, options: results };
+                    })
+                );
+
+                pollsListDiv.innerHTML = ''; // Clear loading message
+                if (pollData.length === 0) {
+                    pollsListDiv.innerHTML = '<p>No polls found.</p>';
+                } else {
+                    pollData.forEach(poll => pollsListDiv.appendChild(createPollElement(poll)));
+                }
+            } catch (error) {
+                console.error('Failed to fetch polls:', error);
+                if (error.message.includes('401')) return; // Already handled
+                pollsListDiv.innerHTML = `<p class="error">Failed to load polls. See console for details.</p>`;
+            }
+        }
+
+        function createPollElement(poll) {
+            const div = document.createElement('div');
+            div.className = 'poll-card';
+            div.dataset.pollId = poll.id;
+
+            const optionsHtml = poll.options.map(opt => `
+                <li data-option-id="${opt.id}">
+                    <span>${opt.text}</span>
+                    <button data-action="edit-option">Edit</button>
+                    <button data-action="delete-option">Delete</button>
+                </li>
+            `).join('');
+
+            div.innerHTML = `
+                <h3>${poll.id}</h3>
+                <button data-action="delete-poll">Delete Poll</button>
+                <h4>Options</h4>
+                <ul class="options-list">${optionsHtml}</ul>
+                <form data-action="add-option-form">
+                    <input type="text" placeholder="New option text" required>
+                    <button type="submit">Add Option</button>
+                </form>
+            `;
+            return div;
+        }
+
+        // --- EVENT HANDLERS ---
+        refreshBtn.addEventListener('click', fetchAndRenderPolls);
+
+        createPollForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const id = document.getElementById('pollId').value;
+            const options = document.getElementById('pollOptions').value.split('\n').filter(Boolean);
+
+            try {
+                await apiFetch('/admin/polls', {
+                    method: 'POST',
+                    body: JSON.stringify({ id, options })
+                });
+                createPollForm.reset();
+                fetchAndRenderPolls(); // Refresh list
+            } catch (error) {
+                alert('Error creating poll: ' + error.message);
+            }
+        });
+
+        pollsListDiv.addEventListener('click', async (e) => {
+            const action = e.target.dataset.action;
+            if (!action) return;
+
+            const pollCard = e.target.closest('.poll-card');
+            const pollId = pollCard.dataset.pollId;
+
+            // Poll-level actions
+            if (action === 'delete-poll') {
+                if (confirm(`Are you sure you want to delete poll "${pollId}"? This cannot be undone.`)) {
+                    await apiFetch(`/admin/polls/${pollId}`, { method: 'DELETE' });
+                    fetchAndRenderPolls();
+                }
+            }
+
+            // Option-level actions
+            const optionLi = e.target.closest('li');
+            if (!optionLi) return;
+            const optionId = optionLi.dataset.optionId;
+            const optionText = optionLi.querySelector('span').textContent;
+
+            if (action === 'delete-option') {
+                if (confirm(`Delete option "${optionText}"?`)) {
+                    await apiFetch(`/admin/options/${optionId}`, { method: 'DELETE' });
+                    fetchAndRenderPolls();
+                }
+            } else if (action === 'edit-option') {
+                const newText = prompt('Enter new option text:', optionText);
+                if (newText) {
+                    await apiFetch(`/admin/options/${optionId}`, {
+                        method: 'PUT',
+                        body: JSON.stringify({ text: newText })
+                    });
+                    fetchAndRenderPolls();
+                }
+            }
+        });
+        
+        pollsListDiv.addEventListener('submit', async (e) => {
+            if (e.target.dataset.action !== 'add-option-form') return;
+            
+            e.preventDefault();
+            const pollId = e.target.closest('.poll-card').dataset.pollId;
+            const input = e.target.querySelector('input');
+            const text = input.value;
+
+            if (text) {
+                await apiFetch(`/admin/polls/${pollId}/options`, {
+                    method: 'POST',
+                    body: JSON.stringify({ text })
+                });
+                fetchAndRenderPolls();
+            }
+        });
+
+        // --- INITIAL LOAD ---
+        document.addEventListener('DOMContentLoaded', fetchAndRenderPolls);
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,67 @@
+Running RStudio on Android Tablets isn't too difficult.
+
+> **Disclaimer**: *I don't really know what I'm doing. I am just documenting what worked for me, in case it helps anyone else.*
+
+## 1. Update your packages
+
+This will make sure we get up-to-date packages.
+
+```bash
+pkg update & pkg upgrade -y
+```
+
+## 2. Install Ubuntu
+
+The utility [proot-distro](https://github.com/termux/proot-distro) allows us to quickly install linux distros.
+
+> **Note**: *You may have to install it's dependencies first.*
+
+```bash
+pkg install proot-distro
+```
+
+We want to install Ubuntu, other distros might work as well but I haven't tried them.
+
+```bash
+proot-distro install ubuntu
+```
+
+## 3. Install RStudio
+
+Start a Ubuntu shell.
+
+```bash
+proot-distro login ubuntu
+```
+
+This rest mostly follows what's written [here](https://github.com/Fr4nzz/ARM-rstudio-server/blob/01cd76f631405c7955fd7991c1c76b6dc86def4f/README.md).
+
+```bash
+VERS='2023.09.0-445'
+apt update && apt upgrade -y && apt install -y wget
+apt install r-base r-base-dev -y
+apt install gdebi-core
+wget https://s3.amazonaws.com/rstudio-ide-build/server/jammy/arm64/rstudio-server-${VERS}-arm64.deb
+gdebi rstudio-server-${VERS}-arm64.deb
+```
+
+If the installation succeeded you should be able to start the server and reach it at `localhost:8787`.
+
+```bash
+rstudio-server start
+```
+
+## 4. Configure the Server
+
+I didn't want user authentication since I'ld only be using it on my local device, so I added 
+
+```
+auth-none=1
+auth-minimum-user-id=0
+```
+
+to `/etc/rstudio/rserver.conf` and restarted the server.
+
+```bash
+rstudio-server restart
+```

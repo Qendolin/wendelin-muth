@@ -1,0 +1,50 @@
+I just spent way too much time restoring the album cover image of **Outtakes From Evangelion (Vol.1)**.
+
+I found a high quality copy of the illustration at [musicbrainz.org](https://musicbrainz.org/release/b35e7e04-713b-418b-b55d-2196a24a7e40/cover-art) which is incidentally the same file as used by apple music. 
+![Outtakes From Evangelion (Vol.1) - Cover Art | =360x](https://is1-ssl.mzstatic.com/image/thumb/Music30/v4/b3/e8/88/b3e8886c-a5e5-b179-619d-655ec90bff6d/KICA-3262.jpg/360x360bb.webp)
+
+Direct archive links:
+[Front](https://ia601903.us.archive.org/26/items/mbid-b35e7e04-713b-418b-b55d-2196a24a7e40/mbid-b35e7e04-713b-418b-b55d-2196a24a7e40-29299266848.jpg) | 
+[Back](https://ia801903.us.archive.org/26/items/mbid-b35e7e04-713b-418b-b55d-2196a24a7e40/mbid-b35e7e04-713b-418b-b55d-2196a24a7e40-30418053647.jpg) | 
+[CD](https://ia801903.us.archive.org/26/items/mbid-b35e7e04-713b-418b-b55d-2196a24a7e40/mbid-b35e7e04-713b-418b-b55d-2196a24a7e40-30418055859.jpg)
+
+The artwork was created by Masashi Ichifuru (TGB design) and is a modified version of some concept art by Mahiro Maeda. It depicts phase 2 of the Evangelion Unit-01 pseudo-evolution. It's also called "The Radiant Giant" (光の巨人).
+
+I wanted a version with less noise and without the text but after a few hours of searching I couldn't that.
+I discovered that a copy of the original was printed in the **Evangelion Exhibition Catalogue** (Evangelion Ten-Zuroku) which was sold at the [Evangelion Exhibition](https://www.asahi.com/event/evangelion/) in 2013.
+
+![Picture of the book | =360x](https://64.media.tumblr.com/8f95b5383f99fe56c4897f347008139f/tumblr_inline_nsdnnunFNq1reelx0_500.jpg)
+
+I even found [this review](https://literaryeagle.tumblr.com/post/125555731074/for-my-thirty-third-evangelion-book-review-here) which includes scans of some of the illustrations but not the radiant giant sketch. 
+![A different radiant giant | =360x](https://64.media.tumblr.com/339d568e0c0e4193684e544fff1ce409/tumblr_inline_nsdnw56oEK1reelx0_500.jpg)
+
+When I already had given up I stumbled across [this twitter post](https://twitter.com/TheOtaking/status/1356203956674899971) with some more scans of the book, including the sketch of the radiant giant:
+
+![Sketch of the radiant giant | =360x](https://pbs.twimg.com/media/EtIz37uWMAQTmfd?format=jpg&name=360x360) 
+
+By combining the color version and the sketch and using [waifu2x](https://waifu2x.udp.jp/) for denoising I was able to restore the album cover image:
+
+![eva_no_text_2+denoise_high.png](https://firebasestorage.googleapis.com/v0/b/wendelin-muth.appspot.com/o/public%2Fcontent%2F3a3b24c7-3414-498a-a06e-0bcb01310ed2.png?alt=media) 
+
+And I have to say, it looks glorious.
+
+By the way, check out this song from the album:
+<iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/oL9I2oxSZCY?si=wdlRqwAwi2eoGfTA" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen loading="lazy"></iframe>
+
+### Bonus
+
+I also found [these](https://twitter.com/DeathlyPrice/status/1659027523705946118) high quality 2000x2000 scans of the "One Last Kiss" album covers (again **only** on twitter for some reason)
+
+![Rei Cover Art | =360x](https://pbs.twimg.com/media/FwYMlOGWwAEPfBx?format=jpg&name=360x360)
+![Shinji Cover Art | =360x](https://pbs.twimg.com/media/FwYMl5tXwAI_OrL?format=jpg&name=360x360)
+![Asuka Cover Art | =360x](https://pbs.twimg.com/media/FwYMmg0WwAIpVCX?format=jpg&name=360x360)
+
+### Note
+
+If the links to the images ever go down and somebody wants them, I have made local copies.
+
+### Update: Super Hi-Res 7080x7080 version
+
+For fun I also just made this super hi-res version. 600dpi for a 30x30cm poster. It's not perfect but I'm not disappointed by how it turned out.  
+To get a good upscale quality I used Potrace on the LAB-L/C channels and a mix of Cubic Upscaling and Median Blurs for the H channel.  
+You can dowload it [here](https://firebasestorage.googleapis.com/v0/b/wendelin-muth.appspot.com/o/public%2Fcontent%2Fe43006f2-2492-4dd8-a7c1-876fa90cdd55.png?alt=media).

@@ -1,0 +1,3 @@
+I've been looking for a BBCode renderer on npm but all that I could find where stupidly easy trick into JavaScript injection or used a regex 'parser'.  
+Now I am using a modified version of [BBob](https://github.com/JiLiZART/BBob) because it has a well written parser and is easily extensible. 
+Too bad it's insecure as hell. Here's a link to the issue that I opened: [issue#148](https://github.com/JiLiZART/BBob/issues/148)

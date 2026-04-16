@@ -1,0 +1,27 @@
+As my next side project I want to experiment with Wave Function Collapse. A while ago I saw [this talk](https://youtu.be/t1O0_yHe-6Y) from GDC on YouTube and it was very intriguing. After watching some more and I wondered if it could be combined with perlin noise terrain generation to get the best of both worlds. 
+
+![WFC Example | =400x400](https://github.com/mxgmn/WaveFunctionCollapse/raw/master/images/wfc.gif)
+
+A problem that I see with WFC when it's used for 2D terrain generation is that it tends to look the same across larger areas, which is to be expected. I think it would be worth a try to weigh the tiles by their affinity to a hidden octave noise map. 
+
+Here is some pseudo code:
+```go
+func collapseTile(pos) {
+  height := sample(heightNoise, pos)
+  temperature := sample(temperatureNoise, pos)
+  
+  possibilities := possibleTiles(pos)
+  
+  weighted := []
+  for tile of possibilities {
+    weight := tile.weigh(height, temperature)
+    for range(weight) {
+      weighted += tile
+    }
+  }
+
+  return random(weighted)
+}
+```
+
+Another idea is to layer WFC where the first iteration generates biomes and landmasses and the second iteration adds details but is bound by the first iteration. So ocean tiles can only generate in the ocean biome.

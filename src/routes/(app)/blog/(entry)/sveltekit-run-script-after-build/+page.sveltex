@@ -1,0 +1,50 @@
+This website uses a mix of SSG and CSR. The blog entry pages are fully CSR and thus very bad for SEO. 
+To improve things a little I wanted to have at least a `<title>` and `<meta name="description">` tag with some generic content.
+Unfortunately I can't just put them in my `app.html` because that would cause conflicts with the statically generated pages which have their own metadata tags.
+
+`@sveltejs/adapter-static` allows you to specify the name of a `fallback` file that can be served by your host for CSR pages.
+```js
+const config = {
+  kit: {
+    adapter: adapter({
+      fallback: '/200.html',
+    })
+  },
+};
+```
+
+My idea was to run a script after each build that would simply modify this `200.html` file.
+Looking online didn't yield any proper results, which is why I am sharing my solution now.
+
+I added a simple plugin to the `vite.config` file:
+
+```js
+const config: UserConfig = {
+  plugins: [
+    sveltekit(),
+    {
+      name: 'fixup-spa-fallback',
+      closeBundle: {
+        sequential: true,
+        order: 'post',
+        async handler() {
+          return fixupSpaFallback();
+        }
+      }
+    }
+  ]
+};
+```
+
+The plugin uses the `closeBundle` hook which is the same step that `adapter-static` uses to generate the fallback page.
+`fixupSpaFallback` is as simple as it gets:
+
+```js
+const metadata = `<title>Wendelin's Homepage</title>`;
+
+async function fixupSpaFallback() {
+  const html = await fs.readFile('./build/200.html', 'utf-8');
+  const updatedHtml = html.replace(/<!--\s*SPA_METADATA_PLACEHOLDER\s*-->/g, metadata);
+  await fs.writeFile('./build/200.html', updatedHtml);
+}
+```
