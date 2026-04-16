@@ -10,7 +10,7 @@
 </svelte:head>
 
 <h1 class="flex justify-between border-b tracking-[-0.05em]">
-  All Blog Entries<span class="self-center text-lg text-neutral-500">{data.blogEntries.length}</span>
+  Blog Entries<span class="self-center text-lg text-neutral-500">{data.blogEntries.length}</span>
 </h1>
 
 <ol class="list-none">
@@ -33,12 +33,14 @@
 <style lang="postcss">
   @reference '$app.css';
 
+  /* TODO: extract style */
+
   .entry-header {
     @apply flex items-baseline;
   }
 
   .entry-title {
-    @apply w-full font-semibold text-gray-800 dark:text-white;
+    @apply w-full text-lg font-semibold text-gray-800 dark:text-white;
   }
 
   .entry {
@@ -50,6 +52,6 @@
   }
 
   .entry-date {
-    @apply shrink-0 pl-4 text-xs text-gray-600 dark:text-[#666];
+    @apply shrink-0 pl-4 text-sm text-gray-600 dark:text-[#666];
   }
 </style>

@@ -9,8 +9,8 @@
   <title>Projects &ndash; Wendelin Muth</title>
 </svelte:head>
 
-<h1 class="flex justify-between border-b tracking-[-0.05em]">All Projects<span class="self-center text-lg text-neutral-500">{data.projects.length}</span></h1>
-
+<h1 class="flex justify-between border-b tracking-[-0.05em]">Projects<span class="self-center text-lg text-neutral-500">{data.projects.length}</span></h1>
+<p class="text-sm italic">Of course I have many more projects, but I can't make a page for every single one.</p>
 <ol class="list-none">
   {#each data.projects as p}
     <li class="group cursor-pointer">
@@ -33,12 +33,14 @@
 <style lang="postcss">
   @reference '$app.css';
 
+  /* TODO: extract style */
+
   .entry-header {
     @apply flex items-baseline;
   }
 
   .entry-title {
-    @apply w-full font-semibold text-gray-800 dark:text-white;
+    @apply w-full text-lg font-semibold text-gray-800 dark:text-white;
   }
 
   .entry {
@@ -50,6 +52,6 @@
   }
 
   .entry-date {
-    @apply shrink-0 pl-4 text-xs text-gray-600 dark:text-[#666];
+    @apply shrink-0 pl-4 text-sm text-gray-600 dark:text-[#666];
   }
 </style>

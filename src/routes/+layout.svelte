@@ -8,6 +8,7 @@
   import NavBar from '$lib/components/NavBar.svelte';
   import { page } from '$app/state';
   import { PUBLIC_BASE_URL, PUBLIC_BUILD_TIMESTAMP } from '$env/static/public';
+  import BuildDate from '$lib/components/BuildDate.svelte';
 
   let { children } = $props();
 
@@ -73,7 +74,7 @@
 
       <div class="space-y-2 md:text-right">
         <p>
-          Built {new Date(Number(PUBLIC_BUILD_TIMESTAMP)).toLocaleString()}
+          Built <BuildDate />
         </p>
         <p>
           Source code on <Link href="https://github.com/Qendolin/wendelin-muth">GitHub</Link>

@@ -39,7 +39,7 @@
   bind:this={container}
   onpointermove={handlePointer}
   onpointerdown={handlePointer}
-  class="group relative mx-auto table min-h-90 max-w-full min-w-160 touch-none overflow-hidden rounded-md bg-black/5 shadow-md select-none"
+  class="group relative mx-auto table max-w-full touch-none overflow-hidden rounded-md bg-black/5 shadow-md select-none"
   style:width={w ? `${w}px` : '100%'}
   style:aspect-ratio={w && h ? `${w}/${h}` : 'auto'}
 >
@@ -112,13 +112,13 @@
 
   <figcaption>
     <div
-      class="absolute bottom-2 left-2 z-10 max-w-2/5 rounded bg-black/50 px-2 py-1 text-[12px] text-white backdrop-blur-sm select-text"
+      class="absolute bottom-2 left-2 z-10 max-w-2/5 rounded bg-black/50 px-2 py-1 text-[9px] text-white backdrop-blur-sm select-text md:text-[12px]"
       aria-label="before caption"
     >
       {captionBefore}
     </div>
     <div
-      class="absolute right-2 bottom-2 z-10 max-w-2/5 rounded bg-black/50 px-2 py-1 text-[12px] text-white backdrop-blur-sm select-text"
+      class="absolute right-2 bottom-2 z-10 max-w-2/5 rounded bg-black/50 px-2 py-1 text-[9px] text-white backdrop-blur-sm select-text md:text-[12px]"
       aria-label="after caption"
     >
       {captionAfter}

@@ -170,13 +170,6 @@
 <style lang="postcss">
   @reference '$app.css';
 
-  .more-content-list {
-    @apply list-none overflow-auto pr-2;
-    scrollbar-width: thin;
-    max-height: max(50lvh, 500px);
-  }
-
-  /* --- Header Section --- */
   .header-row {
     @apply grid grid-cols-[1fr_auto] items-end gap-8;
   }
@@ -198,28 +191,12 @@
     @apply mb-10 grid grid-cols-1 gap-8 md:grid-cols-2;
   }
 
-  .entry-header {
-    @apply flex items-baseline;
-  }
-
-  .entry-title {
-    @apply w-full font-semibold text-gray-800 dark:text-white;
-  }
-
-  /* --- Blog Section --- */
   .section-2 {
     @apply mb-10 grid grid-cols-1 gap-8 md:grid-cols-2;
   }
 
-  .entry {
-    @apply border-b border-gray-200 py-4 dark:border-neutral-800;
-  }
-
+  /* TODO: extract style */
   .entry-desc {
     @apply text-sm leading-relaxed text-gray-600 dark:text-[#888];
-  }
-
-  .entry-date {
-    @apply shrink-0 pl-4 text-xs text-gray-600 dark:text-[#666];
   }
 </style>

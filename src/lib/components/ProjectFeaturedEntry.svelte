@@ -1,5 +1,4 @@
 <script lang="ts">
-  import type { BlogEntry } from '$lib/blog-entry';
   import { formatDateRange } from '$lib/format';
   import type { Project } from '$lib/project';
   import TopicsList from './TopicsList.svelte';
@@ -44,6 +43,6 @@
   }
 
   .card-date {
-    @apply shrink-0 pl-4 text-sm text-gray-600 dark:text-[#666];
+    @apply pl-4 text-sm text-gray-600 md:shrink-0 dark:text-[#666];
   }
 </style>

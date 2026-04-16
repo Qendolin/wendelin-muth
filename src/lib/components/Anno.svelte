@@ -1,12 +1,13 @@
 <script>
+  const uid = $props.id();
   let { children, hint } = $props();
-  const id = `anno-${Math.random().toString(36).slice(2, 9)}`;
+  const id = `anno-${uid}`;
 </script>
 
-<span class="anchor" tabindex="0" role="button" aria-haspopup="true" aria-describedby={id}>
+<span class="anchor" tabindex="0" role="button" aria-haspopup="true" aria-describedby={id} style="anchor-name: --{id};">
   {@render children()}
 
-  <span {id} class="popover" role="tooltip" aria-live="polite">
+  <span {id} class="popover" role="tooltip" aria-live="polite" style="position-anchor: --{id};">
     {hint}
   </span>
 </span>
@@ -21,10 +22,10 @@
   }
 
   .popover {
-    position: absolute;
-    bottom: 120%;
-    left: 50%;
-    transform: translateX(-50%);
+    position: fixed;
+    position-area: top center;
+    margin-bottom: 8px;
+
     width: max-content;
     max-width: 250px;
     padding: 6px 10px;
@@ -34,7 +35,6 @@
     font-size: 13px;
     line-height: 1.4;
 
-    /* Logic */
     visibility: hidden;
     opacity: 0;
     transition: opacity 0.15s ease-out;
@@ -42,10 +42,15 @@
     z-index: 100;
   }
 
-  /* CSS Toggle */
   .anchor:hover .popover,
   .anchor:focus .popover {
     visibility: visible;
     opacity: 1;
+  }
+
+  @supports (position-try-fallbacks: flip-block) {
+    .popover {
+      position-try-fallbacks: flip-block, flip-inline;
+    }
   }
 </style>

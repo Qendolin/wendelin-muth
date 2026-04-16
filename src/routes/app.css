@@ -50,6 +50,7 @@
   }
   :root {
     @apply transition-colors duration-200;
+    font-size: clamp(0.85em, 13px + 0.24vw, 1em);
     width: 100%;
     min-width: 100%;
     overflow-x: auto;
@@ -106,7 +107,7 @@
  */
 
 .shiki {
-  @apply p-2;
+  @apply overflow-auto p-2;
   --shiki-lineno-color: light-dark(rgba(124, 127, 147, 0.6), rgba(147, 154, 183, 0.6));
 }
 
