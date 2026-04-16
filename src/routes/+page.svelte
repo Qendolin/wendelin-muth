@@ -22,7 +22,7 @@
     const blog = collection(db, 'blog');
     const documents = await getDocs(query(blog, where('draft', '==', false)));
     const entries = documents.docs
-      .map((doc) => ({ ...doc.data(), _id: doc.id }) as any)
+      .map((doc) => ({ ...doc.data(), _id: doc.id } as any))
       .map((doc) => ({
         ...doc,
         created_date: new Date(doc.created_date.seconds * 1000),
@@ -84,12 +84,12 @@
   const microdata = serializeSchema({
     '@context': 'https://schema.org',
     '@type': 'Person',
-    '@id': 'https://www.webindex.page/#myself',
+    '@id': 'https://old.webindex.page/#myself',
     name: 'Wendelin Muth',
     givenName: 'Wendelin',
     familyName: 'Muth',
     email: 'wendelin.muth+website@gmail.com',
-    url: 'https://www.webindex.page/',
+    url: 'https://old.webindex.page/',
     nationality: {
       '@type': 'Country',
       name: 'Austria'
@@ -122,17 +122,17 @@
   {@html microdata}
   <meta property="og:type" content="profile" />
   <meta property="og:title" content="Wendelin Muth - Homepage" />
-  <meta property="og:url" content="https://www.webindex.page/" />
-  <meta property="og:image" content="https://www.webindex.page/og-image.webp" />
+  <meta property="og:url" content="https://old.webindex.page/" />
+  <meta property="og:image" content="https://old.webindex.page/og-image.webp" />
   <meta property="og:image:type" content="image/webp" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
   <meta property="og:description" content="My personal website / blog. You should check it out!" />
   <meta property="twitter:card" content="summary_large_image" />
-  <meta property="twitter:url" content="https://www.webindex.page/" />
+  <meta property="twitter:url" content="https://old.webindex.page/" />
   <meta property="twitter:title" content="Wendelin Muth - Homepage" />
   <meta property="twitter:description" content="My personal website / blog. You should check it out!" />
-  <meta property="twitter:image" content="https://www.webindex.page/og-image.webp" />
+  <meta property="twitter:image" content="https://old.webindex.page/og-image.webp" />
   <meta property="profile:first_name" content="Wendelin" />
   <meta property="profile:last_name" content="Muth" />
   <meta name="description" content="My personal website / blog. You should check it out!" />
@@ -142,10 +142,10 @@
 <h1>Welcome to my Website!</h1>
 <hr style="width: 100%" />
 <header>
-  <article id="myself" itemscope itemtype="http://schema.org/Person" itemid="https://www.webindex.page/#myself">
+  <article id="myself" itemscope itemtype="http://schema.org/Person" itemid="https://old.webindex.page/#myself">
     <h2>About Me</h2>
     <meta itemprop="name" content="Wendelin Muth" />
-    <meta itemprop="url" content="https://www.webindex.page/" />
+    <meta itemprop="url" content="https://old.webindex.page/" />
     Hi, I'm Wendelin<span class="waving-hand">👋</span>, I have a passion for software development and am curretly studying computer science at
     <a href="http://tuwien.at" target="_blank" rel="noreferrer noopener nofollow">TU Wien</a>.
     <br />
