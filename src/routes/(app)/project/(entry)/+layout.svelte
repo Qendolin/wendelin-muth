@@ -4,9 +4,9 @@
   import { toJsDate } from '$lib/date';
   import type { ProjectMeta } from '$lib/project';
 
-  const meta: ProjectMeta = page.data.meta;
+  const meta: ProjectMeta = $derived(page.data.meta);
 
-  const absoluteUrl = `${PUBLIC_BASE_URL}${page.url.pathname}`;
+  const absoluteUrl = $derived(`${PUBLIC_BASE_URL}${page.url.pathname}`);
 
   const longDate = new Intl.DateTimeFormat('en-GB', {
     dateStyle: 'full'

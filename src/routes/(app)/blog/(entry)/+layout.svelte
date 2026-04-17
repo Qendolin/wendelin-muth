@@ -4,9 +4,9 @@
   import type { BlogEntryMeta } from '$lib/blog-entry';
   import { toJsDate } from '$lib/date';
 
-  const meta: BlogEntryMeta = page.data.meta;
+  const meta: BlogEntryMeta = $derived(page.data.meta);
 
-  const absoluteUrl = `${PUBLIC_BASE_URL}${page.url.pathname}`;
+  const absoluteUrl = $derived(`${PUBLIC_BASE_URL}${page.url.pathname}`);
 
   const longDate = new Intl.DateTimeFormat('en-GB', {
     dateStyle: 'full'
