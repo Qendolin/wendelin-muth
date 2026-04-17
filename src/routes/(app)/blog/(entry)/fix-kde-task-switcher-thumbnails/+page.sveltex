@@ -1,0 +1,71 @@
+<script lang="ts">
+  import Reddit from "$lib/components/Reddit.svelte";
+</script>
+
+
+After making the jump from Windows 10 to Linux, I eventually landed on **Nobara**. It checked all my boxes: it's not Ubuntu-based, it's excellent for gaming, and it features the KDE Plasma desktop.
+
+However, one visual frustration caught my eye right away: the Task Switcher (Alt+Tab). Although the switcher works perfectly fine, the window previews suffer from heavy pixelation, looking as if they are being aggressively downscaled without any filtering or smoothing.
+
+I'm certainly not the only one noticing this. There are various community discussions regarding the poor thumbnail quality in Plasma:
+
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+  <Reddit height="476" url="https://www.reddit.com/r/kde/comments/wgk95o/is_there_any_way_to_make_thumbnails_look_better/"/>
+  <Reddit height="654" url="https://www.reddit.com/r/kde/comments/1oqzpk3/is_it_possible_to_improve_quality_of_thumbnails/"/>
+</div>
+
+## The Problem: Downscaling
+Whether KDE uses bilinear or nearest-neighbor sampling isn't the main issue. The problem is that any scaling mode tends to break down when the scale factor drops below 0.5x without proper mipmapping or oversampling.
+
+Unfortunately, there isn't a toggle in the System Settings to fix this. To get high-quality previews, we have to modify some files.
+
+## The Solution: A modified style
+
+### 1. Copy the System Style
+We'll use the default `thumbnail_grid` as a template. Copy the system folder to your local user directory so your changes persist and don't require root access.
+
+Depending on your installation, the source will be at:  
+`/usr/share/kwin-wayland/tabbox/thumbnail_grid/`  
+or  
+`/usr/share/kwin/tabbox/thumbnail_grid/`
+
+Copy it to:  
+`~/.local/share/kwin/tabbox/thumbnail_grid_smooth/`
+
+### 2. Edit the QML Logic
+We need to tell the Window Manager to render the thumbnails with better texture filtering. Open `content/ui/main.qml` inside your new folder and locate the `KWin.WindowThumbnail` block.
+
+Replace that block with the following code:
+
+```qml
+KWin.WindowThumbnail {
+    anchors.fill: parent
+    wId: windowId
+    
+    // --- Workaround for pixelated scaling ---
+    layer.enabled: true
+    layer.smooth: true
+    layer.mipmap: true
+    layer.textureSize: Qt.size(width * 2, height * 2)
+    // ----------------------------------------
+}
+```
+
+*Note: Using `width * 2` and `height * 2` forces the texture to render at a higher resolution before scaling down, resulting in much smoother edges.*
+
+### 3. Update the Manifest
+To prevent confusion in the settings menu, we need to give our new style a unique identity. Open `metadata.json` and update the `Id` and `Name` fields:
+
+```json
+"Id": "thumbnail_grid_smooth",
+"Name": "Thumbnail Grid (Smooth)",
+```
+
+### 4. Apply the Changes
+Once the files are saved:
+1. Open **System Settings**.
+2. Navigate to **Window Management** → **Task Switcher**.
+3. Select **Thumbnail Grid (Smooth)** from the style list.
+4. Click **Apply**.
+
+Now, your Alt+Tab previews should look much better!
