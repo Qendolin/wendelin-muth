@@ -65,7 +65,7 @@
           Source code on <Link href="https://github.com/Qendolin/wendelin-muth">GitHub</Link>
         </p>
         <p>
-          Looking for the old page? <Link href="https://old.webindex.page">old.webindex.page</Link>
+          Looking for the old page? <Link href="https://old.webindex.page" rel="nofollow">old.webindex.page</Link>
         </p>
       </div>
     </div>
