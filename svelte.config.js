@@ -1,7 +1,7 @@
 import adapter from '@sveltejs/adapter-static';
 import MagicString from 'magic-string';
 
-import sveltexConfig from './sveltex.config.ts';
+import sveltexConfig from './sveltex.config.js';
 
 /** @type {import('@sveltejs/kit').Config} */
 const config = {
@@ -12,13 +12,16 @@ const config = {
     adapter: adapter(),
     alias: {
       '$app.css': 'src/routes/app.css'
+    },
+    paths: {
+      relative: false
     }
   },
   preprocess: [
     sveltexConfig,
     {
       name: 'fix-sveltex-shit',
-      markup({ content, filename }: { content: string; filename?: string }) {
+      markup(/** @type { {content: string; filename?: string} } */ { content, filename }) {
         if (!filename?.endsWith('.sveltex')) return;
 
         const s = new MagicString(content);

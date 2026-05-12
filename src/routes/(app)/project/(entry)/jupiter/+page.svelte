@@ -1,6 +1,6 @@
 <script>
-  import Image from '$lib/components/Image.svelte';
-  import Link from '$lib/components/Link.svelte';
+  import Image from '$lib/components/Image.static.svelte';
+  import Link from '$lib/components/Link.static.svelte';
 </script>
 
 <p>

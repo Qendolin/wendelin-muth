@@ -1,6 +1,8 @@
 <script lang="ts">
-  import Link from './Link.svelte';
-  import ImageBase from './ImageBase.svelte';
+  // svelte-static:ignore
+  import Link from './Link.static.svelte';
+  // svelte-static:ignore
+  import ImageBase from './ImageBase.static.svelte';
   import { resolveUrl } from './image-resolve';
 
   let {

@@ -1,6 +1,6 @@
 <script lang="ts">
-  import Link from './Link.svelte';
-  import ImageBase from './ImageBase.svelte';
+  import Link from './Link.static.svelte';
+  import ImageBase from './ImageBase.static.svelte';
   import type { SourceProps } from '@unpic/svelte';
   import { resolveUrl } from './image-resolve';
 

@@ -1,0 +1,88 @@
+<script lang="ts">
+  import Link from '$lib/components/Link.static.svelte';
+</script>
+
+## Motivation
+When building this portfolio and blog site, I chose SvelteKit with `prerender=true` and `csr=true`. This setup provides fast initial loads while keeping the smooth navigation of client-side routing. 
+
+However, I ran into two inefficiencies. First, I use Shiki for code syntax highlighting. Shiki is a large library, and including it in the client bundle significantly increased its size. Second, I have image preprocessing logic that handles transformations for optimization. While this didn't bloat the bundle size much, it felt wasteful to re-run the exact same calculations on the client during hydration when the server had already processed them.
+
+Because the site almost purely static, the pre-rendering step can do all this work upfront. Re-shipping Shiki and the image processing logic to the browser just to evaluate the components again didn't make much sense.
+
+## The Problem
+This highlights a limitation in SvelteKit: it doesn't support partial hydration. 
+
+Frameworks like Astro use an islands architecture, where pages are static by default and you opt-in to interactive components. My use case required the opposite: an interactive application by default, but with specific static regions where hydration is disabled. 
+
+In SvelteKit, if a page has client-side routing enabled, all components on that page are hydrated, which pulls their dependencies into the client bundle.
+
+## The Solution
+To solve this, I built a custom Vite plugin (with some AI assistance) called Svelte Static Regions. 
+
+It allows you to mark specific sections of your markup with a `<static>` tag, a `static` attribute, or by isolating them in `.static.svelte` files. You can also use `.static.ts` files for backend-heavy logic. Here is how the plugin processes them during the build:
+
+1. The plugin starts a background Vite SSR server. Spinning up a full secondary server increases build time, but it is the only way to get the correct output. You can't evaluate a Svelte snippet in complete isolation; it needs the Vite environment to properly resolve imports, aliases, and components.
+2. It parses the Svelte AST to find components or blocks marked as static. It runs after all svelte preprocessors, so tools like MDsveX or Sveltex are supported.
+3. It passes those specific regions to the background SSR server, which renders them into plain HTML strings.
+4. In the original source file, it replaces the static regions with the generated HTML using Svelte's `{@html ...}` tag.
+5. To make sure Vite still bundles the CSS for the replaced components, the plugin keeps the original component logic but wraps it in an `{#if false}` block. This strips the JavaScript from the client bundle via dead code elimination while preserving the styles.
+
+For pure logic, any imports from `.static.ts` files are stripped from the client bundle entirely. Using SvelteKit's standard `lib/server` directory wouldn't work here because we need these files to be evaluated during the client build phase.
+
+To use values from `.static.ts` files, you can place them inside a `<static>` template region or wrap them in an `if (__STATIC__)` block in your script. The `__STATIC__` global evaluates to `true` during the static rendering pass, and since it evaluates to `false` in the client build, standard dead code elimination ensures the logic never reaches the browser.
+
+## Setup
+To use the plugin, you first need to update your TypeScript declarations so the compiler recognizes the global variable and the new HTML attribute. Add the following to your `app.d.ts`:
+
+```typescript
+declare global {
+  /**
+   * Global constant that is true during SSR.
+   */
+  const __STATIC__: boolean;
+}
+
+declare module 'svelte/elements' {
+  interface HTMLAttributes<T> {
+    /**
+     * Marker attribute for the svelte-static-regions plugin.
+     * Elements carrying this attribute will be rendered to static HTML at
+     * build time and stripped of this attribute in the final output.
+     */
+    static?: true;
+  }
+}
+```
+
+Then, register the plugin in your `vite.config.ts`. It must be placed before the `sveltekit()` plugin:
+
+```typescript
+import { defineConfig } from 'vite';
+import { sveltekit } from '@sveltejs/kit/vite';
+import { svelteStaticRegions } from './svelte-static-regions.ts';
+
+export default defineConfig({
+  plugins: [
+    svelteStaticRegions(),
+    sveltekit(),
+  ],
+});
+```
+
+## Limitations
+There is one deliberate limitation to this architecture: **you cannot use `<static>` blocks or `.static.svelte` components inside regular `.svelte` components.** They must be used directly inside route files (e.g., `+page.svelte` or `+layout.svelte`). 
+
+Static blocks require evaluating component props at build-time. Inside a route file, the context is predictable. However, inside a regular, reusable component, props can be highly dynamic. If a standard component were to use a `<static>` region internally, runtime features like `{#if}` blocks or `<svelte:component>` wrappers passed from the parent would make it impossible to guarantee a safe build-time evaluation. 
+
+If you try to import a static component into a regular Svelte file, it will fall back to render dynamically, but print a warning.
+
+## Final Thoughts
+This plugin is currently a prototype and should be treated as a proof of concept. 
+
+Because it runs a secondary Vite server during the build pipeline, it does increase the overall build time (likely by a factor of 2x or less). I haven't tested it exhaustively against all edge cases yet, but I haven't encountered any issues so far.
+
+Still, it serves its purpose well and shows that partial hydration is possible in SvelteKit with a bit of build-time processing.
+
+In the future I'd like to expand on this, offering more ways to evaluate code at built time. I don't know if I'll get around to it tho.
+
+You can find the prototype code on [GitHub](https://github.com/Qendolin/wendelin-muth/blob/sveltekit/scripts/svelte-static-regions.ts) under the Apache License 2.0. I'm not interested in publishing it as an NPM package, but if anyone want's to do so, go ahead. Just make sure to credit me.

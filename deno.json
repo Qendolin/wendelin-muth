@@ -3,7 +3,7 @@
     "lib": ["esnext", "dom", "deno.ns", "dom.iterable"],
     "checkJs": true,
     "strict": true,
-    "types": ["./.svelte-kit/ambient.d.ts", "./.svelte-kit/non-ambient.d.ts"],
+    "types": ["./.svelte-kit/ambient.d.ts", "./.svelte-kit/non-ambient.d.ts", "./src/app.d.ts"],
     "rootDirs": [".", "./.svelte-kit/types"],
     "moduleResolution": "bundler"
   },

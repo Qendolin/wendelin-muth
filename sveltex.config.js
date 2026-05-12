@@ -1,37 +1,66 @@
 import { sveltex } from '@nvl/sveltex';
 import rehypeAutolinkHeadings from 'rehype-autolink-headings';
 import remarkGfm from 'remark-gfm';
-import type * as Hast from 'hast';
-import type * as MDast from 'mdast';
-import type * as RemarkRehype from 'remark-rehype';
 
-// Idfk where to get the type from
-type RemarkRehypeHandlers = RemarkRehype.Options['handlers'];
+/** @typedef {import('hast').Properties} HastProperties */
+/** @typedef {import('hast').Element} HastElement */
+/** @typedef {import('mdast').Link} MdastLink */
+/** @typedef {import('mdast').Image} MdastImage */
+/** @typedef {import('remark-rehype').Options['handlers']} RemarkRehypeHandlers */
 
-const handlers: RemarkRehypeHandlers = {
-  link(state, node: MDast.Link) {
-    const properties: Hast.Properties = { href: node.url, title: node.title };
-    const result: Hast.Element = {
+/**
+ * Custom handlers for remark-rehype to transform Markdown nodes
+ * into HAST (HTML Abstract Syntax Tree) elements.
+ *
+ * @type {RemarkRehypeHandlers}
+ */
+const handlers = {
+  /**
+   * @param {any} state - The remark-rehype state.
+   * @param {MdastLink} node - The Markdown link node.
+   */
+  link(state, node) {
+    /** @type {HastProperties} */
+    const properties = { href: node.url, title: node.title };
+
+    /** @type {HastElement} */
+    const result = {
       type: 'element',
       tagName: 'Link',
       properties,
       children: state.all(node)
     };
+
     state.patch(node, result);
     return state.applyData(node, result);
   },
-  image(state, node: MDast.Image) {
+
+  /**
+   * @param {any} state - The remark-rehype state.
+   * @param {MdastImage} node - The Markdown image node.
+   */
+  image(state, node) {
     const attribs = node.alt?.match(/\s*\|([^\|]*)$/)?.[1] ?? '';
     const [, w, h] = attribs.match(/=(\d*)x(\d*)/) ?? [];
     const alt = node.alt?.replace(/\s*\|[^\|]*$/, '');
 
-    const properties: Hast.Properties = { src: node.url, alt: alt, title: node.title, w: w, h: h };
-    const result: Hast.Element = {
+    /** @type {HastProperties} */
+    const properties = {
+      src: node.url,
+      alt: alt,
+      title: node.title,
+      w: w,
+      h: h
+    };
+
+    /** @type {HastElement} */
+    const result = {
       type: 'element',
       tagName: 'Image',
       properties,
       children: state.all(node)
     };
+
     state.patch(node, result);
     return state.applyData(node, result);
   }
@@ -54,11 +83,11 @@ export default await sveltex(
       components: [
         {
           name: 'Link',
-          importPath: '$lib/components/Link.svelte'
+          importPath: '$lib/components/Link.static.svelte'
         },
         {
           name: 'Image',
-          importPath: '$lib/components/Image.svelte'
+          importPath: '$lib/components/Image.static.svelte'
         }
       ],
       directives: {

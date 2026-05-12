@@ -1,7 +1,7 @@
 <script lang="ts">
   import type { PageProps } from './$types';
   import type { Thing, WithContext } from 'schema-dts';
-  import Link from '$lib/components/Link.svelte';
+  import Link from '$lib/components/Link.static.svelte';
   import ProjectFeaturedEntry from '$lib/components/ProjectFeaturedEntry.svelte';
   import BlogFeaturedEntry from '$lib/components/BlogFeaturedEntry.svelte';
   import Anno from '$lib/components/Anno.svelte';
@@ -114,7 +114,7 @@
 </section>
 <hr class="mt-0" />
 
-<div class="section-1">
+<div class="section">
   <section>
     <h2 class="mb-5 border-b border-gray-300 pb-2 text-xs tracking-[3px] text-gray-500 uppercase">About</h2>
     Hi, I'm Wendelin, tho I usually go by <Anno hint="It's the username that I chose when I was like 11 or so.">Qendolin</Anno> online. I'm a software / graphics
@@ -139,7 +139,7 @@
   </section>
 </div>
 
-<div class="section-2">
+<div class="section">
   <section>
     <h2 class="mb-5 flex justify-between border-b border-gray-300 pb-2 text-xs">
       <span class="tracking-[3px] text-gray-500 uppercase">Featured Blog Posts</span><Link href="/blog" class="translate-y-0.5 font-thin text-gray-500"
@@ -187,11 +187,7 @@
     grid-template-columns: max-content max-content;
   }
 
-  .section-1 {
-    @apply mb-10 grid grid-cols-1 gap-8 md:grid-cols-2;
-  }
-
-  .section-2 {
+  .section {
     @apply mb-10 grid grid-cols-1 gap-8 md:grid-cols-2;
   }
 

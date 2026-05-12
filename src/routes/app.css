@@ -29,7 +29,7 @@
     @apply list-inside list-decimal;
   }
   dl > dd {
-    @apply indent-4;
+    @apply pl-4;
   }
   hr {
     @apply my-5;
@@ -47,6 +47,9 @@
     height: 2rem;
     display: inline-block;
     position: relative;
+  }
+  code:not(pre > code) {
+    @apply rounded-sm bg-gray-400/20 px-1 font-mono break-keep whitespace-nowrap;
   }
   :root {
     @apply transition-colors duration-200;
@@ -106,14 +109,14 @@
  * Shiki
  */
 
-.shiki {
+pre.shiki {
   @apply overflow-auto p-2;
   --shiki-lineno-color: light-dark(rgba(124, 127, 147, 0.6), rgba(147, 154, 183, 0.6));
 }
 
 /* Sadly requires duplicate code */
-:root[data-theme='dark'] .shiki,
-:root[data-theme='dark'] .shiki span {
+:root[data-theme='dark'] pre.shiki,
+:root[data-theme='dark'] pre.shiki span {
   color: var(--shiki-dark) !important;
   background-color: var(--shiki-dark-bg) !important;
   /* Optional, if you also want font styles */
@@ -122,12 +125,12 @@
   text-decoration: var(--shiki-dark-text-decoration) !important;
 }
 
-.shiki > code {
+pre.shiki > code {
   counter-reset: step;
   counter-increment: step 0;
 }
 
-.shiki > code .line::before {
+pre.shiki > code .line::before {
   content: counter(step);
   counter-increment: step;
   width: 1rem;

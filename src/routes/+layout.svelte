@@ -1,6 +1,6 @@
 <script lang="ts">
   import './app.css';
-  import Link from '$lib/components/Link.svelte';
+  import Link from '$lib/components/Link.static.svelte';
   import { onMount } from 'svelte';
   import { addBackgroundEffect } from '$lib/background-effect';
   import ThemeSwitch from '$lib/components/ThemeSwitch.svelte';
@@ -42,21 +42,6 @@
     {@render children()}
   </main>
 
-  <!-- <footer style="grid-area: footer;" class="mt-8">
-    <hr class="m-0" />
-    <hr class="mt-0.5 mb-8" />
-    <p>
-      &copy; 2026 Wendelin Muth. Content: <Link href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0.</Link> Code: <Link
-        href="https://www.mozilla.org/media/MPL/2.0/index.txt">MPL-2.0</Link
-      >.
-    </p>
-    <p>
-      Source code on <Link href="https://github.com/Qendolin/wendelin-muth">GitHub</Link>.
-    </p>
-    <p>
-      Looking for the old page? I've archived it at <Link href="https://old.webindex.page">old.webindex.page</Link>.
-    </p>
-  </footer> -->
   <footer style="grid-area: footer;" class="mt-8 pb-4 text-sm">
     <hr class="m-0" />
     <hr class="mt-0.5 mb-4" />

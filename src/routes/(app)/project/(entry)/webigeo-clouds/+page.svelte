@@ -1,7 +1,7 @@
 <script>
   import ImageCompare from '$lib/components/ImageCompare.svelte';
-  import Link from '$lib/components/Link.svelte';
-  import Image from '$lib/components/Image.svelte';
+  import Link from '$lib/components/Link.static.svelte';
+  import Image from '$lib/components/Image.static.svelte';
 </script>
 
 <p>

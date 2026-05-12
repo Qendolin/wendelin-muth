@@ -8,6 +8,22 @@ declare global {
     // interface PageState {}
     // interface Platform {}
   }
+
+  /**
+   * Global constant that is true during SSR.
+   */
+  const __STATIC__: boolean;
+}
+
+declare module 'svelte/elements' {
+  interface HTMLAttributes<T> {
+    /**
+     * Marker attribute for the svelte-static-regions plugin.
+     * Elements carrying this attribute will be rendered to static HTML at
+     * build time and stripped of this attribute in the final output.
+     */
+    static?: true;
+  }
 }
 
 export {};
