@@ -84,7 +84,7 @@ function createWallStore() {
 		if (auth?.displayName) setNickname(auth.displayName, false);
 	});
 
-	const wallCollection = collection(db, 'wall');
+	const wallCollection = collection(db, 'old-wall');
 
 	const mapPost = (data: any, id: string) => ({
 		...data,
@@ -116,7 +116,7 @@ function createWallStore() {
 			);
 		},
 		async delete(id: string) {
-			await deleteDoc(doc(db, 'wall', id));
+			await deleteDoc(doc(db, 'old-wall', id));
 			update((state) =>
 				patch(state, {
 					posts: [...(state.posts ?? [])].filter((post) => post._id != id)
@@ -124,7 +124,7 @@ function createWallStore() {
 			);
 		},
 		async removeAsAdmin(id: string) {
-			await updateDoc(doc(db, 'wall', id), {
+			await updateDoc(doc(db, 'old-wall', id), {
 				removedByAdmin: true
 			});
 			update((state) =>
@@ -149,7 +149,7 @@ function createUserStore() {
 			currentUserData = null;
 			update((state) => patch(state, { auth: user, data: currentUserData }));
 			if (currentUser) {
-				getDoc(doc(db, 'users', currentUser.uid))
+				getDoc(doc(db, 'old-users', currentUser.uid))
 					.then((doc) => ({
 						display_name: doc.get('display_name')
 					}))
@@ -175,11 +175,11 @@ function createUserStore() {
 		},
 		getRef: (): DocumentReference | null => {
 			if (currentUser == null) return null;
-			return doc(db, 'users', currentUser.uid);
+			return doc(db, 'old-users', currentUser.uid);
 		},
 		createUser: async (name: string) => {
 			if (currentUser == null) throw 'No logged in user';
-			await setDoc(doc(db, 'users', currentUser.uid), {
+			await setDoc(doc(db, 'old-users', currentUser.uid), {
 				display_name: name
 			});
 
@@ -198,7 +198,7 @@ function createBlogStore() {
 	return {
 		subscribe,
 		loadEntry: async (slug: string) => {
-			const q = query(collection(db, 'blog'), where('slug', '==', slug));
+			const q = query(collection(db, 'old-blog'), where('slug', '==', slug));
 			const result = await getDocs(q);
 
 			if (result.empty) {
@@ -226,7 +226,7 @@ function createBlogStore() {
 		},
 		getRef: (): DocumentReference | null => {
 			if (currentEntry == null) return null;
-			return doc(db, 'blog', currentEntry._id);
+			return doc(db, 'old-blog', currentEntry._id);
 		}
 	};
 }
@@ -259,7 +259,7 @@ function createCommentsStore() {
 	const reload = async () => {
 		// TODO: add pagination
 		const q = query(
-			collection(db, 'comments'),
+			collection(db, 'old-comments'),
 			where('blog_ref', '==', page.getRef()),
 			where('removed', '==', false),
 			where('comment_ref', '==', null),
@@ -302,7 +302,7 @@ function createCommentsStore() {
 					comment_ref: reply ?? null,
 					removed: false
 				};
-				const resultRef = await addDoc(collection(db, 'comments'), payload);
+				const resultRef = await addDoc(collection(db, 'old-comments'), payload);
 				const resultDoc = await getDoc(resultRef);
 				update((state) =>
 					patch(state, {
@@ -321,7 +321,7 @@ function createCommentsStore() {
 					body: content,
 					modified_date: serverTimestamp()
 				};
-				await updateDoc(doc(db, 'comments', id), payload);
+				await updateDoc(doc(db, 'old-comments', id), payload);
 			} catch (error) {
 				showError(String(error));
 			}

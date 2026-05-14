@@ -58,14 +58,14 @@
 
   async function removeComment() {
     busy = true;
-    await comments.remove(doc(db, 'comments', root._id));
+    await comments.remove(doc(db, 'old-comments', root._id));
     root.removed = true;
     busy = false;
   }
 
   async function unremoveComment() {
     busy = true;
-    await comments.unremove(doc(db, 'comments', root._id));
+    await comments.unremove(doc(db, 'old-comments', root._id));
     root.removed = false;
     busy = false;
   }

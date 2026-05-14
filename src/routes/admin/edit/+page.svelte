@@ -24,7 +24,7 @@
   import katex from 'katex';
   import { title } from '$lib/stores';
 
-  const blog = collection(db, 'blog');
+  const blog = collection(db, 'old-blog');
 
   marked.setOptions({
     gfm: true
@@ -97,7 +97,7 @@
     if (params == null) return;
     const docId = params.get('id');
     if (docId != null) {
-      docRef = doc(db, 'blog', params.get('id') as string);
+      docRef = doc(db, 'old-blog', params.get('id') as string);
       getDoc(docRef).then((doc) => {
         const data = doc.data();
         if (data) {

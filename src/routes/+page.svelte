@@ -19,7 +19,7 @@
   };
 
   async function getBlogEntries(): Promise<Entry[]> {
-    const blog = collection(db, 'blog');
+    const blog = collection(db, 'old-blog');
     const documents = await getDocs(query(blog, where('draft', '==', false)));
     const entries = documents.docs
       .map((doc) => ({ ...doc.data(), _id: doc.id } as any))

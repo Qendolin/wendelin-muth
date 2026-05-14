@@ -24,7 +24,7 @@
     {/if}
   </div>
   <br />
-  <textarea class="wall-edit-area" placeholder="Your website is really cool!" bind:value={wallPostContent} />
+  <textarea class="wall-edit-area" disabled placeholder="Your website is really cool!" bind:value={wallPostContent} />
   <br />
   <button class="wall-post-button" on:click={onWallPost} disabled={wallPostContent.trim() == ''}>Post</button>
   as
