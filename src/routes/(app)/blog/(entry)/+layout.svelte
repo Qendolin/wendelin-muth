@@ -2,6 +2,7 @@
   import { page } from '$app/state';
   import { PUBLIC_BASE_URL } from '$env/static/public';
   import type { BlogEntryMeta } from '$lib/blog-entry';
+  import CommentSection from '$lib/components/CommentSection.svelte';
   import { toJsDate } from '$lib/date';
 
   const meta: BlogEntryMeta = $derived(page.data.meta);
@@ -59,6 +60,10 @@
   </header>
   {@render children()}
 </article>
+
+<hr />
+
+<CommentSection routeId={page.route.id!} />
 
 <style>
   :global(blockquote) {

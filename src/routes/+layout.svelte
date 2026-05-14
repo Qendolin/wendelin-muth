@@ -9,6 +9,7 @@
   import { page } from '$app/state';
   import { PUBLIC_BASE_URL } from '$env/static/public';
   import BuildDate from '$lib/components/BuildDate.svelte';
+  import AuthStatus from '$lib/components/AuthStatus.svelte';
 
   let { children } = $props();
 
@@ -45,6 +46,8 @@
   <footer style="grid-area: footer;" class="mt-8 pb-4 text-sm">
     <hr class="m-0" />
     <hr class="mt-0.5 mb-4" />
+
+    <AuthStatus />
 
     <div class="flex flex-col gap-6 text-sm opacity-70 md:flex-row md:items-end md:justify-between">
       <div class="space-y-2">

@@ -1,7 +1,7 @@
-import { initializeApp } from 'firebase/app';
-import { getFirestore } from 'firebase/firestore/lite';
+import type { Firestore } from 'firebase/firestore/lite';
+import type { Auth } from 'firebase/auth';
 
-const firebaseConfig = {
+const config = {
   apiKey: 'AIzaSyDJ8atqjyu3jXNoCgj8Zi8iAwTUqvWTljk',
   authDomain: 'wendelin-muth.firebaseapp.com',
   projectId: 'wendelin-muth',
@@ -11,6 +11,20 @@ const firebaseConfig = {
   measurementId: 'G-X73GPRXRWM'
 } as const;
 
-export const app = initializeApp(firebaseConfig);
+type Firebase = { db: Firestore; auth: Auth };
 
-export const db = getFirestore(app);
+let cached: Firebase | null = null;
+
+export async function getFirebase(): Promise<Firebase> {
+  if (cached) return cached;
+
+  const [{ initializeApp }, { getFirestore }, { getAuth }] = await Promise.all([
+    import('firebase/app'),
+    import('firebase/firestore/lite'),
+    import('firebase/auth')
+  ]);
+
+  const app = initializeApp(config);
+  cached = { db: getFirestore(app), auth: getAuth(app) };
+  return cached;
+}
