@@ -15,7 +15,7 @@
 <p>
   For the <em>Programmiertechniken für Visual Computing</em> bachelor's course at TU Vienna (2024), the task was to build a real-time 3D game from scratch with
   a set of required rendering effects. I ended up going well past the minimum. We received a <strong>Sehr Gut</strong> and the project is listed on the
-  <Link href="https://www.youtube.com/watch?v=yGkNzov98J8">course Hall of Fame</Link>.
+  <Link href="https://www.cg.tuwien.ac.at/courses/PTVC/HallOfFame/2024S">course Hall of Fame</Link>.
 </p>
 
 <h2>The Game</h2>

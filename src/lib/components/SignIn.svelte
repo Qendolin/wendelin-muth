@@ -2,15 +2,10 @@
   import { auth } from '$lib/stores.svelte';
 
   type Props = {
-    /**
-     * 'link'   — upgrading an existing anonymous account (keeps uid + comments)
-     * 'signin' — fresh sign-in for a returning linked user
-     */
-    mode: 'link' | 'signin';
-    onclose?: () => void;
+    onswitch?: () => void;
   };
 
-  let { mode, onclose }: Props = $props();
+  let { onswitch }: Props = $props();
 
   type Tab = 'google' | 'email';
   let tab = $state<Tab>('google');
@@ -22,45 +17,36 @@
   async function handleGoogle() {
     error = null;
     try {
-      if (mode === 'link') {
-        await auth.linkWithGoogle();
-      } else {
-        await auth.signInWithGoogle();
-      }
-      onclose?.();
+      await auth.signInWithGoogle();
     } catch (e) {
       error = String(e);
     }
   }
 
-  async function handleEmail() {
+  async function handleEmail(ev: SubmitEvent) {
+    ev.preventDefault();
     error = null;
     try {
-      if (mode === 'link') {
-        await auth.linkWithEmail(email, password);
-      } else {
-        await auth.signInWithEmail(email, password);
-      }
-      onclose?.();
+      await auth.signInWithEmail(email, password);
     } catch (e) {
       error = String(e);
     }
   }
-
-  const title = mode === 'link' ? 'Save your account' : 'Sign in';
-  const emailCta = mode === 'link' ? 'Link account' : 'Sign in';
-  const googleCta = mode === 'link' ? 'Link Google account' : 'Sign in with Google';
 </script>
 
 <div>
-  <h3>{title}</h3>
+  <h3 class="mt-0 mb-0 text-lg font-bold">Sign in</h3>
 
-  {#if mode === 'link'}
-    <p>Link a real account to keep access to your comments across devices and sessions. Your existing comments stay attributed to you.</p>
+  {#if onswitch}
+    <p class="mb-4 text-sm text-zinc-600 dark:text-zinc-400">
+      Don't have an account?
+      <button class="font-bold text-black underline hover:no-underline dark:text-white" onclick={onswitch}>Sign up</button>
+    </p>
   {/if}
 
-  <div role="tablist">
+  <div role="tablist" class="tab-list mt-4">
     <button
+      class="tab-btn"
       role="tab"
       aria-selected={tab === 'google'}
       onclick={() => {
@@ -71,6 +57,7 @@
       Google
     </button>
     <button
+      class="tab-btn"
       role="tab"
       aria-selected={tab === 'email'}
       onclick={() => {
@@ -78,37 +65,37 @@
         error = null;
       }}
     >
-      Email + password
+      Email
     </button>
   </div>
 
   {#if tab === 'google'}
-    <div role="tabpanel">
-      <button onclick={handleGoogle} disabled={auth.linking}>
-        {auth.linking ? 'Opening…' : googleCta}
+    <div role="tabpanel" class="mt-4 flex flex-col gap-4">
+      <button class="btn-primary w-full py-2" onclick={handleGoogle} disabled={auth.linking}>
+        {auth.linking ? 'Opening…' : 'Sign in with Google'}
       </button>
     </div>
   {:else}
-    <div role="tabpanel">
-      <label>
-        Email
-        <input type="email" bind:value={email} autocomplete={mode === 'link' ? 'new-password' : 'email'} disabled={auth.linking} />
-      </label>
-      <label>
-        Password
-        <input type="password" bind:value={password} autocomplete={mode === 'link' ? 'new-password' : 'current-password'} disabled={auth.linking} />
-      </label>
-      <button onclick={handleEmail} disabled={auth.linking || !email.trim() || !password}>
-        {auth.linking ? 'Saving…' : emailCta}
-      </button>
+    <div role="tabpanel" class="mt-4">
+      <form class="flex flex-col gap-4" onsubmit={handleEmail}>
+        <label class="flex flex-col gap-1 text-sm">
+          Email
+          <input type="email" class="input-base" bind:value={email} autocomplete="email" required disabled={auth.linking} />
+        </label>
+        <label class="flex flex-col gap-1 text-sm">
+          Password
+          <div class="flex">
+            <input type="password" class="input-base w-full" bind:value={password} autocomplete="current-password" required disabled={auth.linking} />
+          </div>
+        </label>
+        <button class="btn-primary mt-2 w-full py-2" type="submit" disabled={auth.linking || !email.trim() || !password}>
+          {auth.linking ? 'Signing in…' : 'Sign in'}
+        </button>
+      </form>
     </div>
   {/if}
 
   {#if error}
-    <p role="alert">{error}</p>
-  {/if}
-
-  {#if onclose}
-    <button onclick={onclose} disabled={auth.linking}>Cancel</button>
+    <p role="alert" class="mt-4 text-sm text-red-500">{error}</p>
   {/if}
 </div>

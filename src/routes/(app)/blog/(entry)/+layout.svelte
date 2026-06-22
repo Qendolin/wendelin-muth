@@ -41,7 +41,7 @@
   {/if}
 </svelte:head>
 
-<article class="flex w-full flex-col">
+<article class="flex min-h-[50vh] w-full flex-col">
   <header>
     <h1>{meta.title}</h1>
     <span class="bg-neutral-800 px-2 py-0.5 text-xs text-white dark:bg-neutral-200 dark:text-black">

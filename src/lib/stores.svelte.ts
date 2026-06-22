@@ -130,6 +130,33 @@ class AuthStore {
     }
   }
 
+  async signUpWithEmail(email: string, password: string, name: string): Promise<void> {
+    this.linking = true;
+    this.error = null;
+    try {
+      const fbAuth = await this.#ready;
+      const { createUserWithEmailAndPassword, updateProfile } = await import('firebase/auth');
+
+      const trimmed = name.trim();
+      if (!trimmed) throw new Error('A display name is required.');
+      if (trimmed.length > 32) throw new Error('Max 32 characters.');
+
+      const result = await createUserWithEmailAndPassword(fbAuth, email, password);
+      await updateProfile(result.user, { displayName: trimmed });
+
+      const { db } = await getFirebase();
+      const { doc, setDoc } = await import('firebase/firestore/lite');
+      await setDoc(doc(db, 'users', result.user.uid), { display_name: trimmed, is_anonymous: false }, { merge: true });
+
+      this.#syncFromUser(result.user);
+    } catch (e) {
+      this.error = String(e);
+      throw e;
+    } finally {
+      this.linking = false;
+    }
+  }
+
   async linkWithGoogle(): Promise<void> {
     if (!this.user) throw new Error('Not signed in.');
     this.linking = true;
@@ -170,7 +197,7 @@ class AuthStore {
 
       const credential = EmailAuthProvider.credential(email, password);
       const result = await linkWithCredential(this.user, credential);
-      // linkWithCredential fires onAuthStateChanged — listener handles the update.
+      // linkWithCredential fires onAuthStateChanged, listener handles the update.
       await setDoc(doc(db, 'users', result.user.uid), { is_anonymous: false }, { merge: true });
     } catch (e) {
       this.error = String(e);

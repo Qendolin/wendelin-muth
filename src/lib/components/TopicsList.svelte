@@ -12,7 +12,7 @@
   @reference "$app.css";
 
   .topics-list {
-    @apply my-2 flex flex-wrap gap-1 font-mono text-[10px];
+    @apply my-2 flex flex-wrap gap-1 text-[10px];
   }
 
   .topic-tag {
