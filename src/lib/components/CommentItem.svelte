@@ -40,8 +40,8 @@
 </script>
 
 <article class="flex flex-col">
-  <header class="text-muted flex items-baseline gap-3">
-    <span class="text-md text-black dark:text-white"><strong title={comment.user_id}>{comment.author}</strong></span>
+  <header class="flex items-baseline gap-3 text-content-muted">
+    <span class="text-md text-content"><strong title={comment.user_id}>{comment.author}</strong></span>
 
     <time class="text-xs" datetime={comment.created_date.toISOString()} title={comment.created_date.toLocaleString()}>
       {formatDate(comment.created_date)}
@@ -54,12 +54,11 @@
   {#if editing}
     <CommentForm initialBody={comment.body} action="edit" onsubmit={handleEdit} oncancel={() => (editing = false)} />
   {:else}
-    <p class="my-0 whitespace-pre-wrap">{comment.body}</p>
+    <p class="my-0 whitespace-pre-wrap text-content">{comment.body}</p>
 
     <menu class="mt-1 flex gap-4 ps-2 text-xs">
       {#if isOwn}
         <li><button class="btn-link" onclick={() => (editing = true)}>Edit</button></li>
-        <!-- TODO: Confirmation-->
         <li><button class="btn-link" onclick={() => comments.remove(comment._id)}>Delete</button></li>
       {/if}
       {#if depth < 2}
@@ -69,17 +68,15 @@
   {/if}
 
   {#if replying}
-    <div class="mt-4 border-l border-gray-600 pl-4 dark:border-gray-400">
+    <div class="mt-4 border-l border-border-base pl-4">
       <CommentForm placeholder="Reply to {comment.author}…" action="reply" onsubmit={handleReply} oncancel={() => (replying = false)} />
     </div>
   {/if}
 
   {#if replies.length > 0}
-    <ol class="mt-4 flex list-none flex-col gap-2 border-l border-gray-600 pl-4 dark:border-gray-400">
+    <ol class="mt-4 flex list-none flex-col gap-2 border-l border-border-base pl-4">
       {#each replies as reply (reply._id)}
-        <li>
-          <CommentItem comment={reply} depth={depth + 1} />
-        </li>
+        <li><CommentItem comment={reply} depth={depth + 1} /></li>
       {/each}
     </ol>
   {/if}

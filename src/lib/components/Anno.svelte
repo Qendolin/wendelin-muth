@@ -6,8 +6,7 @@
 
 <span class="anchor" tabindex="0" role="button" aria-haspopup="true" aria-describedby={id} style="anchor-name: --{id};">
   {@render children()}
-
-  <span {id} class="popover" role="tooltip" aria-live="polite" style="position-anchor: --{id};">
+  <span {id} class="popover surface-tooltip" role="tooltip" aria-live="polite" style="position-anchor: --{id};">
     {hint}
   </span>
 </span>
@@ -29,9 +28,6 @@
     width: max-content;
     max-width: 250px;
     padding: 6px 10px;
-    background: #222;
-    color: #fff;
-    border-radius: 4px;
     font-size: 13px;
     line-height: 1.4;
 

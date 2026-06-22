@@ -1,5 +1,7 @@
 <script lang="ts">
   import { auth } from '$lib/stores.svelte';
+  import Input from './Input.svelte';
+  import Tabs from './Tabs.svelte';
 
   type Props = {
     /**
@@ -66,40 +68,25 @@
   <h3 class="mt-0 mb-0 text-lg font-bold">{title}</h3>
 
   {#if mode === 'link'}
-    <p class="mb-6 text-sm text-zinc-600 dark:text-zinc-400">
+    <p class="mb-6 text-sm text-content-muted">
       Link a real account to keep access to your comments across devices and sessions. Your existing comments stay attributed to you.
     </p>
   {:else if onswitch}
-    <p class="mb-4 text-sm text-zinc-600 dark:text-zinc-400">
+    <p class="mb-4 text-sm text-content-muted">
       Already have an account?
-      <button class="font-bold text-black underline hover:no-underline dark:text-white" onclick={onswitch}>Sign in</button>
+      <button class="font-bold text-content underline hover:no-underline" onclick={onswitch}>Sign in</button>
     </p>
   {/if}
 
-  <div role="tablist" class="tab-list mt-4">
-    <button
-      class="tab-btn"
-      role="tab"
-      aria-selected={tab === 'google'}
-      onclick={() => {
-        tab = 'google';
-        error = null;
-      }}
-    >
-      Google
-    </button>
-    <button
-      class="tab-btn"
-      role="tab"
-      aria-selected={tab === 'email'}
-      onclick={() => {
-        tab = 'email';
-        error = null;
-      }}
-    >
-      Email
-    </button>
-  </div>
+  <Tabs
+    class="mt-4"
+    options={[
+      { value: 'google', label: 'Google' },
+      { value: 'email', label: 'Email' }
+    ]}
+    bind:selected={tab}
+    onchange={() => (error = null)}
+  />
 
   {#if tab === 'google'}
     <div role="tabpanel" class="mt-4 flex flex-col gap-4">
@@ -111,42 +98,19 @@
     <div role="tabpanel" class="mt-4">
       <form class="flex flex-col gap-4" onsubmit={handleEmail}>
         {#if mode === 'signup'}
-          <label class="flex flex-col gap-1 text-sm">
-            Display Name
-            <input type="text" class="input-base" bind:value={name} required disabled={auth.linking} maxlength="32" />
-          </label>
+          <Input label="Display Name" bind:value={name} required disabled={auth.linking} maxlength={32} />
         {/if}
-        <label class="flex flex-col gap-1 text-sm">
-          Email
-          <input
-            type="email"
-            class="input-base"
-            bind:value={email}
-            autocomplete={mode === 'link' ? 'new-password' : 'email'}
-            required
-            disabled={auth.linking}
-          />
-        </label>
-        <label class="flex flex-col gap-1 text-sm">
-          Password
-          <div class="flex">
-            <input type="password" class="input-base w-full" bind:value={password} autocomplete="new-password" required disabled={auth.linking} minlength="6" />
-          </div>
-        </label>
-        <label class="flex flex-col gap-1 text-sm">
-          Confirm Password
-          <div class="flex">
-            <input
-              type="password"
-              class="input-base w-full"
-              bind:value={confirmPassword}
-              autocomplete="new-password"
-              required
-              disabled={auth.linking}
-              minlength="6"
-            />
-          </div>
-        </label>
+        <Input label="Email" type="email" bind:value={email} autocomplete={mode === 'link' ? 'new-password' : 'email'} required disabled={auth.linking} />
+        <Input label="Password" type="password" bind:value={password} autocomplete="new-password" required disabled={auth.linking} minlength={6} />
+        <Input
+          label="Confirm Password"
+          type="password"
+          bind:value={confirmPassword}
+          autocomplete="new-password"
+          required
+          disabled={auth.linking}
+          minlength={6}
+        />
         <button class="btn-primary mt-2 w-full py-2" type="submit" disabled={auth.linking || !email.trim() || !password || (mode === 'signup' && !name.trim())}>
           {auth.linking ? 'Saving…' : emailCta}
         </button>
@@ -155,11 +119,11 @@
   {/if}
 
   {#if error}
-    <p role="alert" class="mt-4 text-sm text-red-500">{error}</p>
+    <p role="alert" class="text-error mt-4">{error}</p>
   {/if}
 
   {#if onclose}
-    <div class="mt-4 border-t border-zinc-200 pt-4 dark:border-zinc-800">
+    <div class="mt-4 border-t border-border-base pt-4">
       <button class="btn-link w-full" type="button" onclick={onclose} disabled={auth.linking}>Cancel</button>
     </div>
   {/if}

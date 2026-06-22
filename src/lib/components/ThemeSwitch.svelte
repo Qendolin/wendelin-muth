@@ -89,7 +89,7 @@
   popovertarget="theme-popover"
   type="button"
   aria-label="Change color theme"
-  class={['theme-toggle-btn flex size-9 items-center justify-center opacity-0', classes]}
+  class={['theme-toggle-btn btn-icon opacity-0', classes]}
   class:opacity-100={mounted}
   {...rest}
 >
@@ -101,22 +101,9 @@
 </button>
 
 <!-- Popover -->
-<div
-  id="theme-popover"
-  popover
-  class="theme-popover m-0 border
-         border-black/10 bg-white p-1
-         shadow-sm dark:border-white/10
-         dark:bg-gray-900"
->
+<div id="theme-popover" popover class="theme-popover surface-popover m-0 p-1">
   {#each options as opt}
-    <label
-      class="flex cursor-pointer items-center gap-2.5 px-3
-             py-2 text-sm text-gray-700 select-none
-             hover:bg-gray-100 has-checked:bg-gray-100
-             dark:text-gray-300 dark:hover:bg-white/10
-             dark:has-checked:bg-white/10"
-    >
+    <label class="flex cursor-pointer items-center gap-2.5 px-3 py-2 text-sm text-content select-none hover:bg-border-base has-checked:bg-border-base">
       <input
         type="radio"
         name="theme-preference"
@@ -125,7 +112,6 @@
         onchange={() => (preference = opt.value)}
         class="sr-only"
       />
-
       <span class="flex size-4 shrink-0 items-center justify-center">
         {#if opt.value === 'system'}
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
@@ -141,14 +127,12 @@
           {@render moonIcon()}
         {/if}
       </span>
-
       {opt.label}
     </label>
   {/each}
 </div>
 
 <style>
-  /* ── Anchor positioning ─────────────────────────────────────────────── */
   .theme-toggle-btn {
     anchor-name: --theme-toggle;
   }

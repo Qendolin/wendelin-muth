@@ -2,6 +2,7 @@
   import { auth } from '$lib/stores.svelte';
   import SignIn3 from './SignIn.svelte';
   import SignUp from './SignUp.svelte';
+  import Input from './Input.svelte';
 
   let editingName = $state(false);
   let showUpgrade = $state(false);
@@ -29,19 +30,17 @@
 </script>
 
 {#if auth.loading}
-  <div class="text-zinc-600">Loading...</div>
+  <div class="text-content-muted">Loading...</div>
 {:else if auth.isSignedIn}
   <div class="space-y-4">
-    <!-- User / Profile Edit Row -->
     <div class="flex min-h-8 items-center justify-between gap-4">
       {#if editingName}
         <div class="flex w-full items-center gap-3">
-          <input
-            type="text"
-            class="input-base"
+          <Input
+            class="grow"
             bind:value={nameInput}
             placeholder="New name"
-            maxlength="32"
+            maxlength={32}
             disabled={auth.updatingName}
             onkeydown={(e) => e.key === 'Enter' && handleSaveName()}
           />
@@ -52,43 +51,38 @@
         </div>
       {:else}
         <div class="truncate">
-          <span>Signed in as</span>
-          <span class="truncate font-bold">{auth.displayName}</span>
+          <span class="pr-1 text-content-muted">Signed in as</span>
+          <span class="truncate font-bold text-content">{auth.displayName}</span>
         </div>
-        <button class="shrink-0 text-zinc-500 underline hover:text-black dark:text-white" onclick={startEditingName}>Edit</button>
+        <button class="btn-link shrink-0" onclick={startEditingName}>Edit</button>
       {/if}
     </div>
 
     {#if nameError}
-      <p role="alert" class="text-xs text-red-600 dark:text-red-400">{nameError}</p>
+      <p role="alert" class="text-error">{nameError}</p>
     {/if}
 
-    <div class="border-t border-zinc-200 dark:border-zinc-800"></div>
+    <div class="border-t border-border-base"></div>
 
-    <!-- Anonymous Account Warning Statement -->
     {#if auth.isAnonymous}
       {#if !showUpgrade}
-        <div class="space-y-2 text-xs leading-relaxed text-zinc-600 dark:text-zinc-400">
+        <div class="space-y-2 text-xs leading-relaxed text-content-muted">
           <p>You are using a temporary guest account. It will be lost if you sign out, clear browser cookies or switch devices.</p>
-          <button class="block pt-0.5 font-bold text-black underline hover:no-underline dark:text-white" onclick={() => (showUpgrade = true)}>
-            Secure this account
-          </button>
+          <button class="block pt-0.5 font-bold text-content underline hover:no-underline" onclick={() => (showUpgrade = true)}> Secure this account </button>
         </div>
       {:else}
         <div class="py-1">
           <SignUp mode="link" onclose={() => (showUpgrade = false)} />
         </div>
       {/if}
-      <hr class="border-zinc-200 dark:border-zinc-800" />
+      <hr class="border-border-base" />
     {/if}
 
-    <!-- Bottom Actions Matrix (De-prioritized ID string) -->
-    <div class="flex items-center justify-between text-zinc-500 dark:text-zinc-400">
-      <span class="text-[10px] tracking-tight text-zinc-400 select-all dark:text-zinc-600">
+    <div class="flex items-center justify-between text-content-muted">
+      <span class="text-[10px] tracking-tight text-content-disabled select-all">
         id: {auth.uid}
       </span>
-
-      <button class="underline hover:text-black dark:hover:text-white" onclick={() => auth.signOut()}>Sign out</button>
+      <button class="btn-link" onclick={() => auth.signOut()}>Sign out</button>
     </div>
   </div>
 {:else if authMode === 'signin'}

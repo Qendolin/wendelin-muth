@@ -21,7 +21,7 @@
 </script>
 
 <section>
-  <h2 class="mb-2 text-xl">
+  <h2 class="mb-2 text-xl text-content">
     {#if comments.loading || comments.count == 0}
       Comments
     {:else}
@@ -30,9 +30,9 @@
   </h2>
 
   {#if comments.error}
-    <p role="alert" class="mb-4 flex items-center justify-between bg-red-900 p-3 text-white">
+    <p role="alert" class="mb-4 flex items-center justify-between rounded bg-content-error/20 p-3 text-content-error">
       {comments.error}
-      <button class="btn-link text-white hover:text-gray-200" onclick={() => comments.clearError()}>Dismiss</button>
+      <button class="btn-link hover:text-content-error" onclick={() => comments.clearError()}>Dismiss</button>
     </p>
   {/if}
 
@@ -40,13 +40,13 @@
 
   <div class="mt-8">
     {#if comments.loading}
-      <p class="text-muted">Loading comments…</p>
+      <p class="text-content-muted">Loading comments…</p>
     {:else if comments.topLevel.length === 0 && !comments.posting}
-      <p class="text-muted">No comments yet. Be the first!</p>
+      <p class="text-content-muted">No comments yet. Be the first!</p>
     {:else}
       <ol class="flex list-none flex-col gap-4">
         {#each comments.topLevel as comment (comment._id)}
-          <li class="border-b border-gray-800 pb-4 last:border-0 dark:border-gray-200">
+          <li class="border-b border-border-base pb-4 last:border-0">
             <CommentItem {comment} />
           </li>
         {/each}

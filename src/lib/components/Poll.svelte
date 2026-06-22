@@ -82,37 +82,25 @@
 
 <div class={['text-sm', classes]} {...rest}>
   {#if loading && options.length === 0}
-    <p class="animate-pulse opacity-50">Loading poll...</p>
+    <p class="animate-pulse text-content-disabled">Loading poll...</p>
   {:else}
     <fieldset class="mb-2 grid grid-cols-3 gap-2" style="grid-template-columns: 1fr auto auto;">
       {#each options as option (option.id)}
-        <label class="col-span-full grid grid-cols-subgrid items-center">
-          <span class="">
-            {option.text}
-          </span>
-          <span class="text-[10px] opacity-50">[{getPercentage(option.votes)}]</span>
+        <label class="col-span-full grid cursor-pointer grid-cols-subgrid items-center">
+          <span class="text-content">{option.text}</span>
+          <span class="text-[10px] text-content-muted">[{getPercentage(option.votes)}]</span>
           <div class="flex items-center justify-center">
-            <input
-              type="checkbox"
-              value={option.id}
-              bind:group={selectedOptions}
-              class="peer h-4 w-4 cursor-pointer appearance-none rounded-none border border-black dark:border-white"
-            />
-            <div class="pointer-events-none absolute h-2.5 w-2.5 bg-black opacity-0 transition-opacity peer-checked:opacity-100 dark:bg-white"></div>
+            <input type="checkbox" value={option.id} bind:group={selectedOptions} class="input-checkbox" />
           </div>
         </label>
       {/each}
     </fieldset>
-    <hr class="m-0" />
-    <span class="mt-2 text-[10px] opacity-40">
+    <hr class="m-0 border-border-base" />
+    <span class="mt-2 block text-[10px] text-content-disabled">
       User-ID: {userId} &centerdot; Total: {totalSubmissions}
     </span>
-    <div class="flex flex-col items-end gap-1">
-      <button
-        onclick={submitData}
-        disabled={submitting || selectedOptions.length === 0}
-        class="border-b border-black pb-0.5 transition-colors hover:bg-black hover:text-white disabled:cursor-not-allowed disabled:opacity-20 dark:border-white dark:hover:bg-white dark:hover:text-black"
-      >
+    <div class="mt-2 flex flex-col items-end gap-1">
+      <button onclick={submitData} disabled={submitting || selectedOptions.length === 0} class="btn-primary">
         {submitting ? 'Submitting...' : hasSubmitted ? 'Re-Submit' : 'Submit'}
       </button>
     </div>

@@ -1,6 +1,7 @@
 <script lang="ts">
   import { browser } from '$app/environment';
   import { auth } from '$lib/stores.svelte';
+  import Input from './Input.svelte';
 
   type Action = 'post' | 'reply' | 'edit';
 
@@ -58,16 +59,16 @@
   }
 </script>
 
-<div class="my-2 flex flex-col">
+<div class="my-2 flex flex-col gap-2">
   {#if action == 'edit'}
-    <p class="text-muted mb-1">Edit your comment</p>
+    <p class="m-0 text-content-muted">Edit your comment</p>
   {:else if action == 'post' || action == 'reply'}
     {#if auth.loading || !browser}
-      <p class="text-muted mb-1">Loading...</p>
+      <p class="m-0 text-content-muted">Loading...</p>
     {:else if auth.isSignedIn}
-      <p class="text-muted mb-1">{lang.ing} as <strong class="text-black dark:text-white">{auth.displayName}</strong></p>
+      <p class="m-0 text-content-muted">{lang.ing} as <strong class="text-content">{auth.displayName}</strong></p>
     {:else}
-      <input type="text" class="input-base mb-1 max-w-90" bind:value={nameInput} placeholder="Your name" maxlength="32" disabled={busy} />
+      <Input bind:value={nameInput} placeholder="Your name" maxlength={32} disabled={busy} class="max-w-90" />
     {/if}
   {/if}
 
@@ -84,6 +85,6 @@
   </div>
 
   {#if error}
-    <p role="alert" class="mt-2 text-red-500">{error}</p>
+    <p role="alert" class="text-error mt-2">{error}</p>
   {/if}
 </div>

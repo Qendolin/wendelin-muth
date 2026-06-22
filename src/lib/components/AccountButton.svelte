@@ -5,15 +5,7 @@
   const { class: classes, ...rest }: HTMLButtonAttributes = $props();
 </script>
 
-<!-- Anchor element -->
-<button
-  id="account-btn"
-  popovertarget="account-popover"
-  type="button"
-  aria-label="Open profile management"
-  class={['account-btn flex size-9 items-center justify-center', classes]}
-  {...rest}
->
+<button id="account-btn" popovertarget="account-popover" type="button" aria-label="Open profile management" class={['account-btn btn-icon', classes]} {...rest}>
   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
     <path
       stroke-linecap="round"
@@ -23,15 +15,7 @@
   </svg>
 </button>
 
-<!-- Popover -->
-<div
-  id="account-popover"
-  popover
-  class="account-popover m-0 w-100
-         border border-black/10 bg-white
-         p-6 shadow-sm
-         dark:border-white/10 dark:bg-gray-900"
->
+<div id="account-popover" popover class="account-popover surface-popover m-0 w-100 p-6">
   <AuthManage></AuthManage>
 </div>
 
@@ -39,7 +23,6 @@
   .account-btn {
     anchor-name: --account-management;
   }
-
   .account-popover {
     position: absolute;
     inset: unset;
