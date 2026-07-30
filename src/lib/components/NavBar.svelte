@@ -13,7 +13,8 @@
   const routes = {
     '/(app)': 'Home',
     '/(app)/project': 'Projects',
-    '/(app)/blog': 'Blog'
+    '/(app)/blog': 'Blog',
+    '/(app)/cv': 'CV'
   } as const;
 
   const paths = Object.keys(routes) as Array<keyof typeof routes>;

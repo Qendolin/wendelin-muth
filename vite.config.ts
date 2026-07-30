@@ -44,5 +44,8 @@ export default defineConfig({
   },
   define: {
     'import.meta.env.PUBLIC_BUILD_TIMESTAMP': new Date().getTime().toString()
+  },
+  server: {
+    host: '0.0.0.0'
   }
 });
