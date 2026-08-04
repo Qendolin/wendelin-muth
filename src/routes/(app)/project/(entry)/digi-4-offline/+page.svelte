@@ -3,6 +3,10 @@
 </script>
 
 <p>
+  <Link href="https://github.com/Qendolin/digi4offline">Source Code</Link>
+</p>
+
+<p>
   Digi4school is an Austrian platform for digital school textbooks. Students activate books tied to their account and read them in the browser, but there is no
   official way to save them for offline use. During my time at <abbr title="Austrian vocational high school for engineering">HTL</abbr> I got tired of needing an
   internet connection just to study, so I wrote a small Node.js command line tool that downloads any activated book and saves it as a PDF.

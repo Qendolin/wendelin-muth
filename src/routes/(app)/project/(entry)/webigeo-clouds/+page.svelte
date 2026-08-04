@@ -5,6 +5,10 @@
 </script>
 
 <p>
+  <Link href="https://github.com/Qendolin/webigeo-clouds">Source Code</Link> | <Link href="https://webigeo.alpinemaps.org/">Online Demo</Link>
+</p>
+
+<p>
   My bachelor's thesis at TU Wien, finished in March 2026. The goal was to render volumetric clouds from actual meteorological forecast data inside
   <Link href="https://webigeo.alpinemaps.org/">weBIGeo</Link>, a research platform for interactive 3D terrain visualization built on top of
   <Link href="https://alpinemaps.org/">AlpineMaps</Link>. The motivating idea was something like: a hiker wants to know whether the summit sits above or below

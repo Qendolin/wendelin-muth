@@ -5,6 +5,10 @@
 </script>
 
 <p>
+  <Link href="https://github.com/Qendolin/fabric-mod-bisect-tool">Source Code</Link>
+</p>
+
+<p>
   Anyone who has run a large Minecraft modpack has been there. The game crashes, the log is unhelpful, and you have a hundred mods to blame. The usual approach
   is to manually disable half your mods, try again, and repeat until you find the culprit. It works, but it is tedious and easy to get wrong. I wrote this tool
   to automate that process properly.

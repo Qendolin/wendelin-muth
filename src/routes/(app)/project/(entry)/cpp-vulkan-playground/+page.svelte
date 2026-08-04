@@ -1,7 +1,10 @@
 <script>
   import Link from '$lib/components/Link.static.svelte';
-  import Image from '$lib/components/Image.static.svelte';
 </script>
+
+<p>
+  <Link href="https://github.com/Qendolin/cpp-vulkan-playground">Source Code</Link>
+</p>
 
 <p>
   After wrapping up <Link href="./ascent">Ascent</Link> I felt like I had pushed OpenGL about as far as I wanted to. The API was familiar, the patterns were settled,

@@ -5,6 +5,12 @@
 </script>
 
 <p>
+  <Link href="https://github.com/Qendolin/cg25-city-lights">Source Code</Link> | <Link
+    href="https://www.cg.tuwien.ac.at/sites/default/files/hall_of_fame/10445/City_LightsNeumannvideo-city-lights.mp4">Demo Video</Link
+  >
+</p>
+
+<p>
   A few semesters before this, I built a small game from scratch in OpenGL for the bachelor's equivalent of this course. After finishing that I knew I wanted to
   move to Vulkan, mostly because OpenGL is effectively dead and Vulkan is where the interesting work is happening. So I spent the next year or so learning it on
   a toy renderer with no real goal other than getting comfortable with the API and modern C&NoBreak;+&NoBreak;+. This demo was where I wanted to find out if

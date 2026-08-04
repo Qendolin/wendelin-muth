@@ -4,6 +4,10 @@
 </script>
 
 <p>
+  <Link href="https://github.com/Qendolin/advanced-gl">Source Code</Link>
+</p>
+
+<p>
   At the end of my third year at <abbr title="Austrian vocational high school for engineering">HTL</abbr> I wanted to build something proper with OpenGL.
   Inspired by javidx9's work I set out to write something similar to his
   <Link href="https://github.com/OneLoneCoder/olcPixelGameEngine">olcPixelGameEngine</Link>, a minimal self-contained framework for 2D rendering, in Go.

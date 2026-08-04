@@ -5,6 +5,10 @@
 </script>
 
 <p>
+  <Link href="https://github.com/Qendolin/ptvc24-ascent">Source Code</Link>
+</p>
+
+<p>
   Before this I had built a deferred renderer in Go: OpenGL 4.5, a single shadow map, physically based bloom, material batching, and PBR shading. It covered the
   fundamentals but was not a game and was not written in C&NoBreak;+&NoBreak;+. This project was a test of how much of that knowledge I could carry over, and a
   first real attempt at C&NoBreak;+&NoBreak;+ at the same time. The course required raw OpenGL or Vulkan, no frameworks, which suited what I wanted to do

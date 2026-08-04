@@ -3,6 +3,10 @@
   import Link from '$lib/components/Link.static.svelte';
 </script>
 
+<p>
+  <Link href="https://github.com/Qendolin/better-clouds">Source Code</Link> | <Link href="https://modrinth.com/mod/better-clouds">Mod Page</Link>
+</p>
+
 <Image src="/img/project/better-clouds/banner.webp" alt="Better Clouds banner" caption="" />
 
 <p>
