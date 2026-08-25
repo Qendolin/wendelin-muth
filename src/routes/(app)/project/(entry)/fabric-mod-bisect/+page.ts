@@ -5,7 +5,7 @@ import type { ProjectMeta } from '$lib/projects';
 export const _meta: ProjectMeta = {
   title: 'Mod Bisect Tool',
   startDate: SimpleDate(2025, 5, 26),
-  endDate: SimpleDate(2025, 7, 10),
+  endDate: SimpleDate(2026, 9, 1),
   publishDate: SimpleDate(2026, 4, 4),
   description:
     'A Go-based tool (GUI and TUI) that uses bisection search and dependency resolution to automate the identification of conflicting Minecraft mods across Fabric, Quilt, and (Neo)Forge.',
