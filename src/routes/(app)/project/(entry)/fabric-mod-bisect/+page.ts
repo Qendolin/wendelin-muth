@@ -3,13 +3,14 @@ import { SimpleDate } from '$lib/date';
 import type { ProjectMeta } from '$lib/projects';
 
 export const _meta: ProjectMeta = {
-  title: 'Fabric Mod Bisect Tool',
+  title: 'Mod Bisect Tool',
   startDate: SimpleDate(2025, 5, 26),
   endDate: SimpleDate(2025, 7, 10),
   publishDate: SimpleDate(2026, 4, 4),
-  description: 'A Go-based CLI tool that uses bisection search and dependency resolution to automate the identification of conflicting Minecraft mods.',
+  description:
+    'A Go-based tool (GUI and TUI) that uses bisection search and dependency resolution to automate the identification of conflicting Minecraft mods across Fabric, Quilt, and (Neo)Forge.',
   highlight: false,
-  topics: ['Go', 'CLI', 'Tool', 'Minecraft', 'Modding']
+  topics: ['Go', 'GUI', 'CLI', 'Tool', 'Minecraft', 'Modding']
 };
 
 export const load: PageLoad = () => {

@@ -15,6 +15,7 @@ export const TopicsOrder = [
   'Modding',
   'Tool',
   'CLI',
+  'GUI',
   'Web',
   'Computer Graphics',
   'Game',

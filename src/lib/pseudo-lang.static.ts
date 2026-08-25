@@ -92,10 +92,6 @@ export default {
     'builtin-constants': {
       patterns: [
         {
-          name: 'constant.language.fail.pseudocode',
-          match: '\\bFAIL\\b'
-        },
-        {
           name: 'constant.language.null.pseudocode',
           match: '\\bnull\\b'
         },

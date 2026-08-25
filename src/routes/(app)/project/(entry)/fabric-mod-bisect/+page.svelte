@@ -5,7 +5,16 @@
 </script>
 
 <p>
-  <Link href="https://github.com/Qendolin/fabric-mod-bisect-tool">Source Code</Link>
+  <em
+    ><strong>2026 Update:</strong> The project has expanded beyond Fabric to support (Neo)Forge under the name <strong>Mod Bisect Tool</strong>. It now features
+    a native cross-platform <a href="#graphical-user-interface-gui">Graphical User Interface</a> built with Gio UI, and the search algorithm has been extended
+    to <a href="#algorithm-iterative-minimal-conflict-search-with-indeterminate-results-imcs-i">IMCS-I</a> to handle indeterminate test results.</em
+  >
+</p>
+
+<p>
+  <Link href="https://qendolin.github.io/mod-bisect-tool/">Website & Downloads</Link> |
+  <Link href="https://github.com/Qendolin/mod-bisect-tool">Source Code</Link>
 </p>
 
 <p>
@@ -14,7 +23,12 @@
   to automate that process properly.
 </p>
 <p>
-  The source and prebuilt binaries for Windows, Linux, and macOS are on <Link href="https://github.com/Qendolin/fabric-mod-bisect-tool">GitHub</Link>.
+  The tool supports <strong>Fabric</strong>, <strong>Quilt</strong>, and <strong>(Neo)Forge</strong> (including Sinytra Connector and Kilt configurations).
+  Prebuilt binaries with automatic OS detection and comprehensive documentation are hosted on the
+  <Link href="https://qendolin.github.io/mod-bisect-tool/">project website</Link>, and the source code is on
+  <Link href="https://github.com/Qendolin/mod-bisect-tool">GitHub</Link>. Step-by-step guides for both versions are available online:
+  <Link href="https://qendolin.github.io/mod-bisect-tool/GUI-User-Guide.html">GUI User Guide</Link> and
+  <Link href="https://qendolin.github.io/mod-bisect-tool/TUI-User-Guide.html">TUI User Guide</Link>.
 </p>
 
 <h2>How It Works</h2>
@@ -35,10 +49,10 @@
   any number of separate, unrelated conflicts in one session.
 </p>
 <p>
-  The algorithm described in the appendix (IMCS) is my own approach, designed specifically for this use case. It is optimized for situations where only a small
-  number of conflicts exist within a large set of components, focusing on minimizing the number of required test runs by isolating one conflicting element at a
-  time. In contrast, delta debugging (ddmin) and QuickXplain (QXP) have a lot of overhead in such scenarios, but perform better when the number of conflicts is
-  large.
+  The algorithm described in the appendix (IMCS-I) is my own approach, designed specifically for this use case. It is optimized for situations where only a
+  small number of conflicts exist within a large set of components, focusing on minimizing the number of required test runs by isolating one conflicting element
+  at a time and handling secondary failures that produce indeterminate test outcomes. In contrast, delta debugging (ddmin) and QuickXplain (QXP) have a lot of
+  overhead in such scenarios, but perform better when the number of conflicts is large.
 </p>
 
 <h2>Managing the Search</h2>
@@ -80,44 +94,108 @@
   </div>
 </static>
 
-<h2>Future Work</h2>
-
+<h2 id="graphical-user-interface-gui">Graphical User Interface (GUI)</h2>
 <p>
-  One limitation is that a test result is not always simply "Good" or "Fail". In practice, other issues can mask the real problem and lead to indeterminate
-  outcomes, for example due to missing or incorrect dependency metadata. The tool currently does not handle such cases, but I have a potential approach in mind
-  to address this in the future.
+  While the terminal user interface (TUI) provides power-user tools like keyboard shortcuts, a full mod management table, a test history page, and an internal
+  log viewer, these features add unnecessary friction for everyday troubleshooting. The GUI is built to streamline the entire experience around what actually
+  matters: isolating the broken mod with as few clicks and decisions as possible.
 </p>
+<p>
+  The GUI is built using <Link href="https://gioui.org/">Gio UI</Link> (<code>gioui</code> / <code>gogio</code>), an immediate-mode GUI library written in pure
+  Go. Using Gio keeps the binary lightweight and dependency-free while rendering natively across operating systems:
+</p>
+<ul>
+  <li><strong>Windows:</strong> Standalone executable (<code>.exe</code>) with native file dialogs.</li>
+  <li><strong>macOS:</strong> Standalone application bundle (<code>.app</code>).</li>
+  <li><strong>Linux:</strong> Portable, single-file <code>AppImage</code>.</li>
+</ul>
+
+<h3>Guided Pre-Search Wizard</h3>
+<p>Instead of burying candidate configuration inside nested menus, the GUI introduces a guided wizard right after folder setup:</p>
+<ul>
+  <li>
+    <strong>Handling Already-Disabled Mods:</strong> Modpacks often contain mods that were disabled intentionally or temporarily. The GUI identifies these upfront
+    and lets you decide whether they should remain permanently disabled throughout the entire bisect or participate in the candidate pool.
+  </li>
+  <li>
+    <strong>Excluding (Omitting) Safe or Disruptive Mods:</strong> You can exclude mods you already know are safe, or mods that actively get in the way of
+    testing. A prime example is <em>Crash Assistant</em>: it displays an interactive GUI dialog whenever the game crashes, which slows down the search since
+    frequent game crashes are an expected part of the bisection process. Omitted mods are removed from the candidate pool, but the dependency resolver can still
+    activate them if another mod requires them.
+  </li>
+  <li>
+    <strong>Selecting Mods to Keep Enabled:</strong> Some issues only reproduce when a specific prerequisite mod is active. For example, if a visual glitch only occurs
+    with shaders enabled, the shader mod (such as Iris) must remain forced-enabled. If it were disabled during testing, you would not be able to tell whether the
+    issue was resolved or simply impossible to observe.
+  </li>
+</ul>
+
+<static>
+  <div class="mx-auto table">
+    <div class="inline-grid grid-cols-1 justify-center gap-4 md:grid-cols-2">
+      <Image
+        src="/img/project/fabric-mod-bisect/gui-setup-screen.jpg"
+        alt="GUI setup screen where the mods folder is loaded and mod loader is detected"
+        caption="The GUI setup screen, with automatic mod loader detection and folder selection."
+      />
+      <Image
+        src="/img/project/fabric-mod-bisect/gui-main-screen.jpg"
+        alt="GUI main screen showing candidate progress"
+        caption="The GUI main screen, showing candidate progress and remaining candidate counts."
+      />
+      <Image
+        src="/img/project/fabric-mod-bisect/gui-test-screen.jpg"
+        alt="GUI test prompt screen with Works, Broken, and Can't Tell options"
+        caption="The GUI test screen, with options for Works, Broken, and Can't Tell (indeterminate)."
+      />
+      <Image
+        src="/img/project/fabric-mod-bisect/gui-result-screen.jpg"
+        alt="GUI result screen showing isolated conflict sets"
+        caption="The GUI result screen, displaying the isolated conflict set and next action options."
+      />
+    </div>
+  </div>
+</static>
 
 <hr class="my-12" />
 
-<h2 class="mt-0">Appendix</h2>
+<h2 class="mt-0" id="algorithm-iterative-minimal-conflict-search-with-indeterminate-results-imcs-i">Appendix</h2>
 
-<h3>Algorithm: Iterative Minimal Conflict Search (IMCS)</h3>
+<h3>Algorithm: Iterative Minimal Conflict Search with Indeterminate Results (IMCS-I)</h3>
 
 <p>
-  The Iterative Minimal Conflict Search (IMCS) algorithm is a novel, highly efficient method for identifying a 1-minimal conflict set from a larger collection
-  of components. Building upon the core principles of binary search and iterative component isolation, IMCS significantly refines traditional bisection
-  techniques. Unlike the classic <code>ddmin</code> algorithm, which struggles with multi-component conflicts due to its exponential increase in test calls when
-  faced with union issues, IMCS maintains stable and predictable <code>O(p log n)</code> performance. While sharing the same optimal theoretical complexity as
-  <code>QuickXplain</code> (QXP), IMCS distinguishes itself by adopting a "lean start" strategy, precisely targeting individual conflict elements and avoiding QXP's
-  upfront speculative tests. This results in superior practical performance and significantly lower variance for sparse problems, making IMCS ideally suited for real-world
-  troubleshooting scenarios.
+  The Iterative Minimal Conflict Search (IMCS) algorithm is a novel (citation needed hahaha), highly efficient method for identifying a 1-minimal conflict set
+  from a larger collection of components. Building upon the core principles of binary search and iterative component isolation, IMCS maintains stable and
+  predictable <code>O(p log n)</code> performance. While sharing the same optimal theoretical complexity as <code>QuickXplain</code> (QXP), IMCS distinguishes itself
+  by adopting a "lean start" strategy, precisely targeting individual conflict elements and avoiding QXP's upfront speculative tests. This results in superior practical
+  performance and significantly lower variance for sparse problems, making IMCS ideally suited for real-world troubleshooting scenarios.
+</p>
+<p>
+  In practice, test outcomes are not always binary (<code>GOOD</code> vs. <code>FAIL</code>). A secondary issue, such as an undeclared dependency crashing the
+  game before the target bug can be observed, leads to an <strong><code>INDETERMINATE</code></strong> result. <strong>IMCS-I</strong> extends IMCS to resolve these
+  secondary conflicts automatically during bisection.
 </p>
 
 <h4>1. Objective</h4>
 
 <p>
-  To efficiently identify a 1-minimal conflict set of size <code>p</code> from a larger superset of <code>n</code> components. A conflict set is defined as the smallest
-  subset of components that causes a system failure (or a designated undesirable outcome) when tested together.
+  To efficiently identify a 1-minimal conflict set of size <code>p</code> from a larger superset of <code>n</code> components (<code>C_all</code>). A conflict
+  set is defined as the smallest subset of components that causes a system failure (or a designated undesirable outcome) when tested together.
 </p>
 
-<h4>2. Core Principle</h4>
+<h4>2. Core Principle & Indeterminate Handling</h4>
 
 <p>
   The IMCS algorithm operates on a "lean start, iterative isolation" principle. It fundamentally avoids the high overhead of speculative testing on large
-  component sets. Instead, it executes a series of highly efficient, independent binary searches. Each search is tasked with identifying exactly one new
-  <em>conflict element</em> that contributes to the system's failure. This iterative process guarantees stable, predictable performance and is mathematically
-  optimized for sparse conflicts (where <code>p</code> is much smaller than <code>n</code>), which is the common scenario in troubleshooting complex systems.
+  component sets. Instead, it executes a series of independent binary searches, each tasked with identifying exactly one new <em>conflict element</em> that contributes
+  to the system's failure.
+</p>
+<p>
+  An <code>INDETERMINATE</code> result on <code>StableSet ∪ C₁</code> indicates an undeclared dependency: a component in <code>C₁</code> silently requires a
+  component in <code>C₂</code>, and the split separated them. Because IMCS guarantees that <code>test(StableSet ∪ CandidateSet) = FAIL</code> on every recursive
+  call, an <code>INDETERMINATE</code> outcome on <code>StableSet ∪ C₁</code> guarantees that <code>test((StableSet ∪ C₂) ∪ C₁) = FAIL</code> for free without
+  requiring an extra test run. When testing <code>C₂</code> confirms it is clean (<code>GOOD</code>), folding <code>C₂</code> into <code>StableSet</code>
+  suppresses the secondary conflict across the entire recursive descent into <code>C₁</code>.
 </p>
 
 <h4>3. Algorithm Description</h4>
@@ -126,7 +204,7 @@
 
 <h5>Definitions:</h5>
 <dl>
-  <dt>InitialCandidates</dt>
+  <dt>C_all</dt>
   <dd>The initial superset of all <code>n</code> components.</dd>
   <dt>ConflictSet</dt>
   <dd>The set of components confirmed to be part of the minimal conflict set.</dd>
@@ -139,8 +217,8 @@
   </dd>
   <dt>test(S)</dt>
   <dd>
-    A black-box function that returns <code>FAIL</code> if the system exhibits the undesirable outcome when configured with set <code>S</code> of components,
-    and <code>GOOD</code> otherwise.
+    A black-box function that returns <code>FAIL</code> if the system exhibits the target failure when configured with set <code>S</code>,
+    <code>GOOD</code> if clean, and <code>INDETERMINATE</code> if a secondary issue masks the observation.
   </dd>
 </dl>
 
@@ -159,9 +237,9 @@
   {@html highlight(
     'pseudo',
     String.raw`
-function FindConflictSet(InitialCandidates):
+function FindConflictSet(C_all):
   ConflictSet ← {}
-  CandidateSet ← InitialCandidates
+  CandidateSet ← C_all
   loop indefinitely:
     // Find the next single component that, in conjunction with the current ConflictSet, contributes to the failure.
     nextElement ← FindNextConflictElement(StableSet=ConflictSet, CandidateSet=CandidateSet)
@@ -193,73 +271,130 @@ function FindNextConflictElement(StableSet, CandidateSet):
   if CandidateSet is empty:
     return null
 
-  // Base Case 2: Handles the initial call if CandidateSet has only one element.
+  // Base Case 2: Handles CandidateSet of size 1.
   if size(CandidateSet) = 1:
     let c be the single element in CandidateSet
     if test(StableSet ∪ {c}) is FAIL:
       return c
     else:
+      // GOOD: not a conflict element.
+      // INDETERMINATE: c itself causes a secondary conflict; treat as non-element for this search.
       return null
 
   // Recursive Step: Divide and conquer.
   Split CandidateSet into two halves, C₁ and C₂.
+  result₁ ← test(StableSet ∪ C₁)
 
-  // Test the first half in conjunction with the current StableSet.
-  if test(StableSet ∪ C₁) is FAIL:
-    // The next conflict element is in C₁.
-    // Optimization: If C₁ is a single element, it must be the one.
+  if result₁ is FAIL:
     if size(C₁) = 1:
       return the single element in C₁
-    else:
-      return FindNextConflictElement(StableSet, C₁)
+    return FindNextConflictElement(StableSet, C₁)
 
-  // Otherwise, the first half is safe. Add it to the StableSet and search C₂.
-  else:
-    newStableSet ← StableSet ∪ C₁
-    // Optimization: The next conflict element might be in C₂.
-    // If C₂ is a single element, test it directly.
+  if result₁ is GOOD:
+    new_stable ← StableSet ∪ C₁
     if size(C₂) = 1:
-      let c be the single element in C₂
-      if test(newStableSet ∪ {c}) is FAIL:
-        return c
+      if test(new_stable ∪ C₂) is FAIL:
+        return the single element in C₂
       else:
-        return null // This was the last possible conflict element.
-    else:
-      return FindNextConflictElement(newStableSet, C₂)
+        return null
+    return FindNextConflictElement(new_stable, C₂)
+
+  // --- INDETERMINATE: C₁ has a split-induced secondary conflict ---
+  if result₁ is INDETERMINATE:
+    result₂ ← test(StableSet ∪ C₂)
+
+    // Primary conflict element is in C₂. Proceed normally.
+    if result₂ is FAIL:
+      if size(C₂) = 1:
+        return the single element in C₂
+      return FindNextConflictElement(StableSet, C₂)
+
+    // C₂ is confirmed clean. Fold it into StableSet and recurse into C₁ (no extra test needed).
+    if result₂ is GOOD:
+      return FindNextConflictElement(StableSet ∪ C₂, C₁)
+
+    // Both halves are INDETERMINATE (independent secondary conflicts on both sides).
+    // Search both branches, each suppressing the other's secondary conflict.
+    if result₂ is INDETERMINATE:
+      // A practical alternative in this case is to just halt
+      found ← FindNextConflictElement(StableSet ∪ C₂, C₁)
+      if found is not null:
+        return found
+      return FindNextConflictElement(StableSet ∪ C₁, C₂)
 `
   )}
 </static>
 
-<h4>4. Complexity Analysis</h4>
+<h4>4. Handling INDETERMINATE Outcomes</h4>
 
-<h5>Time Complexity: O(p log n)</h5>
+<h5>Single-INDETERMINATE: Resolving with a Single Test</h5>
+<p>
+  When a test on <code>C₁</code> returns <code>INDETERMINATE</code>, an undeclared dependency inside <code>C₁</code> was separated from its required mod in
+  <code>C₂</code>. A naive troubleshooting approach might spend up to <code>O(log n)</code> additional tests trying to hunt down and restore the missing dependency.
+</p>
+<p>
+  IMCS-I avoids this entirely. Because the algorithm already guarantees that <code>test(StableSet ∪ CandidateSet) = FAIL</code> on entry, we only need a
+  <strong>single extra test</strong>
+  on <code>C₂</code> (<code>test(StableSet ∪ C₂)</code>) to know exactly how to proceed:
+</p>
+<ul>
+  <li>
+    <strong>If <code>C₂</code> returns <code>FAIL</code>:</strong> The primary conflict element resides in <code>C₂</code>. Recursion proceeds into
+    <code>C₂</code> as normal.
+  </li>
+  <li>
+    <strong>If <code>C₂</code> returns <code>GOOD</code>:</strong> <code>C₂</code> is confirmed clean, meaning <code>(StableSet ∪ C₂) ∪ C₁</code> is guaranteed
+    to fail. We fold <code>C₂</code> into <code>StableSet</code> to satisfy <code>C₁</code>'s missing dependency for the rest of the descent—requiring zero
+    further tests.
+  </li>
+</ul>
 
+<h5>Double-INDETERMINATE: Preventing Complexity Explosion</h5>
+<p>
+  If <code>C₂</code> <em>also</em> returns <code>INDETERMINATE</code>, two independent undeclared dependencies cross the split in opposite directions. Neither
+  half has a clean baseline to lean on.
+</p>
+<p>
+  If the algorithm attempted to fork and search both branches, the recurrence relation would shift from <code>T(n) = T(n/2) + O(1)</code> to
+  <code>T(n) = 2·T(n/2) + O(1)</code>, causing the worst-case time complexity to explode from <code>O(log n)</code> to <code>O(n)</code>. Because this situation
+  is extremely rare, the tool's implementation avoids exponential branch explosion by simply <strong>halting</strong> the search, reporting the two conflicting groups,
+  and letting the user resolve the missing dependency before resuming.
+</p>
+
+<h4>5. Complexity Analysis</h4>
+
+<h5>Time Complexity: O((p + q) log n)</h5>
 <p>
   The algorithm's total cost is dominated by the <code>p</code> calls to the <code>FindNextConflictElement</code> procedure. Each call performs a binary search
-  on a diminishing set of candidates (from <code>n</code> down to <code>n-p+1</code>), with a cost of <code>O(log n)</code>. Therefore, the total time
-  complexity is <code>O(p log n)</code>.
+  on a diminishing set of candidates (from <code>n</code> down to <code>n - p + 1</code>), with a baseline cost of <code>O(log n)</code> tests. When secondary
+  conflicts occur, each isolated single-<code>INDETERMINATE</code> event costs exactly one extra complement test before clean logarithmic recursion resumes.
+  Across <code>p</code> conflict elements and <code>q</code> single-indeterminate occurrences, the total test complexity is tightly bounded at
+  <code>O((p + q) log n)</code>.
 </p>
 
-<h5>Space Complexity: O(n)</h5>
-<p>
-  The algorithm requires storing the set of candidates, which is initially of size <code>n</code>. The recursion depth of the helper function is
-  <code>O(log n)</code>.
-</p>
-
-<h4>5. Extension: Finding All Independent Conflicts (IMCS_Enumerator)</h4>
+<h4>6. Extension: Finding All Independent Conflicts (IMCS-Enumerator)</h4>
 
 <p>
   The core IMCS algorithm finds a single conflict set. The <code>IMCS_Enumerator</code> is a meta-procedure that extends this to discover all independent minimal
   conflict sets in a system that may have multiple unrelated faults.
 </p>
 <p>
-  A persistent, cross-iteration test cache ("knowledge base") is not used. Such a cache is unworkable in practice for two fundamental reasons. First, a <code
-    >FAIL</code
-  >
-  result is only relevant to its specific set of components; once a conflict element from that set is found and removed, that exact test can never be run again, rendering
-  the cached result useless. Second, a <code>GOOD</code> result is context-dependent on the user's current focus; caching it could incorrectly mask a different, independent
-  issue in a subsequent search. Therefore, the only knowledge that can be safely and usefully persisted between iterations is the reduction of the candidate pool
-  itself.
+  A persistent, cross-iteration test cache (<code>KnowledgeBase</code>) is not used. Such a cache is unworkable in practice for two fundamental reasons:
+</p>
+<ul>
+  <li>
+    A <code>FAIL</code> result is only relevant to its specific set of components; once a conflict element from that set is found and removed, that exact test can
+    never be run again, rendering the cached result useless.
+  </li>
+  <li>
+    A <code>GOOD</code> result is context-dependent on the user's current focus; caching it could incorrectly mask a different, independent issue in a subsequent
+    search.
+  </li>
+</ul>
+<p>
+  Therefore, the only knowledge that can be safely persisted between iterations is the reduction of the candidate pool itself (<code
+    >CandidateSet \ newConflictSet</code
+  >).
 </p>
 
 <static>
@@ -267,9 +402,9 @@ function FindNextConflictElement(StableSet, CandidateSet):
   {@html highlight(
     'pseudo',
     String.raw`
-function IMCS_Enumerator(InitialCandidates):
+function IMCS_Enumerator(C_all):
   AllConflictSets ← []
-  CandidateSet ← InitialCandidates
+  CandidateSet ← C_all
 
   loop indefinitely:
     // Find the next conflict set using a fresh IMCS run. This ensures that
@@ -292,7 +427,7 @@ function IMCS_Enumerator(InitialCandidates):
   )}
 </static>
 
-<h4>6. Capabilities and Limitations</h4>
+<h4>7. Capabilities and Limitations</h4>
 
 <p>The IMCS algorithm suite is highly optimized for a specific class of diagnostic problems.</p>
 
@@ -300,8 +435,11 @@ function IMCS_Enumerator(InitialCandidates):
 
 <ol>
   <li>
-    <b>Optimized for Sparse Conflicts:</b> The algorithm's primary strength is its exceptional <code>O(p log n)</code> performance and low variance when finding
-    a small number (<code>p</code>) of conflict elements within a large set (<code>n</code>). This makes it ideal for real-world troubleshooting.
+    <b>Optimized for Sparse Conflicts:</b> Exceptional <code>O(p log n)</code> performance and low variance when finding a small number (<code>p</code>) of
+    conflict elements within a large set (<code>n</code>). This makes it ideal for real-world troubleshooting.
+  </li>
+  <li>
+    <b>Robust Indeterminate Handling:</b> IMCS-I automatically resolves secondary issues caused by split-induced missing dependencies without discarding progress.
   </li>
   <li>
     <b>Black-Box Operation:</b> IMCS requires no internal knowledge of the system being tested. It operates purely on the <code>GOOD</code>/<code>FAIL</code> outcome
@@ -312,8 +450,7 @@ function IMCS_Enumerator(InitialCandidates):
     performance with minimal variance, as confirmed by benchmarks.
   </li>
   <li>
-    <b>Complete Conflict Enumeration:</b>The <code>IMCS_Enumerator</code> extension provides a state-of-the-art method for enumerating all separate, unrelated conflict
-    sets efficiently.
+    <b>Complete Conflict Enumeration:</b> The <code>IMCS_Enumerator</code> meta-procedure enumerates all separate, unrelated conflict sets efficiently.
   </li>
 </ol>
 
@@ -321,18 +458,22 @@ function IMCS_Enumerator(InitialCandidates):
 
 <ol>
   <li>
-    <b>Finding Non-Minimal Supersets:</b> IMCS is designed to find only the <em>smallest</em> set that causes a failure (<code>1-minimal</code>). It will not
-    report larger sets that also fail but contain non-essential components.
+    <b>Finding Non-Minimal Supersets:</b> Designed to find only the smallest set causing a failure (<code>1-minimal</code>); does not report larger sets
+    containing non-essential components.
   </li>
   <li>
     <b>Conflict Prioritization:</b> The algorithm finds conflict sets in an order determined by the binary search path, not by any measure of severity or probability.
   </li>
   <li>
-    <b>Dense Conflicts:</b> As demonstrated by benchmarks against <code>QuickXplain</code>, IMCS is less efficient for "dense" problems where <code>p</code> is
-    a large fraction of <code>n</code>. In such scenarios, algorithms that leverage information reuse more aggressively may perform better.
+    <b>Dense Conflicts:</b> Less efficient for dense problems where <code>p</code> is a large fraction of <code>n</code>, where algorithms like
+    <code>QuickXplain</code> that leverage information reuse may perform better.
   </li>
   <li>
-    <b>Non-Deterministic Systems:</b> The algorithm relies on the system behaving deterministically. If a test on the same set of components can produce both
-    <code>GOOD</code> and <code>FAIL</code> results, IMCS may fail to find a consistent conflict set or may terminate with an incorrect result.
+    <b>Non-Deterministic Systems:</b> Assumes deterministic outcomes. If identical component configurations produce contradictory results, IMCS may terminate with
+    an incorrect conflict set.
+  </li>
+  <li>
+    <b>Side Effects & External State:</b> The algorithm relies on mod toggling being a pure, reversible operation. If enabling or disabling a mod causes persistent
+    side effects in game settings, the search can fail. This is quite rare in practice.
   </li>
 </ol>
