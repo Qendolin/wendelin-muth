@@ -438,5 +438,37 @@
     "width": 1080,
     "height": 1840,
     "blurhash": "UWR_w|V?*0RjvKf+Rkoft7axVro0icozn#V?"
+  },
+  "/img/project/fabric-mod-bisect/gui-main-screen.jpg": {
+    "url": "https://firebasestorage.googleapis.com/v0/b/wendelin-muth.appspot.com/o/public%2Fcontent%2F373f4df8-f9fe-46cf-89ba-d2949d052f12_gui-main-screen.jpg?alt=media",
+    "hash": "97cb78e99611a451",
+    "bucketFilename": "373f4df8-f9fe-46cf-89ba-d2949d052f12_gui-main-screen.jpg",
+    "width": 800,
+    "height": 600,
+    "blurhash": "U55E{mIXV:xTndactUo%x|o%V;aHaGV?p1o%"
+  },
+  "/img/project/fabric-mod-bisect/gui-result-screen.jpg": {
+    "url": "https://firebasestorage.googleapis.com/v0/b/wendelin-muth.appspot.com/o/public%2Fcontent%2F922a1153-44c9-45a4-b178-1fe9b73e329b_gui-result-screen.jpg?alt=media",
+    "hash": "a6c0395cc56d16d7",
+    "bucketFilename": "922a1153-44c9-45a4-b178-1fe9b73e329b_gui-result-screen.jpg",
+    "width": 800,
+    "height": 611,
+    "blurhash": "U46H.g?wxxs:V;xZi[RiIcIVtAWAxvR;WUtT"
+  },
+  "/img/project/fabric-mod-bisect/gui-setup-screen.jpg": {
+    "url": "https://firebasestorage.googleapis.com/v0/b/wendelin-muth.appspot.com/o/public%2Fcontent%2F6c02fc93-91d1-43a3-9bc6-5422f18d82e9_gui-setup-screen.jpg?alt=media",
+    "hash": "4f1b222fb41735ba",
+    "bucketFilename": "6c02fc93-91d1-43a3-9bc6-5422f18d82e9_gui-setup-screen.jpg",
+    "width": 800,
+    "height": 600,
+    "blurhash": "U94CC]j[VpayaGayo$ayawaykDfRtpfQabaz"
+  },
+  "/img/project/fabric-mod-bisect/gui-test-screen.jpg": {
+    "url": "https://firebasestorage.googleapis.com/v0/b/wendelin-muth.appspot.com/o/public%2Fcontent%2Fa3cf2735-61c7-41bc-97df-66adf141d5df_gui-test-screen.jpg?alt=media",
+    "hash": "15acf4b87a588c1e",
+    "bucketFilename": "a3cf2735-61c7-41bc-97df-66adf141d5df_gui-test-screen.jpg",
+    "width": 800,
+    "height": 600,
+    "blurhash": "U168Ee%dB..Tpyo%^Rv~w0WqEzI;4:D%RPxu"
   }
 }
