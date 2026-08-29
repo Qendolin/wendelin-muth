@@ -1,6 +1,7 @@
 <script lang="ts">
   import { page } from '$app/state';
   import { PUBLIC_BASE_URL } from '$env/static/public';
+  import CommentSection from '$lib/components/CommentSection.svelte';
   import { toJsDate } from '$lib/date';
   import type { ProjectMeta } from '$lib/project';
 
@@ -55,3 +56,7 @@
   </header>
   {@render children()}
 </article>
+
+<hr />
+
+<CommentSection routeId={page.route.id!} />
