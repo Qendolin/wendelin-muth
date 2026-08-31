@@ -89,16 +89,11 @@ service cloud.firestore {
     // ── Notifications ─────────────────────────────────────────────────────
 
     match /notifications/{userId}/inbox/{notifId} {
-      // Per-user inbox; only the owner can read, update, or delete.
+      // Per-user inbox; only the owner can read or delete.
       // Creates happen server-side via the Cloud Function (Admin SDK bypasses rules).
       allow read: if request.auth != null && request.auth.uid == userId;
 
-      // Users may only flip `read` to true.
-      allow update: if request.auth != null
-        && request.auth.uid == userId
-        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['read'])
-        && request.resource.data.read == true;
-
+      // Reading a notification deletes it (no update path exists).
       allow delete: if request.auth != null && request.auth.uid == userId;
       allow create: if false;
     }

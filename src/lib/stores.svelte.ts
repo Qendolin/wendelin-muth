@@ -467,11 +467,11 @@ class NotificationsStore {
   async markRead(id: string): Promise<void> {
     const uid = auth.uid;
     if (!uid) return;
-    this.items = this.items.map((n) => (n._id === id ? { ...n, read: true } : n));
+    this.items = this.items.filter((n) => n._id !== id);
     try {
       const { db } = await getFirebase();
-      const { doc, updateDoc } = await import('firebase/firestore/lite');
-      await updateDoc(doc(db, 'notifications', uid, 'inbox', id), { read: true });
+      const { doc, deleteDoc } = await import('firebase/firestore/lite');
+      await deleteDoc(doc(db, 'notifications', uid, 'inbox', id));
     } catch (e) {
       this.error = String(e);
     }
@@ -480,15 +480,15 @@ class NotificationsStore {
   async markAllRead(): Promise<void> {
     const uid = auth.uid;
     if (!uid) return;
-    const unreadIds = this.unread.map((n) => n._id);
-    if (unreadIds.length === 0) return;
-    this.items = this.items.map((n) => ({ ...n, read: true }));
+    const ids = this.items.map((n) => n._id);
+    if (ids.length === 0) return;
+    this.items = [];
     try {
       const { db } = await getFirebase();
       const { writeBatch, doc } = await import('firebase/firestore/lite');
       const batch = writeBatch(db);
-      for (const id of unreadIds) {
-        batch.update(doc(db, 'notifications', uid, 'inbox', id), { read: true });
+      for (const id of ids) {
+        batch.delete(doc(db, 'notifications', uid, 'inbox', id));
       }
       await batch.commit();
     } catch (e) {
