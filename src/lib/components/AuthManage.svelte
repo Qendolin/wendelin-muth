@@ -1,5 +1,6 @@
 <script lang="ts">
   import { goto } from '$app/navigation';
+  import { resolve } from '$app/paths';
   import { auth, notifications, type Notification } from '$lib/stores.svelte';
   import SignIn3 from './SignIn.svelte';
   import SignUp from './SignUp.svelte';
@@ -26,7 +27,8 @@
 
   function openNotification(n: Notification) {
     void notifications.markRead(n._id);
-    void goto(`${n.route}#comment-${n.comment_id}`);
+    const path = resolve(n.route as any);
+    void goto(`${path}#comment-${n.comment_id}`);
   }
 
   function startEditingName() {
@@ -82,7 +84,7 @@
     <div class="border-t border-border-base"></div>
 
     <div class="flex items-center justify-between">
-      <h3 class="text-sm font-semibold text-content">Notifications</h3>
+      <h3 class="m-0 text-sm font-semibold text-content">Notifications</h3>
       {#if notifications.unread.length > 0}
         <button class="btn-link text-xs" onclick={() => notifications.markAllRead()}>Mark all read</button>
       {/if}

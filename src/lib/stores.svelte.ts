@@ -407,6 +407,7 @@ class NotificationsStore {
 
   #interval: ReturnType<typeof setInterval> | null = null;
   #lastUid: string | null = null;
+  #onRefresh = (): void => void this.refresh();
 
   /** Unread notifications, newest first. */
   get unread(): Notification[] {
@@ -428,6 +429,8 @@ class NotificationsStore {
     if (this.#interval && this.#lastUid === uid) return;
     this.stop();
     this.#lastUid = uid;
+    window.addEventListener('focus', this.#onRefresh);
+    window.addEventListener('visibilitychange', this.#onRefresh);
     void this.refresh();
     this.#interval = setInterval(() => void this.refresh(), NOTIFICATION_POLL_INTERVAL);
   }
@@ -437,6 +440,8 @@ class NotificationsStore {
       clearInterval(this.#interval);
       this.#interval = null;
     }
+    window.removeEventListener('focus', this.#onRefresh);
+    window.removeEventListener('visibilitychange', this.#onRefresh);
     this.#lastUid = null;
   }
 
