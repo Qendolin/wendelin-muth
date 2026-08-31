@@ -1,0 +1,20 @@
+{
+  "nodeModulesDir": "auto",
+  "tasks": {
+    "build": "deno run --allow-all build.ts",
+    "check": "deno check index.ts"
+  },
+  "imports": {
+    "firebase-admin": "npm:firebase-admin@^13",
+    "firebase-admin/app": "npm:firebase-admin@^13/app",
+    "firebase-admin/firestore": "npm:firebase-admin@^13/firestore",
+    "firebase-functions": "npm:firebase-functions@^7.3.2",
+    "firebase-functions/v2": "npm:firebase-functions@^7.3.2/v2",
+    "firebase-functions/v2/firestore": "npm:firebase-functions@^7.3.2/v2/firestore",
+    "esbuild": "npm:esbuild@0.28"
+  },
+  "compilerOptions": {
+    "strict": true,
+    "lib": ["deno.ns", "deno.unstable", "dom"]
+  }
+}

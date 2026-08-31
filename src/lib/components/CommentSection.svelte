@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { page } from '$app/state';
   import { onMount } from 'svelte';
   import { comments } from '$lib/stores.svelte';
   import CommentForm from './CommentForm.svelte';
@@ -14,6 +15,23 @@
   };
 
   let { routeId }: Props = $props();
+
+  let soughtToHash = $state<string | null>(null);
+
+  // Deep-link from a notification (#comment-<id>) once the comments for this
+  // route have loaded and rendered.
+  $effect(() => {
+    if (comments.routeId !== routeId || comments.loading) return;
+    const hash = page.url.hash;
+    if (!hash || hash === soughtToHash) return;
+    soughtToHash = hash;
+    const el = document.getElementById(hash.slice(1));
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      el.classList.add('comment-flash');
+      setTimeout(() => el.classList.remove('comment-flash'), 2000);
+    }
+  });
 
   onMount(() => {
     comments.load(routeId);
@@ -54,3 +72,11 @@
     {/if}
   </div>
 </section>
+
+<style>
+  :global(.comment-flash) {
+    outline: 2px solid rgb(239 68 68 / 0.6);
+    outline-offset: 4px;
+    border-radius: 0.375rem;
+  }
+</style>

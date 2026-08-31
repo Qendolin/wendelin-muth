@@ -28,3 +28,7 @@ vite.config.ts.timestamp-*
 /.firebase
 *-creds.json
 firebase-debug.log
+
+# Functions build output (built locally before deploy)
+functions/index.js
+functions/index.js.map

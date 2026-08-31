@@ -1,5 +1,6 @@
 <script lang="ts">
-  import { auth } from '$lib/stores.svelte';
+  import { goto } from '$app/navigation';
+  import { auth, notifications, type Notification } from '$lib/stores.svelte';
   import SignIn3 from './SignIn.svelte';
   import SignUp from './SignUp.svelte';
   import Input from './Input.svelte';
@@ -11,6 +12,22 @@
 
   // State to manage Signed out visual flow
   let authMode = $state<'signin' | 'signup'>('signup');
+
+  const dateFormat = new Intl.RelativeTimeFormat('en', { numeric: 'auto' });
+
+  function formatDate(date: Date): string {
+    const delta = (Date.now() - date.getTime()) / 1000;
+    if (delta < 60) return 'just now';
+    if (delta < 3600) return dateFormat.format(-Math.round(delta / 60), 'minute');
+    if (delta < 86400) return dateFormat.format(-Math.round(delta / 3600), 'hour');
+    if (delta < 86400 * 365) return dateFormat.format(-Math.round(delta / 86400), 'day');
+    return dateFormat.format(-Math.round(delta / (86400 * 365)), 'year');
+  }
+
+  function openNotification(n: Notification) {
+    void notifications.markRead(n._id);
+    void goto(`${n.route}#comment-${n.comment_id}`);
+  }
 
   function startEditingName() {
     nameInput = auth.displayName ?? '';
@@ -63,6 +80,42 @@
     {/if}
 
     <div class="border-t border-border-base"></div>
+
+    <div class="flex items-center justify-between">
+      <h3 class="text-sm font-semibold text-content">Notifications</h3>
+      {#if notifications.unread.length > 0}
+        <button class="btn-link text-xs" onclick={() => notifications.markAllRead()}>Mark all read</button>
+      {/if}
+    </div>
+
+    <div class="max-h-48 overflow-y-auto">
+      {#if notifications.loading}
+        <p class="py-1 text-content-muted">Loading...</p>
+      {:else if notifications.unread.length === 0}
+        <p class="py-1 text-content-muted">No unread messages</p>
+      {:else}
+        <ul class="flex list-none flex-col">
+          {#each notifications.unread as n (n._id)}
+            <li>
+              <button
+                class="flex w-full flex-col items-start gap-0.5 rounded px-2 py-2 text-left hover:bg-neutral-600/20 dark:hover:bg-neutral-400/10"
+                onclick={() => openNotification(n)}
+              >
+                <span class="flex w-full items-baseline justify-between gap-2">
+                  <span class="truncate text-content"><strong>{n.from_name}</strong></span>
+                  <time class="shrink-0 text-xs text-content-muted" datetime={n.created_date.toISOString()}>
+                    {formatDate(n.created_date)}
+                  </time>
+                </span>
+                <span class="line-clamp-2 w-full text-xs text-content-muted">{n.body}</span>
+              </button>
+            </li>
+          {/each}
+        </ul>
+      {/if}
+    </div>
+
+    <hr class="border-border-base" />
 
     {#if auth.isAnonymous}
       {#if !showUpgrade}

@@ -6,6 +6,8 @@
   "scripts": {
     "dev": "vite dev",
     "deploy:hosting": "firebase deploy --only hosting:wendelin-muth",
+    "build:functions": "deno run --allow-all functions/build.ts",
+    "deploy:functions": "deno run --allow-all functions/build.ts && firebase deploy --only functions",
     "prebuild": "deno run upload-images && deno run --allow-read --allow-write scripts/build-timestamp.ts",
     "build": "vite build",
     "build:debug": "DEBUG=true vite build",

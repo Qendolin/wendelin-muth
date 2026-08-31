@@ -39,7 +39,7 @@
   }
 </script>
 
-<article class="flex flex-col">
+<article id="comment-{comment._id}" class="flex flex-col">
   <header class="flex items-baseline gap-3 text-content-muted">
     <span class="text-md text-content"><strong title={comment.user_id}>{comment.author}</strong></span>
 

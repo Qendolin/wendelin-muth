@@ -24,6 +24,18 @@ export type Comment = {
   modified_date: Date;
 };
 
+export type Notification = {
+  _id: string;
+  from_uid: string;
+  from_name: string;
+  body: string;
+  route: string;
+  comment_id: string;
+  reply_to: string | null;
+  read: boolean;
+  created_date: Date;
+};
+
 // ─── Auth Store ───────────────────────────────────────────────────────────────
 
 const ADMIN_UID = 'gB9DEJyxjbQWI7cliTcDukRzD5l1';
@@ -384,6 +396,102 @@ class CommentsStore {
   }
 }
 
+// ─── Notifications Store ──────────────────────────────────────────────────────
+
+const NOTIFICATION_POLL_INTERVAL = 10 * 60 * 1000;
+
+class NotificationsStore {
+  items = $state<Notification[]>([]);
+  loading = $state(false);
+  error = $state<string | null>(null);
+
+  #interval: ReturnType<typeof setInterval> | null = null;
+  #lastUid: string | null = null;
+
+  /** Unread notifications, newest first. */
+  get unread(): Notification[] {
+    return this.items.filter((n) => !n.read).sort((a, b) => b.created_date.getTime() - a.created_date.getTime());
+  }
+
+  get unreadCount(): number {
+    return this.unread.length;
+  }
+
+  /** Begin polling while a user is signed in. Safe to call repeatedly. */
+  start(): void {
+    const uid = auth.uid;
+    if (!uid) {
+      this.stop();
+      this.items = [];
+      return;
+    }
+    if (this.#interval && this.#lastUid === uid) return;
+    this.stop();
+    this.#lastUid = uid;
+    void this.refresh();
+    this.#interval = setInterval(() => void this.refresh(), NOTIFICATION_POLL_INTERVAL);
+  }
+
+  stop(): void {
+    if (this.#interval) {
+      clearInterval(this.#interval);
+      this.#interval = null;
+    }
+    this.#lastUid = null;
+  }
+
+  async refresh(): Promise<void> {
+    const uid = auth.uid;
+    if (!uid) return;
+
+    this.loading = true;
+    this.error = null;
+    try {
+      const { db } = await getFirebase();
+      const { collection, query, orderBy, limit, getDocs } = await import('firebase/firestore/lite');
+      const q = query(collection(db, 'notifications', uid, 'inbox'), orderBy('created_date', 'desc'), limit(100));
+      const snap = await getDocs(q);
+      this.items = snap.docs.map((d) => mapNotification(d.data(), d.id));
+    } catch (e) {
+      this.error = String(e);
+    } finally {
+      this.loading = false;
+    }
+  }
+
+  async markRead(id: string): Promise<void> {
+    const uid = auth.uid;
+    if (!uid) return;
+    this.items = this.items.map((n) => (n._id === id ? { ...n, read: true } : n));
+    try {
+      const { db } = await getFirebase();
+      const { doc, updateDoc } = await import('firebase/firestore/lite');
+      await updateDoc(doc(db, 'notifications', uid, 'inbox', id), { read: true });
+    } catch (e) {
+      this.error = String(e);
+    }
+  }
+
+  async markAllRead(): Promise<void> {
+    const uid = auth.uid;
+    if (!uid) return;
+    const unreadIds = this.unread.map((n) => n._id);
+    if (unreadIds.length === 0) return;
+    this.items = this.items.map((n) => ({ ...n, read: true }));
+    try {
+      const { db } = await getFirebase();
+      const { writeBatch, doc } = await import('firebase/firestore/lite');
+      const batch = writeBatch(db);
+      for (const id of unreadIds) {
+        batch.update(doc(db, 'notifications', uid, 'inbox', id), { read: true });
+      }
+      await batch.commit();
+    } catch (e) {
+      this.error = String(e);
+    }
+  }
+}
+
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
 function mapComment(data: Record<string, any>, id: string): Comment {
@@ -395,7 +503,17 @@ function mapComment(data: Record<string, any>, id: string): Comment {
   };
 }
 
+function mapNotification(data: Record<string, any>, id: string): Notification {
+  const created = data['created_date'];
+  return {
+    ...(data as Omit<Notification, '_id' | 'created_date'>),
+    _id: id,
+    created_date: created?.seconds ? new Date(created.seconds * 1000) : new Date()
+  } as Notification;
+}
+
 // ─── Singletons ───────────────────────────────────────────────────────────────
 
 export const auth = new AuthStore();
 export const comments = new CommentsStore();
+export const notifications = new NotificationsStore();
