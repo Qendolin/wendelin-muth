@@ -6,6 +6,13 @@
 
 ---
 
+## Rules
+
+- Do not use em-dashes or semicolons. Just use simple comma and period sentence structures.
+- Do not use npm/node.
+
+---
+
 You are able to use the Svelte MCP server, where you have access to comprehensive Svelte 5 and SvelteKit documentation. Here's how to use the available tools effectively:
 
 ## Available MCP Tools:
