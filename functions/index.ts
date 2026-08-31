@@ -10,7 +10,7 @@
  * Bundled to CJS for the Firebase Functions runtime via build.ts (deno).
  */
 
-import { onDocumentCreated } from 'firebase-functions/v2/firestore';
+import { onDocumentCreated, onDocumentDeleted } from 'firebase-functions/v2/firestore';
 import { setGlobalOptions } from 'firebase-functions/v2';
 import { FieldValue } from 'firebase-admin/firestore';
 import { initializeFirebaseAdmin, db } from './lib/firebase.ts';
@@ -72,5 +72,25 @@ export const onCommentCreated = onDocumentCreated('comments/{commentId}', async 
         read: false,
         created_date: FieldValue.serverTimestamp()
       });
+  }
+});
+
+// Delete a comment and all of its replies.
+export const onCommentDeleted = onDocumentDeleted('comments/{commentId}', async (event) => {
+  const { commentId } = event.params;
+  try {
+    const stack = [commentId];
+    while (stack.length) {
+      const id = stack.pop();
+      const snap = await db().collection('comments').where('parent_id', '==', id).get();
+      const batch = db().batch();
+      snap.forEach((d) => {
+        batch.delete(d.ref);
+        stack.push(d.id);
+      });
+      await batch.commit();
+    }
+  } catch (e) {
+    console.error('onCommentDeleted failed', e);
   }
 });
