@@ -3,7 +3,7 @@ service cloud.firestore {
   match /databases/{database}/documents {
 
     function isAdmin() {
-      return request.auth.uid == 'gB9DEJyxjbQWI7cliTcDukRzD5l1';
+      return request.auth != null && request.auth.uid == 'gB9DEJyxjbQWI7cliTcDukRzD5l1';
     }
 
     function isSignedIn() {
@@ -14,9 +14,13 @@ service cloud.firestore {
 
     match /comments/{commentId} {
 
-      // Anyone can read comments (public site)
+      // Any comment can read (public site)
       allow read: if true;
 
+      // NOTE: hasAll() only checks that the required keys are present; it does
+      // NOT forbid extra fields. A malicious client could stuff additional
+      // fields into a comment. Not exploitable today because the client reads
+      // back and renders only known fields, but don't rely on this as a guard.
       allow create: if isSignedIn()
         // Must claim their own uid
         && request.resource.data.user_id == request.auth.uid
@@ -61,13 +65,30 @@ service cloud.firestore {
       // Users can read their own doc; admin can read all
       allow read: if isAdmin() || request.auth.uid == userId;
 
-      // Users can create/update only their own doc
-      allow create, update: if isSignedIn()
+      // Users can create/update only their own doc.
+      // Actual API calls are setDoc(..., { merge: true }): the write sends the
+      // fully merged doc. `create` requires the complete well-formed doc.
+      allow create: if isSignedIn()
         && request.auth.uid == userId
         && request.resource.data.keys().hasAll(['display_name', 'is_anonymous'])
+        && request.resource.data.keys().hasOnly(['display_name', 'is_anonymous'])
         && request.resource.data.display_name is string
         && request.resource.data.display_name.size() > 0
-        && request.resource.data.display_name.size() <= 32;
+        && request.resource.data.display_name.size() <= 32
+        && request.resource.data.is_anonymous is boolean;
+
+      // `update` allows partial writes (e.g. a future single-field updateDoc).
+      // Per-field checks apply only when the field is present.
+      allow update: if isSignedIn()
+        && request.auth.uid == userId
+        && request.resource.data.diff(resource.data).affectedKeys()
+             .hasOnly(['display_name', 'is_anonymous'])
+        && (!('display_name' in request.resource.data)
+            || (request.resource.data.display_name is string
+                && request.resource.data.display_name.size() > 0
+                && request.resource.data.display_name.size() <= 32))
+        && (!('is_anonymous' in request.resource.data)
+            || request.resource.data.is_anonymous is boolean);
 
       allow delete: if false;
     }
@@ -105,10 +126,8 @@ service cloud.firestore {
     }
     match /old-wall/{post} {
       allow read: if true;
-      //allow create: if true;
-      allow delete: if request.auth != null && /databases/$(database)/documents/users/$(request.auth.uid) == resource.data.user_ref;
-      //allow write: if
-    	//	request.auth.uid == 'gB9DEJyxjbQWI7cliTcDukRzD5l1';
+      // Read-only now; delete requires admin intervention:
+      //allow delete: if request.auth != null && /databases/$(database)/documents/users/$(request.auth.uid) == resource.data.user_ref;
     }
     match /old-comments/{comment} {
       allow read: if true;

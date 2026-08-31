@@ -512,6 +512,12 @@ function mapNotification(data: Record<string, any>, id: string): Notification {
   } as Notification;
 }
 
+// ─── Helpers ──────────────────────────────────────────────────────────────────
+
+export function isAdminUid(uid: string | null | undefined): boolean {
+  return uid != null && uid === ADMIN_UID;
+}
+
 // ─── Singletons ───────────────────────────────────────────────────────────────
 
 export const auth = new AuthStore();
