@@ -75,8 +75,7 @@
 
 <style>
   :global(.comment-flash) {
-    outline: 2px solid rgb(239 68 68 / 0.6);
+    outline: 2px solid var(--color-border-strong);
     outline-offset: 4px;
-    border-radius: 0.375rem;
   }
 </style>
