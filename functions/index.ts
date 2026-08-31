@@ -39,26 +39,27 @@ export const onCommentCreated = onDocumentCreated('comments/{commentId}', async 
   const commenterUid = data.user_id;
   const commenterName = data.author;
 
-  const recipients: { uid: string; reply_to: string | null }[] = [];
+  const recipients = new Map<string, string | null>();
 
   // Notify the author of the comment being replied to, unless it's yourself.
   if (data.parent_id) {
     const parentSnap = await db().collection('comments').doc(data.parent_id).get();
     const parentUserId = parentSnap.data()?.user_id as string | undefined;
     if (parentUserId && parentUserId !== commenterUid) {
-      recipients.push({ uid: parentUserId, reply_to: data.parent_id });
+      recipients.set(parentUserId, data.parent_id);
     }
   }
 
-  // Notify the admin about every comment except their own.
-  if (commenterUid !== ADMIN_UID) {
-    recipients.push({ uid: ADMIN_UID, reply_to: data.parent_id ?? null });
+  // Notify the admin about every comment except their own, unless they were
+  // already added as the reply recipient (dedupes to one notification).
+  if (commenterUid !== ADMIN_UID && !recipients.has(ADMIN_UID)) {
+    recipients.set(ADMIN_UID, data.parent_id ?? null);
   }
 
-  for (const recipient of recipients) {
+  for (const [uid, replyTo] of recipients) {
     await db()
       .collection('notifications')
-      .doc(recipient.uid)
+      .doc(uid)
       .collection('inbox')
       .doc(commentId)
       .set({
@@ -67,7 +68,7 @@ export const onCommentCreated = onDocumentCreated('comments/{commentId}', async 
         body: data.body,
         route: data.route_id,
         comment_id: commentId,
-        reply_to: recipient.reply_to,
+        reply_to: replyTo,
         read: false,
         created_date: FieldValue.serverTimestamp()
       });
