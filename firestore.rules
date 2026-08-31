@@ -1,0 +1,124 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function isAdmin() {
+      return request.auth.uid == 'gB9DEJyxjbQWI7cliTcDukRzD5l1';
+    }
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    // --- comments ---
+
+    match /comments/{commentId} {
+
+      // Anyone can read comments (public site)
+      allow read: if true;
+
+      allow create: if isSignedIn()
+        // Must claim their own uid
+        && request.resource.data.user_id == request.auth.uid
+        // Required fields must be present
+        && request.resource.data.keys().hasAll([
+             'route_id', 'user_id', 'author', 'body',
+             'parent_id', 'created_date', 'modified_date'
+           ])
+        // Field types and length limits
+        && request.resource.data.route_id is string
+        && request.resource.data.route_id.size() > 0
+        && request.resource.data.route_id.size() <= 256
+        && request.resource.data.author is string
+        && request.resource.data.author.size() > 0
+        && request.resource.data.author.size() <= 32
+        && request.resource.data.body is string
+        && request.resource.data.body.size() > 0
+        && request.resource.data.body.size() <= 5000
+        // parent_id must be a string or null
+        && (request.resource.data.parent_id == null
+            || request.resource.data.parent_id is string);
+
+      // Only the author can edit; only body and modified_date may change
+      allow update: if isAdmin()
+        || (isSignedIn()
+            && resource.data.user_id == request.auth.uid
+            && request.resource.data.diff(resource.data).affectedKeys()
+                 .hasOnly(['body', 'modified_date'])
+            && request.resource.data.body is string
+            && request.resource.data.body.size() > 0
+            && request.resource.data.body.size() <= 5000);
+
+      // Owner or admin can hard-delete their own comment
+      allow delete: if isAdmin()
+        || (isSignedIn() && resource.data.user_id == request.auth.uid);
+    }
+
+    // --- users ---
+
+    match /users/{userId} {
+
+      // Users can read their own doc; admin can read all
+      allow read: if isAdmin() || request.auth.uid == userId;
+
+      // Users can create/update only their own doc
+      allow create, update: if isSignedIn()
+        && request.auth.uid == userId
+        && request.resource.data.keys().hasAll(['display_name', 'is_anonymous'])
+        && request.resource.data.display_name is string
+        && request.resource.data.display_name.size() > 0
+        && request.resource.data.display_name.size() <= 32;
+
+      allow delete: if false;
+    }
+
+    // --- notifications ---
+
+    // Per-user inbox. Only the owner can read/update/delete their own docs.
+    // Creates happen exclusively via the Cloud Function (Admin SDK bypasses rules).
+    match /notifications/{userId}/inbox/{notifId} {
+      allow read: if request.auth != null && request.auth.uid == userId;
+
+      // Users may only flip the `read` flag to true.
+      allow update: if request.auth != null
+        && request.auth.uid == userId
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['read'])
+        && request.resource.data.read == true;
+
+      allow delete: if request.auth != null && request.auth.uid == userId;
+
+      allow create: if false;
+    }
+
+
+		// --- Old Website ---
+
+    match /old-users/{user} {
+      allow read: if true;
+      //allow create: if
+      //	request.auth.uid == user;
+    }
+    match /old-blog/{entry} {
+      allow read: if true;
+      //allow write: if
+    	//	request.auth.uid == 'gB9DEJyxjbQWI7cliTcDukRzD5l1';
+    }
+    match /old-wall/{post} {
+      allow read: if true;
+      //allow create: if true;
+      allow delete: if request.auth != null && /databases/$(database)/documents/users/$(request.auth.uid) == resource.data.user_ref;
+      //allow write: if
+    	//	request.auth.uid == 'gB9DEJyxjbQWI7cliTcDukRzD5l1';
+    }
+    match /old-comments/{comment} {
+      allow read: if true;
+      //allow create: if request.auth != null;
+      //allow delete: if request.auth != null && /databases/$(database)/documents/users/$(request.auth.uid) == resource.data.user_ref;
+      
+      //allow update: if
+    	//		/databases/$(database)/documents/users/$(request.auth.uid) == request.resource.data.user_ref
+      //    && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['body', 'modified_date', 'removed'])
+      
+    }
+  }
+}

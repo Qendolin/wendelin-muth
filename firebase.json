@@ -1,4 +1,7 @@
 {
+  "firestore": {
+    "rules": "firestore.rules"
+  },
   "hosting": {
     "predeploy": "deno run build",
     "site": "wendelin-muth",

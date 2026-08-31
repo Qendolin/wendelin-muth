@@ -26,7 +26,7 @@ export type Comment = {
 
 // ─── Auth Store ───────────────────────────────────────────────────────────────
 
-const ADMIN_UID = 'YOUR_UID_HERE';
+const ADMIN_UID = 'gB9DEJyxjbQWI7cliTcDukRzD5l1';
 
 class AuthStore {
   // The User object reference never changes after sign-in (Firebase mutates it
@@ -58,6 +58,7 @@ class AuthStore {
       this.isAnonymous = u?.isAnonymous ?? false;
       this.loading = false;
       this.#resolveReady(auth);
+      if (u) this.#ensureUserDoc(u);
     });
   }
 
@@ -65,6 +66,39 @@ class AuthStore {
     this.user = user;
     this.displayName = user.displayName;
     this.isAnonymous = user.isAnonymous;
+  }
+
+  /**
+   * Make sure a users/{uid} doc exists after any sign-in. Accounts created
+   * before this code (e.g. the admin account) or linked accounts may lack it,
+   * which would break the users rules on the next write. Anonymous users who
+   * haven't picked a name yet are skipped here; they get their doc created (or
+   * updated) by #saveUser once a name is chosen.
+   */
+  async #ensureUserDoc(user: User): Promise<void> {
+    const displayName = user.displayName?.trim();
+    if (!displayName) return;
+    try {
+      const { db } = await getFirebase();
+      const { doc, getDoc } = await import('firebase/firestore/lite');
+      const ref = doc(db, 'users', user.uid);
+      const snap = await getDoc(ref);
+      if (!snap.exists()) {
+        const { setDoc } = await import('firebase/firestore/lite');
+        await setDoc(ref, { display_name: displayName, is_anonymous: user.isAnonymous }, { merge: true });
+      }
+    } catch (e) {
+      // Non-fatal: the sign-in/comment flows surface real errors.
+      console.error('Failed to ensure user doc', e);
+    }
+  }
+
+  /** Upsert the user doc with both required fields present. */
+  async #saveUser(user: User, name: string | null): Promise<void> {
+    const { db } = await getFirebase();
+    const { doc, setDoc } = await import('firebase/firestore/lite');
+    const displayName = name?.trim() || user.displayName?.trim() || 'Anonymous';
+    await setDoc(doc(db, 'users', user.uid), { display_name: displayName, is_anonymous: user.isAnonymous }, { merge: true });
   }
 
   // ── Derived ──────────────────────────────────────────────────────────────
@@ -91,13 +125,11 @@ class AuthStore {
     if (!trimmed) throw new Error('A display name is required to post.');
     if (trimmed.length > 32) throw new Error('Max 32 characters.');
 
-    const { db } = await getFirebase();
     const { signInAnonymously, updateProfile } = await import('firebase/auth');
-    const { doc, setDoc } = await import('firebase/firestore/lite');
 
     const { user } = await signInAnonymously(fbAuth);
     await updateProfile(user, { displayName: trimmed });
-    await setDoc(doc(db, 'users', user.uid), { display_name: trimmed, is_anonymous: true }, { merge: true });
+    await this.#saveUser(user, trimmed);
 
     // updateProfile mutates user in place without firing onAuthStateChanged,
     // so we sync the primitive $state values directly.
@@ -115,12 +147,10 @@ class AuthStore {
     this.updatingName = true;
     this.error = null;
     try {
-      const { db } = await getFirebase();
       const { updateProfile } = await import('firebase/auth');
-      const { doc, setDoc } = await import('firebase/firestore/lite');
 
       await updateProfile(this.user, { displayName: trimmed });
-      await setDoc(doc(db, 'users', this.user.uid), { display_name: trimmed, is_anonymous: this.user.isAnonymous }, { merge: true });
+      await this.#saveUser(this.user, trimmed);
       this.#syncFromUser(this.user);
     } catch (e) {
       this.error = String(e);
@@ -144,9 +174,7 @@ class AuthStore {
       const result = await createUserWithEmailAndPassword(fbAuth, email, password);
       await updateProfile(result.user, { displayName: trimmed });
 
-      const { db } = await getFirebase();
-      const { doc, setDoc } = await import('firebase/firestore/lite');
-      await setDoc(doc(db, 'users', result.user.uid), { display_name: trimmed, is_anonymous: false }, { merge: true });
+      await this.#saveUser(result.user, trimmed);
 
       this.#syncFromUser(result.user);
     } catch (e) {
@@ -162,9 +190,7 @@ class AuthStore {
     this.linking = true;
     this.error = null;
     try {
-      const { db } = await getFirebase();
       const { GoogleAuthProvider, linkWithPopup, updateProfile } = await import('firebase/auth');
-      const { doc, setDoc } = await import('firebase/firestore/lite');
 
       const existingName = this.displayName;
       const result = await linkWithPopup(this.user, new GoogleAuthProvider());
@@ -173,7 +199,7 @@ class AuthStore {
       const nameToKeep = existingName ?? result.user.displayName;
       if (nameToKeep) {
         await updateProfile(result.user, { displayName: nameToKeep });
-        await setDoc(doc(db, 'users', result.user.uid), { display_name: nameToKeep, is_anonymous: false }, { merge: true });
+        await this.#saveUser(result.user, nameToKeep);
         this.#syncFromUser(result.user);
       }
     } catch (e: any) {
@@ -191,14 +217,12 @@ class AuthStore {
     this.linking = true;
     this.error = null;
     try {
-      const { db } = await getFirebase();
       const { EmailAuthProvider, linkWithCredential } = await import('firebase/auth');
-      const { doc, setDoc } = await import('firebase/firestore/lite');
 
       const credential = EmailAuthProvider.credential(email, password);
       const result = await linkWithCredential(this.user, credential);
       // linkWithCredential fires onAuthStateChanged, listener handles the update.
-      await setDoc(doc(db, 'users', result.user.uid), { is_anonymous: false }, { merge: true });
+      await this.#saveUser(result.user, this.displayName);
     } catch (e) {
       this.error = String(e);
       throw e;
