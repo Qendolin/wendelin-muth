@@ -7,5 +7,6 @@
   "css.customData": [".vscode/tailwind.json"],
   "[sveltex]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
-  }
+  },
+  "deno.lint": false
 }

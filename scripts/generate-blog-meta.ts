@@ -63,6 +63,7 @@ interface LLMResult {
 // ---------------------------------------------------------------------------
 
 async function callLlm(postContent: string, title: string, seed: number | null): Promise<LLMResult> {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const systemPrompt = `You are writing meta descriptions and topic tags for a personal/technical blog. Follow these rules exactly.
 
 ## Description rules
@@ -166,7 +167,7 @@ ${postContent.slice(0, 12000)}
   const body = {
     model: MODEL,
     messages: [
-      { role: 'system', content: systemPrompt },
+      { role: 'system', content: systemPrompt2 },
       { role: 'user', content: userPrompt }
     ],
     temperature: 1.0,

@@ -57,21 +57,16 @@ export const onCommentCreated = onDocumentCreated('comments/{commentId}', async 
   }
 
   for (const [uid, replyTo] of recipients) {
-    await db()
-      .collection('notifications')
-      .doc(uid)
-      .collection('inbox')
-      .doc(commentId)
-      .set({
-        from_uid: commenterUid,
-        from_name: commenterName,
-        body: data.body,
-        route: data.route_id,
-        comment_id: commentId,
-        reply_to: replyTo,
-        read: false,
-        created_date: FieldValue.serverTimestamp()
-      });
+    await db().collection('notifications').doc(uid).collection('inbox').doc(commentId).set({
+      from_uid: commenterUid,
+      from_name: commenterName,
+      body: data.body,
+      route: data.route_id,
+      comment_id: commentId,
+      reply_to: replyTo,
+      read: false,
+      created_date: FieldValue.serverTimestamp()
+    });
   }
 });
 

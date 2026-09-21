@@ -102,7 +102,7 @@
 
 <!-- Popover -->
 <div id="theme-popover" popover class="theme-popover surface-popover m-0 p-1">
-  {#each options as opt}
+  {#each options as opt (opt)}
     <label class="flex cursor-pointer items-center gap-2.5 px-3 py-2 text-sm text-content select-none hover:bg-border-base has-checked:bg-border-base">
       <input
         type="radio"

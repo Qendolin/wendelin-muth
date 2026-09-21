@@ -234,6 +234,7 @@
 <h5>Main Procedure: <code>FindConflictSet</code></h5>
 
 <static>
+  <!-- eslint-disable-next-line svelte/no-at-html-tags -->
   {@html highlight(
     'pseudo',
     String.raw`
@@ -263,6 +264,7 @@ function FindConflictSet(C_all):
 
   <h5>Helper Procedure: <code>FindNextConflictElement</code></h5>
 
+  <!-- eslint-disable-next-line svelte/no-at-html-tags -->
   {@html highlight(
     'pseudo',
     String.raw`
@@ -399,6 +401,7 @@ function FindNextConflictElement(StableSet, CandidateSet):
 
 <static>
   <h5>Meta-Procedure: <code>IMCS_Enumerator</code></h5>
+  <!-- eslint-disable-next-line svelte/no-at-html-tags -->
   {@html highlight(
     'pseudo',
     String.raw`

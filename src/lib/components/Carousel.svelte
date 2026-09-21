@@ -67,7 +67,6 @@
   }
 </script>
 
-<!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
 <!-- svelte-ignore a11y_no_noninteractive_tabindex -->
 <section
   class="carousel"
@@ -96,6 +95,7 @@
     </button>
 
     <div class="dots" role="tablist" aria-label="Slides">
+      <!-- eslint-disable-next-line svelte/require-each-key -->
       {#each { length: count } as _, i}
         <button
           class="dot"

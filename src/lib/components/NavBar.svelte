@@ -25,7 +25,7 @@
 </script>
 
 <nav class={['relative flex gap-4', classes ?? '']} {...rest}>
-  {#each paths as path}
+  {#each paths as path (path)}
     {@const active = isActive(path)}
     <a href={resolve(path)} class="relative" aria-current={active ? 'page' : undefined}>
       {routes[path]}

@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { resolve } from '$app/paths';
   import { formatDateRange } from '$lib/format';
   import type { Project } from '$lib/project';
   import TopicsList from './TopicsList.svelte';
@@ -10,7 +11,8 @@
   } = $props();
 </script>
 
-<a href={p.path} class="select-auto" draggable="false">
+<!-- eslint-disable-next-line @typescript-eslint/no-explicit-any -->
+<a href={resolve(p.path as any)} class="select-auto" draggable="false">
   <div class="entry-card group">
     <div class="entry-header">
       <span class="entry-title">{p.meta.title}</span>

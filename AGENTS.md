@@ -9,7 +9,8 @@
 ## Rules
 
 - Do not use em-dashes or semicolons. Just use simple comma and period sentence structures.
-- Do not use npm/node.
+- Do not use npm/node, use deno instead.
+- Use the scripts defined in package.json when appropriate. (I.e. lint, format, check)
 
 ---
 

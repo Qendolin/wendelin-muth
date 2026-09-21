@@ -23,7 +23,14 @@
 </script>
 
 <div class="relative inline-flex">
-  <button id="account-btn" popovertarget="account-popover" type="button" aria-label="Open profile management" class={['account-btn btn-icon', classes]} {...rest}>
+  <button
+    id="account-btn"
+    popovertarget="account-popover"
+    type="button"
+    aria-label="Open profile management"
+    class={['account-btn btn-icon', classes]}
+    {...rest}
+  >
     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
       <path
         stroke-linecap="round"

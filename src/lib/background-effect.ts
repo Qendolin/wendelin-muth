@@ -5,13 +5,13 @@ const symbol = Symbol.for('background_effect');
 export function addBackgroundEffect() {
   if (!globalThis?.document?.body) return;
 
-  // deno-lint-ignore no-explicit-any
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   let instance = (globalThis as any)[symbol] as BackgroundEffect | undefined;
   if (instance) {
     return;
   }
   instance = new BackgroundEffect();
-  // deno-lint-ignore no-explicit-any
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   (globalThis as any)[symbol] = instance;
 
   if (document.readyState !== 'complete') {
@@ -327,7 +327,7 @@ class BackgroundEffect {
     this.wiper = isMobile ? null : new Wiper();
   }
 
-  private onScroll(ev: Event) {
+  private onScroll() {
     if (this.pointer == null) return;
     this.pointerEvents.push({ x: this.pointer.x, y: this.pointer.y });
   }

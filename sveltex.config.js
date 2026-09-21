@@ -40,9 +40,9 @@ const handlers = {
    * @param {MdastImage} node - The Markdown image node.
    */
   image(state, node) {
-    const attribs = node.alt?.match(/\s*\|([^\|]*)$/)?.[1] ?? '';
+    const attribs = node.alt?.match(/\s*\|([^|]*)$/)?.[1] ?? '';
     const [, w, h] = attribs.match(/=(\d*)x(\d*)/) ?? [];
-    const alt = node.alt?.replace(/\s*\|[^\|]*$/, '');
+    const alt = node.alt?.replace(/\s*\|[^|]*$/, '');
 
     /** @type {HastProperties} */
     const properties = {

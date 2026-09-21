@@ -1,6 +1,5 @@
 import type { PageLoad } from './$types';
 import type { BlogEntryMeta } from '$lib/blog-entries';
-import { SimpleDate } from '$lib/date';
 
 export const _meta: BlogEntryMeta = {
   title: 'Opengl Counting',

@@ -36,6 +36,7 @@ export const load: PageLoad = () => {
       await fs.unlink(metaPath);
 
       console.log(`✅ Converted: ${entry.name}/meta.ts → +page.ts`);
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       if (err.code === 'ENOENT') {
         // No meta.ts in this folder — skip silently

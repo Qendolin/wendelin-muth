@@ -27,7 +27,9 @@
 
   function openNotification(n: Notification) {
     void notifications.markRead(n._id);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const path = resolve(n.route as any);
+    // eslint-disable-next-line svelte/no-navigation-without-resolve
     void goto(`${path}#comment-${n.comment_id}`);
   }
 

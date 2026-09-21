@@ -214,6 +214,7 @@ class AuthStore {
         await this.#saveUser(result.user, nameToKeep);
         this.#syncFromUser(result.user);
       }
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (e: any) {
       if (e?.code !== 'auth/popup-closed-by-user') {
         this.error = String(e);
@@ -251,6 +252,7 @@ class AuthStore {
       const { GoogleAuthProvider, signInWithPopup } = await import('firebase/auth');
       await signInWithPopup(fbAuth, new GoogleAuthProvider());
       // onAuthStateChanged handles the update.
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (e: any) {
       if (e?.code !== 'auth/popup-closed-by-user') {
         this.error = String(e);
@@ -499,6 +501,7 @@ class NotificationsStore {
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 function mapComment(data: Record<string, any>, id: string): Comment {
   return {
     ...(data as Omit<Comment, '_id' | 'created_date' | 'modified_date'>),
@@ -508,6 +511,7 @@ function mapComment(data: Record<string, any>, id: string): Comment {
   };
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 function mapNotification(data: Record<string, any>, id: string): Notification {
   const created = data['created_date'];
   return {

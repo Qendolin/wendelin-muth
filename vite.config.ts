@@ -13,6 +13,7 @@ function namedFiles() {
   return {
     name: 'hash-plugin',
     apply: 'build' as const,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     config(config: any) {
       if (!DEBUG) return config;
 

@@ -150,6 +150,7 @@ app.post('/polls/:id/vote', async (c) => {
 	try {
 		body = await c.req.json();
 	} catch (e) {
+		console.error(e);
 		return c.json({ error: 'Invalid JSON payload' }, 400);
 	}
 	const { userId, optionIds } = body;

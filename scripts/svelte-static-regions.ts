@@ -18,10 +18,10 @@ import process from 'node:process';
 import { createHash } from 'node:crypto';
 import { createServer, type ViteDevServer, type Plugin, type InlineConfig, type ResolvedConfig } from 'vite';
 import type { TransformPluginContext } from 'rollup';
-import { parse, PreprocessorGroup, Processed, type AST } from 'svelte/compiler';
+import { parse, type PreprocessorGroup, type Processed, type AST } from 'svelte/compiler';
 import type * as ESTree from 'estree';
 import MagicString from 'magic-string';
-import { SvelteConfig } from '@sveltejs/vite-plugin-svelte';
+import type { SvelteConfig } from '@sveltejs/vite-plugin-svelte';
 
 /**
  * Augment standard ESTree nodes to include the `start` and `end` positions
@@ -488,7 +488,8 @@ async function renderStaticRegion(
       `[svelte-static-regions] Failed to render static region.\n\n${tempCode
         .split('\n')
         .map((l) => '    ' + l)
-        .join('\n')}\n\nInner Error: ${e.message}\n${e.stack}`
+        .join('\n')}\n\nInner Error: ${e.message}\n${e.stack}`,
+      { cause: err }
     );
   } finally {
     state.virtualFiles.delete(virtualId);
@@ -540,16 +541,18 @@ async function replaceStaticRegions(
       if (e.message.includes('transport was disconnected')) {
         throw new Error(
           `[svelte-static-regions] SSR server disconnected while rendering a region in "${id}". ` +
-            `Aborting to prevent a partial transform from producing malformed Svelte output.`
+            `Aborting to prevent a partial transform from producing malformed Svelte output.`,
+          { cause: err }
         );
       }
       if (e.message.includes('Vite module runner has been closed')) {
         throw new Error(
           `[svelte-static-regions] SSR server closed while rendering a region in "${id}". ` +
-            `Aborting to prevent a partial transform from producing malformed Svelte output.`
+            `Aborting to prevent a partial transform from producing malformed Svelte output.`,
+          { cause: err }
         );
       }
-      throw new Error(`[svelte-static-regions] Failed to render static block in "${id}".\nInner Error: ${e.message}\n${e.stack}`);
+      throw new Error(`[svelte-static-regions] Failed to render static block in "${id}".\nInner Error: ${e.message}\n${e.stack}`, { cause: err });
     }
   }
 }
@@ -583,7 +586,7 @@ async function processTransform(code: string, id: string, htmlTransform: ((html:
     ast = parse(code, { filename: id, modern: true });
   } catch (err) {
     const e = err as Error;
-    throw new Error(`[svelte-static-regions] Failed to parse svelte code of "${id}".\nInner Error: ${e.message}\n${e.stack}`);
+    throw new Error(`[svelte-static-regions] Failed to parse svelte code of "${id}".\nInner Error: ${e.message}\n${e.stack}`, { cause: err });
   }
 
   const templateRoot = ast.fragment;

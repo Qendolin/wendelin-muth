@@ -1,5 +1,5 @@
 import { initializeApp } from 'firebase/app';
-import { getFirestore, collection, getDocs, type Timestamp } from 'firebase/firestore/lite';
+import { getFirestore, collection, getDocs } from 'firebase/firestore/lite';
 
 export type BlogEntryDoc = {
   _id: string;
@@ -71,7 +71,7 @@ export const load: PageLoad = () => {
   return { meta: _meta };
 };`;
 
-    const content = entry.body_raw.replaceAll('{', '\{').replaceAll('}', '\}');
+    const content = entry.body_raw.replaceAll('{', '\\{').replaceAll('}', '\\}');
 
     await Deno.mkdir(targetDir, { recursive: true });
     await Deno.writeTextFile(`${targetDir}/+page.ts`, metaContent, { create: true });

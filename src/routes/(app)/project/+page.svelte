@@ -2,6 +2,7 @@
   import TopicsList from '$lib/components/TopicsList.svelte';
   import { formatDateRange } from '$lib/format';
   import type { PageProps } from './$types';
+  import { resolve } from '$app/paths';
   let { data }: PageProps = $props();
 </script>
 
@@ -16,9 +17,10 @@
 <p class="text-sm text-content-muted italic">Of course I have many more projects, but I can't make a page for every single one.</p>
 
 <ol class="list-none">
-  {#each data.projects as p}
+  {#each data.projects as p (p.path)}
     <li class="group entry-row cursor-pointer">
-      <a href={p.path} class="select-auto" draggable="false">
+      <!-- eslint-disable-next-line @typescript-eslint/no-explicit-any -->
+      <a href={resolve(p.path as any)} class="select-auto" draggable="false">
         <div class="entry-header">
           <span class="entry-title">{p.meta.title}</span>
           <span class="entry-meta">{formatDateRange(p.meta)}</span>

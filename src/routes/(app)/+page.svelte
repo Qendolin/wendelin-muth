@@ -54,6 +54,7 @@
 <svelte:head>
   <title>Wendelin's Homepage</title>
 
+  <!-- eslint-disable-next-line svelte/no-at-html-tags -->
   {@html microdata}
   <meta property="og:type" content="profile" />
   <meta property="og:title" content="Wendelin Muth - Homepage" />
@@ -130,7 +131,7 @@
       >
     </h2>
     <ol class="list-none">
-      {#each data.projectsFeatured as p}
+      {#each data.projectsFeatured as p (p.path)}
         <li class="group cursor-pointer">
           <ProjectFeaturedEntry project={p}></ProjectFeaturedEntry>
         </li>
@@ -148,7 +149,7 @@
     </h2>
 
     <ol class="list-none">
-      {#each data.blogFeatured as e}
+      {#each data.blogFeatured as e (e.path)}
         <li class="group cursor-pointer">
           <BlogFeaturedEntry entry={e}></BlogFeaturedEntry>
         </li>

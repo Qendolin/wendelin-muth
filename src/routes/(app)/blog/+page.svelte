@@ -2,6 +2,7 @@
   import TopicsList from '$lib/components/TopicsList.svelte';
   import { formatDate } from '$lib/format';
   import type { PageProps } from './$types';
+  import { resolve } from '$app/paths';
   let { data }: PageProps = $props();
 </script>
 
@@ -15,9 +16,10 @@
 </h1>
 
 <ol class="list-none">
-  {#each data.blogEntries as e}
+  {#each data.blogEntries as e (e.path)}
     <li class="group entry-row cursor-pointer">
-      <a href={e.path} class="select-auto" draggable="false">
+      <!-- eslint-disable-next-line @typescript-eslint/no-explicit-any -->
+      <a href={resolve(e.path as any)} class="select-auto" draggable="false">
         <div class="entry-header">
           <span class="entry-title">{e.meta.title}</span>
           <span class="entry-meta">{e.meta.createdDate ? formatDate(e.meta.createdDate) : ''}</span>
