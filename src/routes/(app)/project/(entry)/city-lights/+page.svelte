@@ -24,6 +24,8 @@
   <Link href="https://www.cg.tuwien.ac.at/courses/Computer-Graphics/HallOfFame/2025W">course Hall of Fame</Link>.
 </p>
 
+<video src="https://www.cg.tuwien.ac.at/sites/default/files/hall_of_fame/10445/City_LightsNeumannvideo-city-lights.mp4" controls title="Demo Video"></video>
+
 <h2>The Demo</h2>
 <p>
   The scene is a city that starts out in daylight and gradually transitions to night. The skybox blends between two textures and the sun light is animated
