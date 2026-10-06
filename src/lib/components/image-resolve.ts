@@ -1,4 +1,4 @@
-import { dev } from '$app/environment';
+import { browser, dev } from '$app/environment';
 
 type ManifestEntry = {
   url: string;
@@ -20,6 +20,8 @@ export function resolveUrl(src: string): string {
     return src;
   }
 
+  if (browser) throw new Error(`Local image ${src} must be resolved with $static().`);
+
   const manifestUrl = manifest[src]?.url;
   if (!manifestUrl) throw new Error(`Local image ${src} does not have manifest entry.`);
   return manifestUrl;
@@ -32,6 +34,8 @@ export function resolveSize(src: string, w: number | undefined, h: number | unde
   if (!src.startsWith('/') && !src.startsWith('.')) {
     return [w, h];
   }
+
+  if (browser) throw new Error(`Local image size for ${src} must be resolved with $static().`);
 
   const entry = manifest[src];
 
@@ -59,6 +63,8 @@ export function resolveBlurhash(src: string): string {
   if (!src.startsWith('/') && !src.startsWith('.')) {
     return '';
   }
+
+  if (browser) throw new Error(`Local image blurhash for ${src} must be resolved with $static().`);
 
   return manifest[src]?.blurhash ?? '';
 }

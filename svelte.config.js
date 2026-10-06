@@ -1,5 +1,6 @@
 import adapter from '@sveltejs/adapter-static';
 import MagicString from 'magic-string';
+import { svelteStaticCallsPreprocessor, withStaticCallResultsAdapter } from './scripts/svelte-static-calls-config.js';
 
 import sveltexConfig from './sveltex.config.js';
 
@@ -9,7 +10,7 @@ const config = {
     runes: true
   },
   kit: {
-    adapter: adapter(),
+    adapter: withStaticCallResultsAdapter(adapter()),
     alias: {
       '$app.css': 'src/routes/app.css'
     },
@@ -19,6 +20,7 @@ const config = {
   },
   preprocess: [
     sveltexConfig,
+    svelteStaticCallsPreprocessor(),
     {
       name: 'fix-sveltex-shit',
       markup(/** @type { {content: string; filename?: string} } */ { content, filename }) {

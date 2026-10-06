@@ -35,6 +35,9 @@
     const x = Math.max(0, Math.min(e.clientX - rect.left, rect.width));
     sliderPos = (x / rect.width) * 100;
   }
+
+  const beforeUrl = $static(resolveUrl(before));
+  const afterUrl = $static(resolveUrl(after));
 </script>
 
 <figure
@@ -52,7 +55,7 @@
 
   <div class="absolute top-2 left-2 z-30 opacity-0 transition-opacity duration-200 group-hover:opacity-100">
     <Link
-      href={resolveUrl(before)}
+      href={beforeUrl}
       target="_blank"
       class="flex h-6 w-6 items-center justify-center rounded bg-black/50 text-white backdrop-blur-sm hover:bg-black/70"
       title="View original before"
@@ -72,7 +75,7 @@
   </div>
   <div class="absolute top-2 right-2 z-30 opacity-0 transition-opacity duration-200 group-hover:opacity-100">
     <Link
-      href={resolveUrl(after)}
+      href={afterUrl}
       target="_blank"
       class="flex h-6 w-6 items-center justify-center rounded bg-black/50 text-white backdrop-blur-sm hover:bg-black/70"
       title="View original after"

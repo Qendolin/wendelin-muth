@@ -666,14 +666,11 @@ export function svelteStaticRegions(options: StaticRegionOptions = {}): Plugin[]
       const isStaticCapable = fileFilter(fname, filename);
 
       if (!isStaticCapable) {
-        if (content.includes('static')) {
-          checkRegularComponent(content, filename);
-        }
+        if (content.includes('static')) checkRegularComponent(content, filename);
         return;
       }
 
       if (!content.includes('static')) return;
-
       return processTransform(content, filename, htmlTransform);
     }
   };

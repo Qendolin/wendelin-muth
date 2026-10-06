@@ -29,10 +29,10 @@
     console.warn('Remote image "%s" without specified size!', orgSrc);
   }
 
-  const src = $derived(resolveUrl(orgSrc));
+  const src = $static(resolveUrl(orgSrc));
   const useWsrv = $derived(!dev && proxy && src.startsWith('https://'));
-  const [w, h] = $derived(resolveSize(orgSrc, orgW, orgH));
-  const blurhash = $derived(resolveBlurhash(orgSrc));
+  const [w, h] = $static(resolveSize(orgSrc, orgW, orgH));
+  const blurhash = $static(resolveBlurhash(orgSrc));
 
   type ProviderOperations = NonNullable<SourceProps['operations']>;
   const operations: ProviderOperations['wsrv'] = {

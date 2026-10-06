@@ -5,6 +5,7 @@ import { defineConfig } from 'vite';
 import sirv from 'sirv';
 import type { Plugin } from 'vite';
 import { svelteStaticRegions } from './scripts/svelte-static-regions.ts';
+import { svelteStaticCallResultsPlugin } from './scripts/svelte-static-calls.ts';
 import process from 'node:process';
 
 const DEBUG = process.env['DEBUG'] !== 'false';
@@ -29,6 +30,7 @@ export default defineConfig({
   plugins: [
     tailwindcss(),
     svelteStaticRegions(),
+    svelteStaticCallResultsPlugin({ maxSerializedResultBytes: 1024 }),
     sveltekit(),
     devtoolsJson(),
     {
@@ -44,7 +46,8 @@ export default defineConfig({
     sourcemap: DEBUG
   },
   define: {
-    'import.meta.env.PUBLIC_BUILD_TIMESTAMP': new Date().getTime().toString()
+    'import.meta.env.PUBLIC_BUILD_TIMESTAMP': new Date().getTime().toString(),
+    __STATIC_RESULT_CAPTURE__: JSON.stringify(process.env.STATIC_RESULT_PASS === 'capture')
   },
   server: {
     host: '0.0.0.0'

@@ -13,6 +13,9 @@ declare global {
    * Global constant that is true during SSR.
    */
   const __STATIC__: boolean;
+
+  /** Compile-time expression marker, lowered by the static-regions preprocessor. */
+  function $static<T>(value: T): T;
 }
 
 declare module 'svelte/elements' {
