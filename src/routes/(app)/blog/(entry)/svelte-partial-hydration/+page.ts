@@ -7,6 +7,7 @@ export const _meta: BlogEntryMeta = {
   description:
     "SvelteKit doesn't support partial hydration out of the box. Here is how I built a Vite plugin to freeze components into static HTML to save client bundle size and avoid wasteful processing.",
   createdDate: SimpleDate(2026, 5, 7),
+  modifiedDate: SimpleDate(2026, 10, 6),
   topics: ['Web', 'Tool'],
   draft: false
 };

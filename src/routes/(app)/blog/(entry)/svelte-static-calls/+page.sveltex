@@ -1,0 +1,85 @@
+<script lang="ts">
+  import Link from '$lib/components/Link.static.svelte';
+</script>
+
+In my [previous post](/blog/svelte-partial-hydration) I built a Vite plugin called Svelte Static Regions. It freezes static components into plain HTML at build time, which keeps them and their dependencies out of the client bundle. That works great for components that never change after build.
+
+But freezing only works if a component can be fully evaluated at build time. Some components are interactive and have to stay alive on the client.
+
+## The Problem
+The `ImageCompare` component renders a before and after slider with a draggable divider. It needs pointer handling and state, so it cannot be frozen into static HTML. The static regions pipeline skips it and ships it to the browser as a regular component.
+
+The images it shows are stored remotely and processed at build time. A storage manifest maps every local image path to its final URL, size and blurhash. That manifest only exists in the build environment, after the image upload step. For static components, the plugin bakes the resolved values straight into the HTML. An interactive component cannot do that, so `image-resolve.ts` would have to look the values up in the browser.
+
+Shipping the manifest to the client is not an option. It would bloat the bundle, and the values only matter at build time anyway. So the component was stuck. It could not resolve the very data it needed to render its images.
+
+## The Solution
+I added a `$static()` marker that lets an interactive component evaluate an expression at build time and replay the captured result on the client. I named it `$static` to mimic Svelte's rune syntax, so it reads like a built-in language feature.
+
+```typescript
+const beforeUrl = $static(resolveUrl(before));
+const afterUrl = $static(resolveUrl(after));
+```
+
+During prerender, `resolveUrl` runs in the build environment and the result is recorded. On the client, the expression is never executed, the recorded value is read back instead.
+
+## How it works
+This works through a preprocessor, two build passes, and a runtime.
+
+### The preprocessor
+A preprocessor rewrites every `$static()` call in instance scripts. The rewritten call either evaluates the expression at build time or reads a captured result on the client, depending on the environment it runs in.
+
+### Capture pass
+The `build:capture` task builds the site with `STATIC_RESULT_PASS=capture`. Every `$static()` result evaluated during prerender is serialized and appended to an NDJSON log. A wrapped adapter aggregates that log into `.svelte-kit/static-call-results.json` once the build finishes.
+
+### Hybrid pass
+The `build:hybrid` task builds the site again with `STATIC_RESULT_PASS=hybrid`. A Vite plugin reads the results file and injects the results for the current route into the module script of each page. A virtual module serves the captured data to the runtime.
+
+### Runtime
+On the client, `src/lib/static-calls/runtime.ts` keeps a map of captured results per route. Every callsite gets a stable id and a cursor. When a component reads a result, the cursor advances, so multiple component instances on one page replay their results in render order.
+
+## Using $static()
+The marker is a global function, so you need to declare it once in `app.d.ts`:
+
+```typescript
+declare global {
+  /** Compile-time expression marker, lowered by the static-regions preprocessor. */
+  function $static<T>(value: T): T;
+}
+```
+
+Then wrap any build-time expression in your instance script. This is how `ImageBase.static.svelte` resolves URLs, sizes and blurhashes:
+
+```typescript
+const src = $static(resolveUrl(orgSrc));
+const [w, h] = $static(resolveSize(orgSrc, orgW, orgH));
+const blurhash = $static(resolveBlurhash(orgSrc));
+```
+
+## Safety
+The mechanism fails loudly when misused. `image-resolve.ts` now throws if a manifest lookup reaches the browser without a `$static()` guard, so a missing marker turns into a clear error instead of a broken image.
+
+Captured results must be JSON serializable, with a special marker for `undefined` since JSON has no representation for it. There is also a per-result byte limit, and a single oversized result fails the capture build.
+
+`$static()` only works in instance scripts and only inside a page. The preprocessor throws for module scripts, and the runtime throws when a result is requested outside a page context.
+
+## Build tooling
+The two passes are deno tasks, `build:capture` and `build:hybrid`. The npm `build` script runs capture first and hybrid second. Since `svelte.config.js` is loaded by a bare Node `import()` without TypeScript support, the config-facing pieces live in a plain JavaScript module, `scripts/svelte-static-calls-config.js`. The Vite plugin itself lives in `scripts/svelte-static-calls.ts`.
+
+## What could be improved
+This is still a prototype, and it has some rough edges.
+
+The results are injected per route, not per path. If a route has many prerendered paths, say a dynamic blog post route with hundreds of posts, then the virtual module for that route contains the results for every path. All of them end up in one chunk, so a visitor to a single post downloads captured results for the whole route. Splitting the results per pathname and lazy loading only the current one would fix that.
+
+The cursor based replay is order sensitive. Every `$static()` callsite must run the same number of times, in the same order, on the client as it did during prerender. If the rendering changes, the runtime throws. There is no way to know at build time whether the client will render identically.
+
+The serialization rules are strict by design, but they also limit what you can capture. Anything that is not plain JSON data needs a different mechanism, and the result size cap makes large values impractical.
+
+Capturing only works for paths that were actually prerendered, and the whole thing needs the page context. A `$static()` call outside a page, or on a path that was not prerendered, fails at runtime.
+
+## Final Thoughts
+The two-pass build doubles the time spent prerendering, on top of the secondary Vite server the static regions plugin already runs. So far that has been acceptable for this site.
+
+Still, the approach works. It closes the gap between static and interactive components. A component can be interactive and still resolve build-time data, without shipping that logic or the data to the browser.
+
+I still don't know if this will ever become a proper NPM package. The code lives on [GitHub](https://github.com/Qendolin/wendelin-muth/blob/sveltekit/scripts/svelte-static-calls.ts) under the Apache License 2.0, as a continuation of the [static regions plugin](/blog/svelte-partial-hydration).

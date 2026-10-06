@@ -83,6 +83,6 @@ Because it runs a secondary Vite server during the build pipeline, it does incre
 
 Still, it serves its purpose well and shows that partial hydration is possible in SvelteKit with a bit of build-time processing.
 
-In the future I'd like to expand on this, offering more ways to evaluate code at built time. I don't know if I'll get around to it tho.
+In the future I'd like to expand on this, offering more ways to evaluate code at built time. I don't know if I'll get around to it tho. As it turns out, I did. Check out my follow up post about [$static() build-time result capture](/blog/svelte-static-calls).
 
 You can find the prototype code on [GitHub](https://github.com/Qendolin/wendelin-muth/blob/sveltekit/scripts/svelte-static-regions.ts) under the Apache License 2.0. I'm not interested in publishing it as an NPM package, but if anyone want's to do so, go ahead. Just make sure to credit me.
